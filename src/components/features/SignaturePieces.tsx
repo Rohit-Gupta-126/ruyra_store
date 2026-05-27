@@ -53,7 +53,7 @@ export default function SignaturePieces() {
           whileInView="show"
           viewport={{ once: true, margin: "-50px" }}
           animate="show"
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 w-full"
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 w-full"
         >
           {products.map((product) => (
             <ProductCard

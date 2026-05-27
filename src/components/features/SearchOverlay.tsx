@@ -109,7 +109,7 @@ export default function SearchOverlay() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="What are you looking for?"
-                className="w-full text-3xl md:text-5xl font-serif text-brand-brown outline-none bg-transparent placeholder-brand-brown/20 pr-12 font-medium"
+                className="w-full text-2xl sm:text-3xl md:text-5xl font-serif text-brand-brown outline-none bg-transparent placeholder-brand-brown/20 pr-12 font-medium"
               />
             </div>
             
@@ -172,7 +172,7 @@ export default function SearchOverlay() {
                       variants={containerVariants}
                       initial="hidden"
                       animate="show"
-                      className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
+                      className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8"
                     >
                       {filteredProducts.map((product) => (
                         <motion.div

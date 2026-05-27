@@ -36,7 +36,7 @@ export default function ValueMarquee() {
       >
         <motion.div
           animate={{
-            x: isHovered ? 0 : ["0%", "-50%"],
+            x: isHovered ? 0 : ["0%", "-33.333%"],
           }}
           transition={{
             duration: isHovered ? 0 : 20,
@@ -45,9 +45,9 @@ export default function ValueMarquee() {
           }}
           className="flex"
         >
-          {/* First block */}
+          {/* Three blocks to guarantee full-width coverage on ultra-wide screens */}
           {marqueeContent}
-          {/* Duplicate block for seamless loop */}
+          {marqueeContent}
           {marqueeContent}
         </motion.div>
       </motion.div>

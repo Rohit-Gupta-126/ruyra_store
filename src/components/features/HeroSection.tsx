@@ -258,7 +258,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ type: "spring", stiffness: 90, damping: 20 }}
-              className="font-serif text-2xl sm:text-4xl lg:text-6xl text-brand-brown leading-[1.15] tracking-wide"
+              className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-brand-brown leading-[1.15] tracking-wide"
             >
               <span className="block">{currentVibe.title[0]}</span>
               <motion.span
@@ -279,7 +279,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 90, damping: 20, delay: 0.22 }}
-            className="font-sans text-[11px] sm:text-xs lg:text-base text-brand-text-muted mt-3 lg:mt-6 leading-relaxed font-light"
+            className="font-sans text-xs sm:text-sm lg:text-base text-brand-text-muted mt-3 lg:mt-6 leading-relaxed font-light"
           >
             {currentVibe.desc}
           </motion.p>
@@ -322,7 +322,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 90, damping: 20, delay: 0.42 }}
-            className="flex flex-row gap-3 mt-6 lg:mt-8 w-full"
+            className="flex flex-col min-[360px]:flex-row gap-3 mt-6 lg:mt-8 w-full"
           >
             <a
               href={currentVibe.ctaLink}

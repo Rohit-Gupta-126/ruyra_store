@@ -77,7 +77,7 @@ export default function EditorialInterstitial() {
               opacity: line1Opacity,
               y: line1Y,
             }}
-            className="font-serif text-5xl md:text-7xl text-brand-brown leading-[1.1] font-light"
+            className="font-serif text-3xl sm:text-5xl md:text-7xl text-brand-brown leading-[1.1] font-light"
           >
             Light a Candle.
           </motion.h2>
@@ -87,7 +87,7 @@ export default function EditorialInterstitial() {
               opacity: line2Opacity,
               y: line2Y,
             }}
-            className="font-serif text-6xl md:text-8xl text-brand-brown leading-[1.1] font-light mt-8"
+            className="font-serif text-4xl sm:text-6xl md:text-8xl text-brand-brown leading-[1.1] font-light mt-8"
           >
             Ground your Spirit.
           </motion.h2>
@@ -97,7 +97,7 @@ export default function EditorialInterstitial() {
               opacity: line3Opacity,
               y: line3Y,
             }}
-            className="font-serif text-6xl md:text-8xl text-brand-brown leading-[1.1] font-light mt-8"
+            className="font-serif text-4xl sm:text-6xl md:text-8xl text-brand-brown leading-[1.1] font-light mt-8"
           >
             Reclaim your Space.
           </motion.h2>

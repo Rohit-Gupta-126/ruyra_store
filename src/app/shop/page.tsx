@@ -115,7 +115,7 @@ export default function ShopPage() {
       <div className="bg-bg-primary border-b border-bg-surface pt-12 pb-8 px-6 md:px-12">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="space-y-2">
-            <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight">
+            <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
               All Adornments & Rituals
             </h1>
             <p className="font-sans text-xs uppercase tracking-widest text-text-secondary">
@@ -285,7 +285,7 @@ export default function ShopPage() {
               initial="hidden"
               animate="show"
               key={`${selectedTypes.join("-")}-${selectedScents.join("-")}-${sortBy}`}
-              className="grid grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+              className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
             >
               {filteredProducts.map((product) => (
                 <ProductCard

@@ -99,7 +99,7 @@ export default function LaunchesAndOffers() {
                 LATEST FROM THE SANCTUARY
               </span>
             </div>
-            <h2 className="font-serif text-3xl md:text-4xl text-brand-brown leading-tight">
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-brand-brown leading-tight">
               New Releases & Limited Offerings
             </h2>
             <p className="font-sans text-xs md:text-sm text-brand-text-muted leading-relaxed font-light">
@@ -134,10 +134,10 @@ export default function LaunchesAndOffers() {
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ type: "spring", stiffness: 70, damping: 15, delay: index * 0.1 }}
                   onClick={() => openSheet(item.name, item.image, item.price)}
-                  className="lg:col-span-2 flex flex-col md:flex-row bg-brand-taupe/35 border border-brand-brown/5 rounded-3xl overflow-hidden group cursor-pointer shadow-sm hover:shadow-[0_15px_35px_rgba(62,44,36,0.06)] hover:border-brand-terracotta/25 transition-all duration-500 min-h-[420px] md:min-h-[380px] w-[85vw] max-w-[420px] lg:w-auto lg:max-w-none shrink-0 snap-center"
+                  className="lg:col-span-2 flex flex-col xl:flex-row bg-brand-taupe/35 border border-brand-brown/5 rounded-3xl overflow-hidden group cursor-pointer shadow-sm hover:shadow-[0_15px_35px_rgba(62,44,36,0.06)] hover:border-brand-terracotta/25 transition-all duration-500 min-h-[420px] xl:min-h-[380px] w-[85vw] max-w-[420px] lg:w-auto lg:max-w-none shrink-0 snap-center"
                 >
                   {/* Left content half */}
-                  <div className="flex-1 p-6 sm:p-8 flex flex-col justify-between order-2 md:order-1">
+                  <div className="flex-1 p-6 sm:p-8 flex flex-col justify-between order-2 xl:order-1">
                     <div className="space-y-4">
                       {/* Offer badge tag */}
                       <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-terracotta text-brand-sand font-sans text-[9px] tracking-wider uppercase font-bold rounded-full w-fit">
@@ -195,7 +195,7 @@ export default function LaunchesAndOffers() {
                   </div>
 
                   {/* Right image half */}
-                  <div className="flex-1 relative aspect-video md:aspect-auto min-h-[160px] md:min-h-0 overflow-hidden order-1 md:order-2">
+                  <div className="flex-1 relative aspect-video xl:aspect-auto min-h-[160px] xl:min-h-0 overflow-hidden order-1 xl:order-2">
                     <Image
                       src={item.image}
                       alt={item.alt}
@@ -203,7 +203,7 @@ export default function LaunchesAndOffers() {
                       className="object-cover transition-transform duration-700 group-hover:scale-103"
                       sizes="(max-width: 768px) 80vw, 400px"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-black/10 to-transparent pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-t xl:bg-gradient-to-l from-black/10 to-transparent pointer-events-none" />
                   </div>
                 </motion.div>
               );
