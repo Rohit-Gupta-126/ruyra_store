@@ -28,11 +28,13 @@ export const metadata: Metadata = {
   },
 };
 
-import CartProvider from "@/app/context/CartContext";
-import CartDrawer from "@/app/components/CartDrawer";
-import ProductSheetProvider from "@/app/components/ProductSheetContext";
-import ProductSheet from "@/app/components/ProductSheet";
-import Navigation from "@/app/components/Navigation";
+import CartProvider from "@/lib/context/CartContext";
+import CartDrawer from "@/components/features/CartDrawer";
+import ProductSheetProvider from "@/components/features/ProductSheetContext";
+import ProductSheet from "@/components/features/ProductSheet";
+import Navigation from "@/components/layout/Navigation";
+import SearchProvider from "@/lib/context/SearchContext";
+import SearchOverlay from "@/components/features/SearchOverlay";
 
 export default function RootLayout({
   children,
@@ -44,14 +46,17 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${playfairDisplay.variable}`}
     >
-      <body className="min-h-screen antialiased overflow-x-hidden selection:bg-brand-terracotta selection:text-white">
+      <body className="min-h-screen antialiased overflow-x-hidden selection:bg-brand-terracotta selection:text-white pb-16 md:pb-0">
         <CartProvider>
-          <ProductSheetProvider>
-            <Navigation />
-            {children}
-            <ProductSheet />
-            <CartDrawer />
-          </ProductSheetProvider>
+          <SearchProvider>
+            <ProductSheetProvider>
+              <Navigation />
+              {children}
+              <ProductSheet />
+              <CartDrawer />
+              <SearchOverlay />
+            </ProductSheetProvider>
+          </SearchProvider>
         </CartProvider>
       </body>
     </html>

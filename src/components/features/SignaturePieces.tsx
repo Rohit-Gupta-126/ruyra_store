@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { products, Product } from "@/app/data/products";
+import { products, Product } from "@/lib/data/products";
 import { useProductSheet } from "./ProductSheetContext";
-import { useCart } from "@/app/context/CartContext";
+import { useCart } from "@/lib/context/CartContext";
 import ProductCard from "./ProductCard";
 
 export default function SignaturePieces() {

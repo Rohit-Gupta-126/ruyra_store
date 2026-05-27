@@ -3,11 +3,11 @@
 import { useState, useMemo } from "react";
 import { SlidersHorizontal, X, ArrowUpDown, HelpCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { products } from "@/app/data/products";
-import { useProductSheet } from "@/app/components/ProductSheetContext";
-import { useCart } from "@/app/context/CartContext";
-import ProductCard from "@/app/components/ProductCard";
-import Footer from "@/app/components/Footer";
+import { products } from "@/lib/data/products";
+import { useProductSheet } from "@/components/features/ProductSheetContext";
+import { useCart } from "@/lib/context/CartContext";
+import ProductCard from "@/components/features/ProductCard";
+import Footer from "@/components/layout/Footer";
 
 // Types mapping for category and scent
 const RITUAL_TYPES = [
@@ -112,7 +112,7 @@ export default function ShopPage() {
     <div className="bg-bg-primary text-text-primary min-h-screen flex flex-col">
       
       {/* ── Page Header (Sticky top-20 to stack under Navigation) ── */}
-      <div className="sticky top-20 z-30 bg-bg-primary/95 backdrop-blur-md border-b border-bg-surface pt-16 pb-8 px-6 md:px-12">
+      <div className="sticky top-16 md:top-20 z-30 bg-bg-primary/95 backdrop-blur-md border-b border-bg-surface pt-16 pb-8 px-6 md:px-12">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="space-y-2">
             <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight">
@@ -182,10 +182,10 @@ export default function ShopPage() {
       </div>
 
       {/* ── Main Catalog Layout ── */}
-      <div className="max-w-7xl mx-auto w-full px-6 md:px-12 py-16 flex-1 flex gap-12 relative">
+      <div className="max-w-7xl mx-auto w-full px-6 md:px-12 py-24 flex-1 flex gap-12 relative">
         
         {/* ── Desktop Filters Sidebar (md+) ── */}
-        <aside className="w-64 flex-shrink-0 sticky top-64 h-[calc(100vh-280px)] overflow-y-auto pr-6 hidden md:block no-scrollbar space-y-8">
+        <aside className="w-64 shrink-0 sticky top-64 h-[calc(100vh-280px)] overflow-y-auto pr-6 hidden md:block no-scrollbar space-y-8">
           
           {/* Ritual Type Accordion */}
           <div className="space-y-4">
@@ -333,7 +333,7 @@ export default function ShopPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileFilterOpen(false)}
-              className="fixed inset-0 bg-black/45 backdrop-blur-sm z-[55] md:hidden"
+              className="fixed inset-0 bg-black/45 backdrop-blur-sm z-55 md:hidden"
               aria-hidden="true"
             />
 
@@ -343,18 +343,18 @@ export default function ShopPage() {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", stiffness: 220, damping: 25 }}
-              className="fixed inset-x-0 bottom-0 h-[80vh] bg-bg-primary rounded-t-3xl shadow-2xl z-[60] p-6 flex flex-col text-text-primary md:hidden overflow-hidden"
+              className="fixed inset-x-0 bottom-0 h-[80vh] bg-bg-primary rounded-t-3xl shadow-2xl z-60 p-6 flex flex-col text-text-primary md:hidden overflow-hidden"
             >
               {/* Drag Handle */}
               <div 
-                className="w-full flex justify-center py-2 cursor-pointer flex-shrink-0"
+                className="w-full flex justify-center py-2 cursor-pointer shrink-0"
                 onClick={() => setIsMobileFilterOpen(false)}
               >
                 <div className="w-12 h-1.5 bg-gray-300 rounded-full" />
               </div>
 
               {/* Header */}
-              <div className="flex justify-between items-center border-b border-bg-surface pb-4 pt-2 flex-shrink-0">
+              <div className="flex justify-between items-center border-b border-bg-surface pb-4 pt-2 shrink-0">
                 <h3 className="font-serif text-xl font-bold">Filter Sanctuary</h3>
                 <button
                   onClick={() => setIsMobileFilterOpen(false)}
@@ -420,7 +420,7 @@ export default function ShopPage() {
               </div>
 
               {/* Sticky bottom modal action buttons */}
-              <div className="pt-4 border-t border-bg-surface flex gap-4 flex-shrink-0">
+              <div className="pt-4 border-t border-bg-surface flex gap-4 shrink-0">
                 <button
                   onClick={handleClearAll}
                   className="flex-1 py-3.5 bg-bg-surface text-text-primary rounded-full font-sans text-xs uppercase tracking-widest font-semibold focus:outline-none hover:bg-gray-200 transition-colors"
@@ -441,7 +441,7 @@ export default function ShopPage() {
       </AnimatePresence>
 
       {/* Brand Tagline Ribbon (Shop Page) */}
-      <div className="w-full bg-bg-primary pb-16">
+      <div className="w-full bg-bg-primary">
         <Footer />
       </div>
     </div>

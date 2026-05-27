@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Plus } from "lucide-react";
 import { motion } from "framer-motion";
-import { Product } from "@/app/data/products";
+import { Product } from "@/lib/data/products";
 
 interface ProductCardProps {
   product: Product;

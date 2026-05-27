@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { X, ArrowRight, Calendar, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import Footer from "@/app/components/Footer";
+import Footer from "@/components/layout/Footer";
 
 interface Article {
   id: string;
@@ -128,7 +128,7 @@ export default function JournalPage() {
                 {/* Asymmetrical Image Container */}
                 <div 
                   className={`relative w-full rounded-2xl overflow-hidden bg-bg-surface ${
-                    isFeature ? "aspect-[21/9] h-[300px] md:h-[450px]" : "aspect-[4/3] md:aspect-[3/4] h-auto"
+                    isFeature ? "aspect-21/9 h-75 md:h-112.5" : "aspect-4/3 md:aspect-3/4 h-auto"
                   }`}
                 >
                   <motion.div
@@ -185,7 +185,7 @@ export default function JournalPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedArticle(null)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-md z-[95]"
+              className="fixed inset-0 bg-black/60 backdrop-blur-md z-95"
               aria-hidden="true"
             />
 
@@ -195,7 +195,7 @@ export default function JournalPage() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", stiffness: 200, damping: 22 }}
-              className="fixed inset-6 md:inset-12 lg:inset-20 bg-bg-primary rounded-3xl shadow-2xl z-[100] flex flex-col text-text-primary overflow-hidden"
+              className="fixed inset-6 md:inset-12 lg:inset-20 bg-bg-primary rounded-3xl shadow-2xl z-100 flex flex-col text-text-primary overflow-hidden"
               role="dialog"
               aria-modal="true"
               aria-label={selectedArticle.title}
@@ -229,7 +229,7 @@ export default function JournalPage() {
                   </div>
 
                   {/* Feature Image inside Article */}
-                  <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden bg-bg-surface">
+                  <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-bg-surface">
                     <Image
                       src={selectedArticle.image}
                       alt={selectedArticle.alt}
@@ -248,7 +248,7 @@ export default function JournalPage() {
                     </p>
 
                     {/* Breakout Pull Quote */}
-                    <blockquote className="w-full md:w-[110%] md:-ml-[5%] py-8 border-y border-bg-surface flex flex-col items-center justify-center text-center my-10">
+                    <blockquote className="w-full md:w-[110%] md:ml-[-5%] py-8 border-y border-bg-surface flex flex-col items-center justify-center text-center my-10">
                       <p className="font-serif text-xl md:text-2xl italic text-accent-primary font-medium max-w-xl leading-relaxed">
                         &ldquo;{selectedArticle.quote}&rdquo;
                       </p>

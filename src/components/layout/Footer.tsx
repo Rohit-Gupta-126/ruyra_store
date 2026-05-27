@@ -32,7 +32,7 @@ const columns = [
 
 export default function Footer() {
   return (
-    <footer id="story-section" className="bg-bg-primary py-24 px-6 md:px-12 border-t border-bg-surface w-full">
+    <footer id="story-section" className="bg-bg-primary pt-24 pb-12 px-6 md:px-12 border-t border-bg-surface w-full">
       <div className="max-w-7xl mx-auto flex flex-col gap-16">
         
         {/* Main Grid with scroll stagger */}
@@ -64,7 +64,7 @@ export default function Footer() {
             <h3 className="font-serif text-2xl tracking-[0.15em] text-text-primary font-bold">
               RUYRA
             </h3>
-            <p className="font-sans text-xs text-text-secondary max-w-sm leading-relaxed font-light">
+            <p className="font-sans text-sm text-text-secondary max-w-sm leading-relaxed font-light">
               Crafting botanical rituals to bring intention, warmth, and raw tactile beauty to modern spaces. Sustainably produced, ethically sourced.
             </p>
             
@@ -121,9 +121,9 @@ export default function Footer() {
                 hidden: { opacity: 0, y: 20 },
                 show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80, damping: 15 } }
               }}
-              className="space-y-4"
+              className="space-y-4 border-t border-brand-brown/5 pt-8 md:border-t-0 md:border-l md:border-brand-brown/10 md:pt-0 md:pl-8"
             >
-              <h4 className="font-sans text-[10px] tracking-[0.2em] uppercase font-bold text-text-primary">
+              <h4 className="font-sans text-xs tracking-[0.2em] uppercase font-bold text-text-primary">
                 {col.title}
               </h4>
               <ul className="space-y-2.5">
@@ -131,7 +131,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="font-sans text-xs text-text-secondary hover:text-accent-primary transition-colors font-light"
+                      className="font-sans text-sm text-text-secondary hover:text-accent-primary transition-colors font-light"
                     >
                       {link.label}
                     </a>
@@ -151,14 +151,14 @@ export default function Footer() {
           transition={{ duration: 1, delay: 0.3 }}
           className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-bg-surface gap-4"
         >
-          <p className="font-sans text-[10px] text-text-secondary font-light">
+          <p className="font-sans text-xs text-text-secondary font-light">
             © {new Date().getFullYear()} RUYRA. Handcrafted with Intention.
           </p>
           <div className="flex gap-6">
-            <a href="#" className="font-sans text-[10px] text-text-secondary hover:text-text-primary transition-colors font-light">
+            <a href="#" className="font-sans text-xs text-text-secondary hover:text-text-primary transition-colors font-light">
               Privacy Policy
             </a>
-            <a href="#" className="font-sans text-[10px] text-text-secondary hover:text-text-primary transition-colors font-light">
+            <a href="#" className="font-sans text-xs text-text-secondary hover:text-text-primary transition-colors font-light">
               Terms of Service
             </a>
           </div>

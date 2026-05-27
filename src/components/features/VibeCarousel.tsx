@@ -64,7 +64,7 @@ export default function VibeCarousel() {
             viewport={{ once: true, margin: "-50px" }}
             transition={{ type: "spring", stiffness: 70, damping: 15, delay: index * 0.15 }}
             onClick={() => openSheet(vibe.name, vibe.image, vibe.price)}
-            className="w-[280px] md:w-[400px] h-[400px] md:h-[500px] shrink-0 snap-center relative rounded-2xl overflow-hidden group cursor-pointer focus-within:ring-2 focus-within:ring-accent-primary focus:outline-none"
+            className="w-70 md:w-100 h-100 md:h-125 shrink-0 snap-center relative rounded-2xl overflow-hidden group cursor-pointer focus-within:ring-2 focus-within:ring-accent-primary focus:outline-none"
             tabIndex={0}
             role="button"
             aria-label={`Explore ${vibe.name} collection, starting at ${vibe.price}`}
@@ -93,7 +93,7 @@ export default function VibeCarousel() {
             </div>
 
             {/* Permanent Dark Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent z-10" />
 
             {/* Text Overlay (Bottom Aligned) */}
             <div className="absolute bottom-0 left-0 right-0 p-6 z-20 flex flex-col justify-end text-white">

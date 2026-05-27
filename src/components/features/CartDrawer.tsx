@@ -1,6 +1,6 @@
 "use client";
 
-import { useCart } from "@/app/context/CartContext";
+import { useCart } from "@/lib/context/CartContext";
 import { X, Plus, Minus, Lock, ShoppingBag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -15,7 +15,7 @@ export default function CartDrawer() {
     subtotal,
   } = useCart();
 
-  const freeShippingThreshold = 100;
+  const freeShippingThreshold = 75;
   const isFreeShipping = subtotal >= freeShippingThreshold;
   const remainingForFreeShipping = freeShippingThreshold - subtotal;
   const shippingProgress = Math.min((subtotal / freeShippingThreshold) * 100, 100);
@@ -130,9 +130,15 @@ export default function CartDrawer() {
                             {item.price}
                           </span>
                         </div>
-                        <p className="font-sans text-xs text-text-secondary">
-                          {item.variant}
-                        </p>
+                        <div className="font-sans text-xs text-text-secondary flex flex-col gap-0.5">
+                          <span>{item.variant}</span>
+                          {item.isSubscription && (
+                            <span className="text-[10px] text-accent-primary font-semibold flex items-center gap-1 mt-0.5">
+                              <span className="w-1.5 h-1.5 rounded-full bg-accent-primary animate-pulse" />
+                              Auto-delivery: {item.frequency} (Saved 10%)
+                            </span>
+                          )}
+                        </div>
                       </div>
 
                       {/* Quantity Selector & Remove Button */}
@@ -140,7 +146,7 @@ export default function CartDrawer() {
                         <div className="border border-[#E5E5E5] rounded-full flex items-center justify-between w-24 px-2 py-0.5 bg-white">
                           <motion.button
                             whileTap={{ scale: 0.8 }}
-                            onClick={() => updateQuantity(item.id, item.variant, item.quantity - 1)}
+                            onClick={() => updateQuantity(item.id, item.variant, item.quantity - 1, item.isSubscription, item.frequency)}
                             className="p-1 hover:text-accent-primary text-text-secondary focus:outline-none"
                             aria-label="Decrease quantity"
                           >
@@ -151,7 +157,7 @@ export default function CartDrawer() {
                           </span>
                           <motion.button
                             whileTap={{ scale: 0.8 }}
-                            onClick={() => updateQuantity(item.id, item.variant, item.quantity + 1)}
+                            onClick={() => updateQuantity(item.id, item.variant, item.quantity + 1, item.isSubscription, item.frequency)}
                             className="p-1 hover:text-accent-primary text-text-secondary focus:outline-none"
                             aria-label="Increase quantity"
                           >
@@ -160,7 +166,7 @@ export default function CartDrawer() {
                         </div>
 
                         <button
-                          onClick={() => removeItem(item.id, item.variant)}
+                          onClick={() => removeItem(item.id, item.variant, item.isSubscription, item.frequency)}
                           className="font-sans text-[10px] uppercase tracking-wider text-text-secondary hover:text-accent-secondary transition-colors"
                         >
                           Remove

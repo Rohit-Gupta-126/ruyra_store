@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RUYRA — Botanical Storefront
 
-## Getting Started
+RUYRA is a high-end luxury e-commerce application specializing in handcrafted botanical candles, bath rituals, and artisanal home adornments. This storefront is upgraded with premium growth, social proof, and performance engines.
 
-First, run the development server:
+## 🚀 Key Features (The Three Engines)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 1. The Revenue Engine (Growth-Driven PDP)
+Integrated directly into the Product Detail Modal to optimize average order value (AOV) and conversion:
+* **Subscribe & Save Toggle**: Smooth interactive stacked cards offering a 10% discount on auto-deliveries with selectable frequency (1, 2, or 3 months).
+* **Dynamic Shipping Motivator**: A progress bar tracks the subtotal dynamically against a **$75** threshold, letting customers know exactly how much they need to add to qualify for free shipping.
+* **"Complete the Ritual" Cross-sell**: Seamlessly suggests 1–2 pairing products that can be instantly added to the cart with a minimal circular `+` button.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. The Trust Engine (Verified Photo Reviews)
+Located at the bottom of the scrollable Product Detail Modal:
+* **Sanctuary Community Carousel**: Lifestyle user-generated content (UGC) photo cards in a swipeable layout. Hovering displays a dark glassmorphism gradient and slides up a community quote.
+* **Verified Buyer Badges**: Trustworthy indicators with custom checkmarks next to detailed text reviews.
+* **Dynamic Review Submission**: Clicking "Write a Review" triggers a floating modal to select rating stars and type a review, instantly appending it to the local reviews list for live stateful testing.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. The Performance Engine (Predictive Instant Search)
+A full-screen responsive overlay modal that opens instantaneously:
+* **Trending Intentions**: Interactive empty-state pills ("Amber Candle", "Bath Salts") that pre-fill the search input when clicked.
+* **Frictionless Result Cards**: Dynamic queries match typing against product metadata, showing matching titles, prices, and categories.
+* **Staggered Animations**: Implemented using Framer Motion so that results pop smoothly into place. Clicking a result automatically triggers the Product Detail Modal.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🛠️ Tech Stack & Styling
+* **Framework**: React, Next.js (utilizing Turbopack and Server Components)
+* **Styling**: Tailwind CSS (Brand colors: `brand-sand` background, `brand-brown` typography, `brand-terracotta` accents, and `brand-taupe` surfaces)
+* **Animations**: Framer Motion for smooth, premium transitions, modal triggers, and stagger effects
+* **Icons**: Lucide React for consistent line icons
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 File Structure
+* [`ProductSheet.tsx`](file:///e:/Web%20Dev%20Exercises/Next.js/ruyra_store/src/app/components/ProductSheet.tsx): The details modal hosting the shipping motivator, subscription cards, cross-sells, and photo review grid.
+* [`WriteReviewModal.tsx`](file:///e:/Web%20Dev%20Exercises/Next.js/ruyra_store/src/app/components/WriteReviewModal.tsx): Floating review input card.
+* [`SearchOverlay.tsx`](file:///e:/Web%20Dev%20Exercises/Next.js/ruyra_store/src/app/components/SearchOverlay.tsx): Full-screen predictive search modal with query matching and navigation routing.
+* [`SearchContext.tsx`](file:///e:/Web%20Dev%20Exercises/Next.js/ruyra_store/src/app/context/SearchContext.tsx): Global state manager for search.
+* [`CartContext.tsx`](file:///e:/Web%20Dev%20Exercises/Next.js/ruyra_store/src/app/context/CartContext.tsx): Extended to handle subscription identifiers and AOV metrics.
+* [`Navigation.tsx`](file:///e:/Web%20Dev%20Exercises/Next.js/ruyra_store/src/app/components/Navigation.tsx): Modified desktop header and bottom mobile navigation bar search hooks.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## ⚙️ Running Locally
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Install dependencies:
+   ```bash
+   pnpm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. Run the development server:
+   ```bash
+   pnpm dev
+   ```
+
+3. Build production bundle:
+   ```bash
+   pnpm build
+   ```

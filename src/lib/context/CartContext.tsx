@@ -9,6 +9,8 @@ export interface CartItem {
   variant: string;
   image: string;
   quantity: number;
+  isSubscription?: boolean;
+  frequency?: string;
 }
 
 interface CartContextValue {
@@ -17,8 +19,8 @@ interface CartContextValue {
   cartCount: number;
   subtotal: number;
   addItem: (item: Omit<CartItem, "quantity">) => void;
-  removeItem: (id: string, variant: string) => void;
-  updateQuantity: (id: string, variant: string, quantity: number) => void;
+  removeItem: (id: string, variant: string, isSubscription?: boolean, frequency?: string) => void;
+  updateQuantity: (id: string, variant: string, quantity: number, isSubscription?: boolean, frequency?: string) => void;
   toggleCart: () => void;
   openCart: () => void;
   closeCart: () => void;
@@ -67,7 +69,11 @@ export default function CartProvider({ children }: { children: React.ReactNode }
   const addItem = (newItem: Omit<CartItem, "quantity">) => {
     setCartItems((prevItems) => {
       const existingItemIndex = prevItems.findIndex(
-        (item) => item.id === newItem.id && item.variant === newItem.variant
+        (item) =>
+          item.id === newItem.id &&
+          item.variant === newItem.variant &&
+          item.isSubscription === newItem.isSubscription &&
+          item.frequency === newItem.frequency
       );
 
       if (existingItemIndex > -1) {
@@ -82,20 +88,39 @@ export default function CartProvider({ children }: { children: React.ReactNode }
     setIsCartOpen(true);
   };
 
-  const removeItem = (id: string, variant: string) => {
+  const removeItem = (id: string, variant: string, isSubscription?: boolean, frequency?: string) => {
     setCartItems((prevItems) =>
-      prevItems.filter((item) => !(item.id === id && item.variant === variant))
+      prevItems.filter(
+        (item) =>
+          !(
+            item.id === id &&
+            item.variant === variant &&
+            item.isSubscription === isSubscription &&
+            item.frequency === frequency
+          )
+      )
     );
   };
 
-  const updateQuantity = (id: string, variant: string, quantity: number) => {
+  const updateQuantity = (
+    id: string,
+    variant: string,
+    quantity: number,
+    isSubscription?: boolean,
+    frequency?: string
+  ) => {
     if (quantity <= 0) {
-      removeItem(id, variant);
+      removeItem(id, variant, isSubscription, frequency);
       return;
     }
     setCartItems((prevItems) =>
       prevItems.map((item) =>
-        item.id === id && item.variant === variant ? { ...item, quantity } : item
+        item.id === id &&
+        item.variant === variant &&
+        item.isSubscription === isSubscription &&
+        item.frequency === frequency
+          ? { ...item, quantity }
+          : item
       )
     );
   };
