@@ -62,7 +62,7 @@ export default function HeroSection() {
   const [isAutoplay, setIsAutoplay] = useState<boolean>(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Motion values for mouse movement (3D tilt parallax)
+  // Motion values for mouse movement (3D tilt parallax) - Desktop only
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -120,10 +120,10 @@ export default function HeroSection() {
     <section 
       onMouseEnter={() => setIsAutoplay(false)}
       onMouseLeave={() => setIsAutoplay(true)}
-      className="relative min-h-[90vh] lg:min-h-[85vh] w-full bg-brand-sand overflow-hidden flex flex-col justify-center border-b border-brand-brown/5"
+      className="relative min-h-[92vh] lg:min-h-[85vh] w-full bg-brand-sand overflow-hidden flex flex-col justify-end lg:justify-center border-b border-brand-brown/5 pb-[76px] lg:pb-0"
     >
-      {/* Subtle organic light glow overlay behind the layout */}
-      <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden">
+      {/* Desktop-only organic light glow overlay behind the layout */}
+      <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden hidden lg:block">
         <motion.div
           animate={{
             background: activeVibe === "amber" 
@@ -136,28 +136,57 @@ export default function HeroSection() {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto w-full px-6 py-12 lg:py-16 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-        {/* Left Editorial Panel: Tag, Vibe Switcher, Headlines, and CTAs (Col-span 5 for larger image ratio) */}
-        <div className="lg:col-span-5 flex flex-col justify-center order-2 lg:order-1">
+      {/* Mobile/Tablet Fullscreen Immersive Background (hidden on desktop) */}
+      <div className="absolute inset-0 lg:hidden w-full h-full pointer-events-none overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeVibe}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            className="absolute inset-0 w-full h-full"
+          >
+            <Image
+              src={currentVibe.image}
+              alt={currentVibe.label}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+            {/* Soft shade overlay to ease visual contrast */}
+            <div className="absolute inset-0 bg-black/25 pointer-events-none" />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Main Grid Wrapper */}
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-12 py-8 lg:py-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-end lg:items-center relative z-10">
+        
+        {/* Left Editorial Panel: 
+            On desktop: sits inline.
+            On mobile/tablet: styled as a beautiful floating glassmorphic details card pushed to the bottom. */}
+        <div className="lg:col-span-5 flex flex-col justify-center w-full max-w-[480px] lg:max-w-none mx-auto bg-brand-sand/95 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none border border-brand-brown/10 lg:border-none p-6 sm:p-8 lg:p-0 rounded-[2rem] lg:rounded-none shadow-[0_20px_50px_rgba(62,44,36,0.12)] lg:shadow-none">
+          
           {/* Collection Tag */}
-          <div className="flex items-center gap-2 mb-6">
+          <div className="flex items-center gap-2 mb-4 lg:mb-6">
             <span className="h-px w-6 bg-brand-brown/30" />
-            <span className="font-sans text-[10px] tracking-[0.25em] uppercase text-brand-brown/60 font-semibold">
+            <span className="font-sans text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-brand-brown/60 font-semibold">
               {currentVibe.tagline}
             </span>
           </div>
 
-          {/* Vibe Switcher Tabs */}
-          <div className="flex flex-wrap gap-1.5 p-1 bg-brand-taupe/30 border border-brand-brown/5 rounded-full w-fit mb-8">
+          {/* Vibe Switcher Tabs (Horizontal scroll on mobile, wrap/flex on desktop) */}
+          <div className="flex overflow-x-auto no-scrollbar gap-1 p-0.5 bg-brand-taupe/30 border border-brand-brown/5 rounded-full max-w-full mb-6 shrink-0 w-max">
             {VIBES.map((v) => (
               <button
                 key={v.id}
                 onClick={() => {
                   setActiveVibe(v.id);
-                  // Temporarily disable autoplay briefly when clicked
                   setIsAutoplay(false);
                 }}
-                className="relative px-4 py-2 rounded-full font-sans text-[10px] md:text-xs uppercase tracking-widest font-bold transition-all cursor-pointer z-10"
+                className="relative px-3.5 py-2 rounded-full font-sans text-[10px] sm:text-xs uppercase tracking-widest font-bold transition-all cursor-pointer z-10 whitespace-nowrap"
                 style={{
                   color: activeVibe === v.id ? "var(--color-brand-sand)" : "var(--color-brand-brown)",
                 }}
@@ -177,17 +206,17 @@ export default function HeroSection() {
           {/* Sequential Reveal Header */}
           <div key={`header-${activeVibe}`} className="overflow-hidden">
             <motion.h1
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ type: "spring", stiffness: 90, damping: 20 }}
-              className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-brown leading-[1.15] tracking-wide max-w-xl"
+              className="font-serif text-3xl sm:text-4xl lg:text-6xl text-brand-brown leading-[1.15] tracking-wide"
             >
               <span className="block">{currentVibe.title[0]}</span>
               <motion.span
-                initial={{ opacity: 0, y: 25 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ type: "spring", stiffness: 90, damping: 20, delay: 0.12 }}
-                className="block font-serif italic mt-1.5 font-normal"
+                className="block font-serif italic mt-1 sm:mt-1.5 font-normal"
                 style={{ color: getVibeColor(activeVibe) }}
               >
                 {currentVibe.title[1]}
@@ -198,10 +227,10 @@ export default function HeroSection() {
           {/* Subtitle Description */}
           <motion.p
             key={`desc-${activeVibe}`}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 90, damping: 20, delay: 0.22 }}
-            className="font-sans text-xs md:text-sm lg:text-base text-brand-text-muted mt-6 max-w-md leading-relaxed font-light"
+            className="font-sans text-xs lg:text-base text-brand-text-muted mt-4 lg:mt-6 leading-relaxed font-light"
           >
             {currentVibe.desc}
           </motion.p>
@@ -221,16 +250,16 @@ export default function HeroSection() {
                 },
               },
             }}
-            className="flex flex-wrap gap-2 mt-8"
+            className="flex flex-wrap gap-1.5 mt-6"
           >
             {currentVibe.notes.map((note) => (
               <motion.span
                 key={note}
                 variants={{
-                  hidden: { opacity: 0, y: 8 },
+                  hidden: { opacity: 0, y: 6 },
                   show: { opacity: 1, y: 0 },
                 }}
-                className="px-3.5 py-1.5 bg-brand-taupe/40 border border-brand-brown/5 rounded-full font-sans text-[10px] md:text-[11px] tracking-wider text-brand-brown font-medium flex items-center gap-1.5"
+                className="px-3 py-1 bg-brand-taupe/40 border border-brand-brown/5 rounded-full font-sans text-[9px] sm:text-[10px] tracking-wider text-brand-brown font-medium flex items-center gap-1.5"
               >
                 <span className="w-1 h-1 rounded-full bg-brand-terracotta/60" />
                 {note}
@@ -241,34 +270,34 @@ export default function HeroSection() {
           {/* CTAs */}
           <motion.div
             key={`ctas-${activeVibe}`}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 90, damping: 20, delay: 0.42 }}
-            className="flex flex-col sm:flex-row gap-4 mt-10"
+            className="flex flex-col sm:flex-row gap-3 mt-8 w-full"
           >
             <a
               href={currentVibe.ctaLink}
-              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-brand-brown text-brand-sand font-sans text-xs font-bold tracking-widest uppercase transition-all duration-300 hover:bg-brand-brown/95 hover:shadow-lg hover:shadow-brand-brown/10 rounded-md cursor-pointer group"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-brand-brown text-brand-sand font-sans text-[11px] sm:text-xs font-bold tracking-widest uppercase transition-all duration-300 hover:bg-brand-brown/95 hover:shadow-lg hover:shadow-brand-brown/10 rounded-md cursor-pointer group w-full sm:w-auto"
             >
               {currentVibe.ctaText}
               <ArrowRight className="w-3.5 h-3.5 stroke-[2] transition-transform duration-300 group-hover:translate-x-1" />
             </a>
             <a
               href="#sustainability-section"
-              className="inline-flex items-center justify-center px-8 py-3.5 border border-brand-brown/20 text-brand-brown font-sans text-xs font-bold tracking-widest uppercase hover:bg-brand-brown/5 transition-all duration-300 rounded-md cursor-pointer"
+              className="inline-flex items-center justify-center px-6 py-3.5 border border-brand-brown/20 text-brand-brown font-sans text-[11px] sm:text-xs font-bold tracking-widest uppercase hover:bg-brand-brown/5 transition-all duration-300 rounded-md cursor-pointer w-full sm:w-auto"
             >
               Our Story
             </a>
           </motion.div>
         </div>
 
-        {/* Right Sensory Canvas Panel: Interactive Image Frame with 3D Parallax Tilt (Col-span 7 for a larger visual) */}
+        {/* Right Sensory Canvas Panel: Interactive Image Frame with 3D Parallax Tilt (Desktop only, hidden on mobile/tablet) */}
         <div
           ref={containerRef}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           style={{ perspective: 1000 }}
-          className="lg:col-span-7 flex items-center justify-center order-1 lg:order-2 w-full select-none"
+          className="lg:col-span-7 hidden lg:flex items-center justify-center w-full select-none"
         >
           {/* Color aura behind image */}
           <motion.div
@@ -282,14 +311,14 @@ export default function HeroSection() {
             className="absolute -inset-6 blur-3xl rounded-full opacity-60 pointer-events-none transition-colors duration-700 -z-10"
           />
 
-          {/* Main 3D Card (Increased height to h-[68vh] for more prominence) */}
+          {/* Main 3D Card */}
           <motion.div
             style={{
               rotateX,
               rotateY,
               transformStyle: "preserve-3d",
             }}
-            className="relative w-full h-[45vh] sm:h-[50vh] lg:h-[68vh] rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(62,44,36,0.12)] border border-brand-brown/5 bg-brand-taupe/20"
+            className="relative w-full h-[68vh] rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(62,44,36,0.12)] border border-brand-brown/5 bg-brand-taupe/20"
           >
             {/* Image Transition Slider */}
             <AnimatePresence mode="wait">
@@ -306,7 +335,7 @@ export default function HeroSection() {
                   alt={currentVibe.label}
                   fill
                   priority
-                  sizes="(max-width: 1024px) 100vw, 55vw"
+                  sizes="55vw"
                   className="object-cover object-center"
                 />
                 {/* Visual shade gradient */}
@@ -327,7 +356,7 @@ export default function HeroSection() {
                 <Sparkles className="w-3 h-3 stroke-[2] text-accent-gold" />
                 Sensory Spec
               </div>
-              <div className="font-serif text-sm md:text-base font-medium leading-snug mt-1 text-white">
+              <div className="font-serif text-base font-medium leading-snug mt-1 text-white">
                 {currentVibe.sensoryText}
               </div>
               <div className="font-sans text-[10px] text-white/60 mt-1 flex items-center gap-1.5">
