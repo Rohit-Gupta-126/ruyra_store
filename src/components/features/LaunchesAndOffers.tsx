@@ -66,7 +66,6 @@ export default function LaunchesAndOffers() {
 
   const handleAction = (item: LaunchItem, e: React.MouseEvent) => {
     e.stopPropagation();
-    // Open product detail sheet for specific config
     openSheet(item.name, item.image, item.price);
   };
 
@@ -86,7 +85,7 @@ export default function LaunchesAndOffers() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 w-full">
         
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 lg:mb-16 gap-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -121,12 +120,12 @@ export default function LaunchesAndOffers() {
           </motion.div>
         </div>
 
-        {/* 2:1:1 Asymmetrical Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* 2:1:1 Asymmetrical Grid on Desktop, Horizontal Swipe Carousel on Mobile & Tablet */}
+        <div className="flex lg:grid overflow-x-auto lg:overflow-visible gap-6 lg:gap-8 snap-x snap-mandatory no-scrollbar pb-6 -mx-6 px-6 lg:mx-0 lg:px-0 lg:grid-cols-4">
           
           {ITEMS.map((item, index) => {
             if (item.isOffer) {
-              // Highlight Solstice Bundle Card (Spans 2 columns on desktop)
+              // Highlight Solstice Bundle Card (Spans 2 columns on desktop, snap-center card on mobile)
               return (
                 <motion.div
                   key={item.id}
@@ -135,46 +134,46 @@ export default function LaunchesAndOffers() {
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ type: "spring", stiffness: 70, damping: 15, delay: index * 0.1 }}
                   onClick={() => openSheet(item.name, item.image, item.price)}
-                  className="lg:col-span-2 flex flex-col md:flex-row bg-brand-taupe/35 border border-brand-brown/5 rounded-3xl overflow-hidden group cursor-pointer shadow-sm hover:shadow-[0_15px_35px_rgba(62,44,36,0.06)] hover:border-brand-terracotta/25 transition-all duration-500 min-h-[380px]"
+                  className="lg:col-span-2 flex flex-col md:flex-row bg-brand-taupe/35 border border-brand-brown/5 rounded-3xl overflow-hidden group cursor-pointer shadow-sm hover:shadow-[0_15px_35px_rgba(62,44,36,0.06)] hover:border-brand-terracotta/25 transition-all duration-500 min-h-[420px] md:min-h-[380px] w-[85vw] max-w-[420px] lg:w-auto lg:max-w-none shrink-0 snap-center"
                 >
                   {/* Left content half */}
-                  <div className="flex-1 p-8 flex flex-col justify-between order-2 md:order-1">
+                  <div className="flex-1 p-6 sm:p-8 flex flex-col justify-between order-2 md:order-1">
                     <div className="space-y-4">
                       {/* Offer badge tag */}
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-terracotta text-brand-sand font-sans text-[9px] tracking-wider uppercase font-bold rounded-full">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-terracotta text-brand-sand font-sans text-[9px] tracking-wider uppercase font-bold rounded-full w-fit">
                         <Tag className="w-3 h-3 stroke-[2.5]" />
                         {item.tag}
                       </span>
                       
-                      <h3 className="font-serif text-2xl text-brand-brown leading-tight group-hover:text-brand-terracotta transition-colors">
+                      <h3 className="font-serif text-xl sm:text-2xl text-brand-brown leading-tight group-hover:text-brand-terracotta transition-colors">
                         {item.name}
                       </h3>
-                      <p className="font-sans text-xs text-brand-brown/65 uppercase tracking-widest font-semibold">
+                      <p className="font-sans text-[10px] text-brand-brown/65 uppercase tracking-widest font-semibold">
                         {item.sub}
                       </p>
-                      <p className="font-sans text-xs md:text-sm text-brand-text-muted leading-relaxed font-light">
+                      <p className="font-sans text-xs sm:text-sm text-brand-text-muted leading-relaxed font-light">
                         {item.description}
                       </p>
                     </div>
 
-                    <div className="mt-8 space-y-4">
+                    <div className="mt-6 space-y-3">
                       {/* Price Section */}
-                      <div className="flex items-baseline gap-3">
-                        <span className="font-sans text-2xl font-semibold text-brand-brown">
+                      <div className="flex flex-wrap items-baseline gap-2">
+                        <span className="font-sans text-xl sm:text-2xl font-semibold text-brand-brown">
                           {item.price}
                         </span>
                         {item.originalPrice && (
-                          <span className="font-sans text-sm text-brand-text-muted/60 line-through">
+                          <span className="font-sans text-xs sm:text-sm text-brand-text-muted/60 line-through">
                             {item.originalPrice}
                           </span>
                         )}
-                        <span className="font-sans text-[10px] text-accent-gold font-bold tracking-widest uppercase ml-1 animate-pulse">
-                          • Limited Batch of 150
+                        <span className="font-sans text-[9px] text-accent-gold font-bold tracking-widest uppercase ml-1 animate-pulse">
+                          • Limited Batch
                         </span>
                       </div>
 
                       {/* CTA Buttons */}
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2.5">
                         <button
                           onClick={(e) => handleAction(item, e)}
                           className="flex-1 py-3 bg-brand-brown text-brand-sand font-sans text-[10px] tracking-wider uppercase font-bold rounded-md hover:bg-brand-brown/95 transition-all flex items-center justify-center gap-1.5 group/btn"
@@ -194,13 +193,13 @@ export default function LaunchesAndOffers() {
                   </div>
 
                   {/* Right image half */}
-                  <div className="flex-1 relative aspect-square md:aspect-auto min-h-[220px] md:min-h-0 overflow-hidden order-1 md:order-2">
+                  <div className="flex-1 relative aspect-video md:aspect-auto min-h-[160px] md:min-h-0 overflow-hidden order-1 md:order-2">
                     <Image
                       src={item.image}
                       alt={item.alt}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-103"
-                      sizes="(max-width: 768px) 100vw, 400px"
+                      sizes="(max-width: 768px) 80vw, 400px"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-black/10 to-transparent pointer-events-none" />
                   </div>
@@ -208,7 +207,7 @@ export default function LaunchesAndOffers() {
               );
             }
 
-            // Normal new launch items (Col-span 1)
+            // Normal new launch items (Col-span 1, snap-center card on mobile)
             return (
               <motion.div
                 key={item.id}
@@ -217,7 +216,7 @@ export default function LaunchesAndOffers() {
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ type: "spring", stiffness: 70, damping: 15, delay: index * 0.12 }}
                 onClick={() => openSheet(item.name, item.image, item.price)}
-                className="lg:col-span-1 bg-white border border-brand-brown/5 rounded-3xl overflow-hidden group cursor-pointer flex flex-col justify-between shadow-sm hover:shadow-[0_15px_35px_rgba(62,44,36,0.06)] hover:border-brand-brown/15 transition-all duration-500"
+                className="lg:col-span-1 bg-white border border-brand-brown/5 rounded-3xl overflow-hidden group cursor-pointer flex flex-col justify-between shadow-sm hover:shadow-[0_15px_35px_rgba(62,44,36,0.06)] hover:border-brand-brown/15 transition-all duration-500 w-[78vw] max-w-[320px] lg:w-auto lg:max-w-none shrink-0 snap-center"
               >
                 {/* Media Container */}
                 <div className="relative aspect-[4/3] w-full overflow-hidden">
@@ -226,7 +225,7 @@ export default function LaunchesAndOffers() {
                     alt={item.alt}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-103"
-                    sizes="(max-width: 768px) 100vw, 300px"
+                    sizes="(max-width: 768px) 70vw, 300px"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
                   
@@ -239,10 +238,10 @@ export default function LaunchesAndOffers() {
                 {/* Card Content details */}
                 <div className="p-6 flex-1 flex flex-col justify-between">
                   <div className="space-y-2">
-                    <h3 className="font-serif text-lg text-brand-brown group-hover:text-brand-terracotta transition-colors leading-tight">
+                    <h3 className="font-serif text-base sm:text-lg text-brand-brown group-hover:text-brand-terracotta transition-colors leading-tight line-clamp-1">
                       {item.name}
                     </h3>
-                    <p className="font-sans text-[10px] text-brand-text-muted uppercase tracking-widest font-semibold">
+                    <p className="font-sans text-[9px] text-brand-text-muted uppercase tracking-widest font-semibold">
                       {item.sub}
                     </p>
                     <p className="font-sans text-xs text-brand-text-muted leading-relaxed font-light line-clamp-2">
@@ -250,12 +249,12 @@ export default function LaunchesAndOffers() {
                     </p>
                   </div>
 
-                  <div className="mt-6 pt-4 border-t border-brand-brown/5 flex items-center justify-between">
+                  <div className="mt-5 pt-3 border-t border-brand-brown/5 flex items-center justify-between">
                     <span className="font-sans text-base font-semibold text-brand-brown">
                       {item.price}
                     </span>
                     
-                    <div className="flex gap-2">
+                    <div className="flex gap-1.5">
                       <button
                         onClick={(e) => handleAction(item, e)}
                         className="py-1.5 px-3 bg-brand-brown text-brand-sand font-sans text-[9px] tracking-wider uppercase font-bold rounded-md hover:bg-brand-brown/95 transition-colors"
