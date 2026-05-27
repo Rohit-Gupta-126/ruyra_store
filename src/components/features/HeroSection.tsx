@@ -120,7 +120,7 @@ export default function HeroSection() {
     <section 
       onMouseEnter={() => setIsAutoplay(false)}
       onMouseLeave={() => setIsAutoplay(true)}
-      className="relative min-h-[90vh] md:min-h-[85vh] w-full bg-brand-sand overflow-hidden flex flex-col justify-center border-b border-brand-brown/5 pb-[64px] md:pb-0"
+      className="relative min-h-[90vh] landscape:min-h-[85vh] w-full bg-brand-sand overflow-hidden flex flex-col justify-center border-b border-brand-brown/5 pb-[64px] md:pb-0"
     >
       {/* Subtle organic light glow overlay behind the layout (Desktop only) */}
       <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden hidden lg:block">
@@ -137,7 +137,7 @@ export default function HeroSection() {
       </div>
 
       {/* Main Grid Wrapper */}
-      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-12 py-6 md:py-10 lg:py-16 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 lg:gap-16 items-center">
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-12 py-6 landscape:py-16 grid grid-cols-1 landscape:grid-cols-12 gap-6 landscape:gap-16 items-center">
         
         {/* Right Sensory Canvas Panel (Image Container - Order-1 on mobile so visual loads at the top) */}
         <div
@@ -145,7 +145,7 @@ export default function HeroSection() {
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           style={{ perspective: 1000 }}
-          className="md:col-span-6 lg:col-span-7 flex items-center justify-center order-1 md:order-2 w-full select-none"
+          className="landscape:col-span-7 flex items-center justify-center order-1 landscape:order-2 w-full select-none"
         >
           {/* Color aura behind image (Desktop only) */}
           <motion.div
@@ -166,7 +166,7 @@ export default function HeroSection() {
               rotateY,
               transformStyle: "preserve-3d",
             }}
-            className="relative w-full h-[28vh] sm:h-[35vh] md:h-auto md:aspect-[4/5] lg:aspect-[3/4] xl:aspect-[4/5] rounded-2xl lg:rounded-3xl overflow-hidden shadow-[0_12px_30px_rgba(62,44,36,0.08)] lg:shadow-[0_20px_50px_rgba(62,44,36,0.12)] border border-brand-brown/5 bg-brand-taupe/20"
+            className="relative w-full h-[28vh] sm:h-[35vh] portrait:sm:h-[45vh] landscape:h-[68vh] rounded-2xl lg:rounded-3xl overflow-hidden shadow-[0_12px_30px_rgba(62,44,36,0.08)] lg:shadow-[0_20px_50px_rgba(62,44,36,0.12)] border border-brand-brown/5 bg-brand-taupe/20"
           >
             {/* Image Transition Slider */}
             <AnimatePresence mode="wait">
@@ -216,9 +216,9 @@ export default function HeroSection() {
         </div>
 
         {/* Left Editorial Panel (Order-2 on mobile so it sits cleanly below the image) */}
-        <div className="md:col-span-6 lg:col-span-5 flex flex-col justify-center w-full max-w-[480px] md:max-w-none mx-auto p-0 order-2 md:order-1">
+        <div className="landscape:col-span-5 flex flex-col justify-center w-full max-w-[480px] sm:portrait:max-w-[560px] landscape:max-w-none mx-auto p-0 order-2 landscape:order-1">
           {/* Collection Tag */}
-          <div className="flex items-center gap-2 mb-3 md:mb-4 lg:mb-6">
+          <div className="flex items-center gap-2 mb-3 landscape:mb-6">
             <span className="h-px w-6 bg-brand-brown/30" />
             <span className="font-sans text-[9px] tracking-[0.25em] uppercase text-brand-brown/60 font-semibold">
               {currentVibe.tagline}
@@ -226,7 +226,7 @@ export default function HeroSection() {
           </div>
 
           {/* Vibe Switcher Tabs (Horizontal scroll on mobile, wrap/flex on desktop) */}
-          <div className="flex overflow-x-auto no-scrollbar gap-1 p-0.5 bg-brand-taupe/30 border border-brand-brown/5 rounded-full max-w-full mb-5 md:mb-6 lg:mb-8 shrink-0 w-max">
+          <div className="flex overflow-x-auto no-scrollbar gap-1 p-0.5 bg-brand-taupe/30 border border-brand-brown/5 rounded-full max-w-full mb-5 landscape:mb-8 shrink-0 w-max">
             {VIBES.map((v) => (
               <button
                 key={v.id}
@@ -279,7 +279,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 90, damping: 20, delay: 0.22 }}
-            className="font-sans text-xs sm:text-sm lg:text-base text-brand-text-muted mt-3 md:mt-4 lg:mt-6 leading-relaxed font-light"
+            className="font-sans text-xs sm:text-sm lg:text-base text-brand-text-muted mt-3 landscape:mt-6 leading-relaxed font-light"
           >
             {currentVibe.desc}
           </motion.p>
@@ -322,18 +322,18 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 90, damping: 20, delay: 0.42 }}
-            className="flex flex-col min-[360px]:flex-row gap-3 mt-6 md:mt-8 w-full"
+            className="flex flex-col min-[360px]:flex-row gap-3 mt-6 landscape:mt-8 w-full"
           >
             <a
               href={currentVibe.ctaLink}
-              className="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-3.5 bg-brand-brown text-brand-sand font-sans text-[10px] sm:text-xs font-bold tracking-widest uppercase transition-all duration-300 hover:bg-brand-brown/95 hover:shadow-lg hover:shadow-brand-brown/10 rounded-md cursor-pointer group"
+              className="flex-1 landscape:flex-none inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-3.5 bg-brand-brown text-brand-sand font-sans text-[10px] sm:text-xs font-bold tracking-widest uppercase transition-all duration-300 hover:bg-brand-brown/95 hover:shadow-lg hover:shadow-brand-brown/10 rounded-md cursor-pointer group"
             >
               {currentVibe.ctaText.replace("Collection", "")} {/* Make it slightly shorter for mobile */}
               <ArrowRight className="w-3.5 h-3.5 stroke-[2] transition-transform duration-300 group-hover:translate-x-1" />
             </a>
             <a
               href="#sustainability-section"
-              className="flex-1 md:flex-none inline-flex items-center justify-center px-4 sm:px-6 py-3.5 border border-brand-brown/20 text-brand-brown font-sans text-[10px] sm:text-xs font-bold tracking-widest uppercase hover:bg-brand-brown/5 transition-all duration-300 rounded-md cursor-pointer"
+              className="flex-1 landscape:flex-none inline-flex items-center justify-center px-4 sm:px-6 py-3.5 border border-brand-brown/20 text-brand-brown font-sans text-[10px] sm:text-xs font-bold tracking-widest uppercase hover:bg-brand-brown/5 transition-all duration-300 rounded-md cursor-pointer"
             >
               Our Story
             </a>
