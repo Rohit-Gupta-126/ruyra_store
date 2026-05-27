@@ -176,6 +176,7 @@ export default function LaunchesAndOffers() {
                       <div className="flex items-center gap-2.5">
                         <button
                           onClick={(e) => handleAction(item, e)}
+                          suppressHydrationWarning
                           className="flex-1 py-3 bg-brand-brown text-brand-sand font-sans text-[10px] tracking-wider uppercase font-bold rounded-md hover:bg-brand-brown/95 transition-all flex items-center justify-center gap-1.5 group/btn"
                         >
                           {item.ctaText}
@@ -183,6 +184,7 @@ export default function LaunchesAndOffers() {
                         </button>
                         <button
                           onClick={(e) => handleQuickAdd(item, e)}
+                          suppressHydrationWarning
                           className="p-3 border border-brand-brown/20 text-brand-brown hover:bg-brand-brown hover:text-brand-sand hover:border-brand-brown transition-all rounded-md"
                           aria-label="Add Solstice Bundle to cart instantly"
                         >
@@ -257,12 +259,14 @@ export default function LaunchesAndOffers() {
                     <div className="flex gap-1.5">
                       <button
                         onClick={(e) => handleAction(item, e)}
+                        suppressHydrationWarning
                         className="py-1.5 px-3 bg-brand-brown text-brand-sand font-sans text-[9px] tracking-wider uppercase font-bold rounded-md hover:bg-brand-brown/95 transition-colors"
                       >
                         Details
                       </button>
                       <button
                         onClick={(e) => handleQuickAdd(item, e)}
+                        suppressHydrationWarning
                         className="p-1.5 border border-brand-brown/15 text-brand-brown hover:bg-brand-brown hover:text-brand-sand hover:border-brand-brown transition-colors rounded-md"
                         aria-label={`Quick add ${item.name} to cart`}
                       >

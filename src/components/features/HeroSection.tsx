@@ -234,6 +234,7 @@ export default function HeroSection() {
                   setActiveVibe(v.id);
                   setIsAutoplay(false);
                 }}
+                suppressHydrationWarning
                 className="relative px-3.5 py-1.5 sm:py-2 rounded-full font-sans text-[9px] sm:text-xs uppercase tracking-widest font-bold transition-all cursor-pointer z-10 whitespace-nowrap"
                 style={{
                   color: activeVibe === v.id ? "var(--color-brand-sand)" : "var(--color-brand-brown)",

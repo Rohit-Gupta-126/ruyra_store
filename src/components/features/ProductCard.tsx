@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Plus } from "lucide-react";
 import { motion } from "framer-motion";
 import { Product } from "@/lib/data/products";
+import { useRef, useState } from "react";
 
 interface ProductCardProps {
   product: Product;
@@ -20,11 +21,56 @@ const cardVariants = {
   },
 } as const;
 
+// Video URLs - product-specific videos
+const PRODUCT_VIDEOS: Record<string, string> = {
+  "amber-ritual-candle":
+    "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+  "ritual-bath-salts":
+    "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+  "earthen-taper-holder":
+    "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+  "resin-adornments":
+    "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+};
+
 export default function ProductCard({
   product,
   onOpenDetails,
   onQuickAdd,
 }: ProductCardProps) {
+  const [isVideoHovered, setIsVideoHovered] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+  const magneticButtonRef = useRef<HTMLButtonElement>(null);
+  const [magneticOffset, setMagneticOffset] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (!magneticButtonRef.current) return;
+
+    const rect = magneticButtonRef.current.getBoundingClientRect();
+    const buttonCenterX = rect.left + rect.width / 2;
+    const buttonCenterY = rect.top + rect.height / 2;
+
+    const distance = 40; // magnetic pull distance
+
+    const dx = e.clientX - buttonCenterX;
+    const dy = e.clientY - buttonCenterY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist < distance) {
+      const strength = 1 - dist / distance;
+      setMagneticOffset({
+        x: (dx / dist) * strength * 15,
+        y: (dy / dist) * strength * 15,
+      });
+    } else {
+      setMagneticOffset({ x: 0, y: 0 });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setMagneticOffset({ x: 0, y: 0 });
+  };
+
   return (
     <motion.div
       id={`product-card-${product.id}`}
@@ -44,14 +90,19 @@ export default function ProductCard({
       aria-label={`View ${product.name} details — price ${product.price}`}
     >
       {/* Image Block */}
-      <div className="aspect-[4/5] bg-brand-taupe rounded-xl mb-4 relative flex items-center justify-center overflow-hidden p-4">
-        {/* Product Image */}
+      <div
+        className="aspect-4/5 bg-brand-taupe rounded-xl mb-4 relative flex items-center justify-center overflow-hidden p-4 group"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        {/* Product Image (fades out on video hover unless video errors out) */}
         <motion.div
           className="w-full h-full relative"
+          animate={{ opacity: isVideoHovered && !videoError ? 0 : 1 }}
+          transition={{ duration: 0.7 }}
           variants={{
-            hover: { scale: 1.05 },
+            hover: { scale: isVideoHovered && !videoError ? 1 : 1.05 },
           }}
-          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <Image
             src={product.image}
@@ -61,6 +112,27 @@ export default function ProductCard({
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
           />
         </motion.div>
+
+        {/* Video Element (fades in on hover) */}
+        {!videoError && (
+          <motion.video
+            className="absolute inset-0 w-full h-full object-cover rounded-lg"
+            animate={{
+              opacity: isVideoHovered ? 1 : 0,
+              scale: isVideoHovered ? 1.05 : 1,
+            }}
+            transition={{ duration: 1 }}
+            onMouseEnter={() => setIsVideoHovered(true)}
+            onMouseLeave={() => setIsVideoHovered(false)}
+            onError={() => setVideoError(true)}
+            autoPlay
+            muted
+            loop
+            playsInline
+          >
+            <source src={PRODUCT_VIDEOS[product.id] || ""} type="video/mp4" />
+          </motion.video>
+        )}
 
         {/* Mobile Floating Add Button */}
         <button
@@ -73,24 +145,29 @@ export default function ProductCard({
             onQuickAdd(product);
           }}
         >
-          <Plus className="w-4 h-4 stroke-[2]" />
+          <Plus className="w-4 h-4 stroke-2" />
         </button>
 
-        {/* Desktop Hover Quick Add Slide-up */}
-        <motion.div
-          variants={{
-            hover: { y: 0 },
+        {/* Desktop Magnetic Quick Add Button */}
+        <motion.button
+          ref={magneticButtonRef}
+          suppressHydrationWarning
+          className="absolute bottom-4 right-4 hidden md:flex items-center justify-center w-12 h-12 rounded-full backdrop-blur-md bg-white/50 border border-white text-brand-brown hover:bg-white/70 transition-colors z-20 shadow-lg focus:outline-none focus-within:ring-2 focus-within:ring-brand-terracotta"
+          animate={{
+            x: magneticOffset.x,
+            y: magneticOffset.y,
           }}
-          initial={{ y: "101%" }}
-          transition={{ type: "spring", stiffness: 150, damping: 18 }}
+          transition={{ type: "spring", stiffness: 150, damping: 15 }}
           onClick={(e) => {
             e.stopPropagation();
             onQuickAdd(product);
           }}
-          className="absolute bottom-0 left-0 right-0 w-full bg-brand-terracotta hover:bg-[#9A4C34] text-white py-3.5 text-center font-sans text-xs tracking-widest uppercase font-semibold hidden md:block z-20 cursor-pointer transition-colors duration-300"
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          aria-label={`Quick add ${product.name} to bag`}
         >
-          Quick Add
-        </motion.div>
+          <Plus className="w-5 h-5 stroke-2" />
+        </motion.button>
       </div>
 
       {/* Typography Info */}
