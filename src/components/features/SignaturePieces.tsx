@@ -15,14 +15,15 @@ export default function SignaturePieces() {
   };
 
   return (
-    <section className="bg-bg-surface rounded-t-[40px] py-24 px-6 md:px-12 w-full mt-12">
-      <div className="max-w-7xl mx-auto">
+    <section className="bg-bg-surface py-24 px-6 md:px-12 w-full overflow-x-hidden">
+      <div className="max-w-7xl mx-auto w-full">
         {/* Header with entrance animation */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
+          animate={{ opacity: 1, y: 0 }}
           className="flex justify-between items-baseline mb-12"
         >
           <h2 className="font-serif text-3xl text-text-primary">
@@ -51,7 +52,8 @@ export default function SignaturePieces() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
+          animate="show"
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 w-full"
         >
           {products.map((product) => (
             <ProductCard
