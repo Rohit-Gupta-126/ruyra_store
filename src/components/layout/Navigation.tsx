@@ -92,6 +92,7 @@ export default function Navigation() {
           <div className="hidden md:flex items-center gap-6 text-brand-brown">
             <button
               id="nav-search-desktop"
+              suppressHydrationWarning
               onClick={openSearch}
               className="p-1 hover:text-brand-terracotta transition-colors focus:outline-none cursor-pointer"
               aria-label="Search Collection"
@@ -139,6 +140,7 @@ export default function Navigation() {
               <button
                 key={item.id}
                 id={`mobile-nav-${item.id}`}
+                suppressHydrationWarning
                 onClick={item.isCartButton ? openCart : openSearch}
                 className="relative flex flex-col items-center justify-center p-3 text-brand-brown/70 hover:text-brand-terracotta active:scale-95 transition-all focus:outline-none cursor-pointer"
                 aria-label={item.label}
