@@ -51,7 +51,9 @@ export default function CartProvider({ children }: { children: React.ReactNode }
             setCartItems(parsed);
           }
         } catch (e) {
-          console.error("Error loading cart", e);
+          if (process.env.NODE_ENV !== "production") {
+            console.error("Error loading cart", e);
+          }
         }
       }
       setIsLoaded(true);

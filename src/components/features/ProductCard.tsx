@@ -40,6 +40,7 @@ export default function ProductCard({
 }: ProductCardProps) {
   const [isVideoHovered, setIsVideoHovered] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const magneticButtonRef = useRef<HTMLButtonElement>(null);
   const [magneticOffset, setMagneticOffset] = useState({ x: 0, y: 0 });
 
@@ -69,6 +70,16 @@ export default function ProductCard({
 
   const handleMouseLeave = () => {
     setMagneticOffset({ x: 0, y: 0 });
+  };
+
+  const handleVideoMouseEnter = () => {
+    setIsVideoHovered(true);
+    void videoRef.current?.play().catch(() => undefined);
+  };
+
+  const handleVideoMouseLeave = () => {
+    setIsVideoHovered(false);
+    videoRef.current?.pause();
   };
 
   return (
@@ -116,16 +127,17 @@ export default function ProductCard({
         {/* Video Element (fades in on hover) */}
         {!videoError && (
           <motion.video
+            ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover rounded-lg"
             animate={{
               opacity: isVideoHovered ? 1 : 0,
               scale: isVideoHovered ? 1.05 : 1,
             }}
             transition={{ duration: 1 }}
-            onMouseEnter={() => setIsVideoHovered(true)}
-            onMouseLeave={() => setIsVideoHovered(false)}
+            onMouseEnter={handleVideoMouseEnter}
+            onMouseLeave={handleVideoMouseLeave}
             onError={() => setVideoError(true)}
-            autoPlay
+            preload="none"
             muted
             loop
             playsInline

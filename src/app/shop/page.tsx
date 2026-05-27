@@ -121,7 +121,8 @@ export default function ShopPage() {
     }
   } as const;
   return (
-    <div className="bg-bg-primary text-text-primary min-h-screen flex flex-col">
+    <>
+    <main className="bg-bg-primary text-text-primary min-h-screen flex flex-col">
       
       {/* ── Page Header (Static top header under Navigation) ── */}
       <div className="bg-bg-primary border-b border-bg-surface pt-12 pb-8">
@@ -303,6 +304,9 @@ export default function ShopPage() {
 
         {/* ── Catalog Product Grid ── */}
         <div className="flex-1">
+          <p aria-live="polite" className="sr-only">
+            {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"} found
+          </p>
           {filteredProducts.length === 0 ? (
             <div className="py-24 text-center space-y-4">
               <HelpCircle className="w-12 h-12 text-text-secondary/40 mx-auto" />
@@ -476,9 +480,10 @@ export default function ShopPage() {
       </AnimatePresence>
 
       {/* Brand Tagline Ribbon (Shop Page) */}
+    </main>
       <div className="w-full bg-bg-primary">
         <Footer />
       </div>
-    </div>
+    </>
   );
 }

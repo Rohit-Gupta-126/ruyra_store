@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Dark circular background -->
+  <circle cx="16" cy="16" r="16" fill="#3E2C24"/>
+
+  <!-- Subtle terracotta inner ring -->
+  <circle cx="16" cy="16" r="13.8" fill="none" stroke="#B85B3F" stroke-width="0.6" opacity="0.7"/>
+
+  <!-- R — vertical stem -->
+  <rect x="9" y="7.5" width="2.6" height="17" rx="1.3" fill="#F6F4F0"/>
+
+  <!-- R — bowl (semi-circle arc) -->
+  <path
+    d="M11.6 7.5 L17.5 7.5 Q22 7.5 22 12 Q22 16.5 17.5 16.5 L11.6 16.5"
+    fill="none"
+    stroke="#F6F4F0"
+    stroke-width="2.4"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- R — diagonal leg in gold -->
+  <line
+    x1="13.2"
+    y1="16.5"
+    x2="22"
+    y2="24.5"
+    stroke="#D4AF37"
+    stroke-width="2.4"
+    stroke-linecap="round"
+  />
+</svg>

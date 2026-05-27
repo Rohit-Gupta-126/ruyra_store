@@ -6,26 +6,26 @@ const columns = [
   {
     title: "Shop",
     links: [
-      { label: "All Products", href: "#" },
-      { label: "Home Fragrance", href: "#" },
-      { label: "Bath Rituals", href: "#" },
-      { label: "Earthen Ware", href: "#" }
+      { label: "All Products", href: "/shop" },
+      { label: "Home Fragrance", href: "/shop" },
+      { label: "Bath Rituals", href: "/shop" },
+      { label: "Earthen Ware", href: "/shop" }
     ]
   },
   {
     title: "Sanctuary",
     links: [
-      { label: "Our Story", href: "#" },
-      { label: "Journal", href: "#" },
-      { label: "Sustainability", href: "#" }
+      { label: "Our Story", href: "/journal" },
+      { label: "Journal", href: "/journal" },
+      { label: "Sustainability", href: "/#sustainability-section" }
     ]
   },
   {
     title: "Support",
     links: [
-      { label: "Care Guide", href: "#" },
-      { label: "Shipping & Returns", href: "#" },
-      { label: "Contact Us", href: "#" }
+      { label: "Care Guide", href: "/journal" },
+      { label: "Shipping & Returns", href: "/shop" },
+      { label: "Contact Us", href: "/#newsletter-section" }
     ]
   }
 ];
@@ -101,7 +101,7 @@ export default function Footer() {
               ].map((social) => (
                 <motion.a
                   key={social.label}
-                  href="#"
+                  href="/journal"
                   aria-label={social.label}
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   whileTap={{ scale: 0.95 }}
@@ -155,10 +155,10 @@ export default function Footer() {
             © {new Date().getFullYear()} RUYRA. Handcrafted with Intention.
           </p>
           <div className="flex gap-6">
-            <a href="#" className="font-sans text-xs text-text-secondary hover:text-text-primary transition-colors font-light">
+            <a href="/journal" className="font-sans text-xs text-text-secondary hover:text-text-primary transition-colors font-light">
               Privacy Policy
             </a>
-            <a href="#" className="font-sans text-xs text-text-secondary hover:text-text-primary transition-colors font-light">
+            <a href="/shop" className="font-sans text-xs text-text-secondary hover:text-text-primary transition-colors font-light">
               Terms of Service
             </a>
           </div>
