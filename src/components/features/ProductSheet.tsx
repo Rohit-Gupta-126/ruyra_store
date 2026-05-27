@@ -182,7 +182,7 @@ export default function ProductSheet() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={closeSheet}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[55]"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-55"
             aria-hidden="true"
           />
 
@@ -200,11 +200,11 @@ export default function ProductSheet() {
               mobile: { y: 0, x: 0 }
             }}
             transition={{ type: "spring", stiffness: 260, damping: 28 }}
-            className="fixed inset-x-0 bottom-0 h-[80vh] md:h-full md:w-[480px] md:top-0 md:bottom-0 md:left-auto md:right-0 md:rounded-t-none md:rounded-l-3xl bg-bg-primary rounded-t-3xl shadow-2xl z-[60] flex flex-col text-text-primary overflow-hidden"
+            className="fixed inset-x-0 bottom-0 h-[80vh] md:h-full md:w-120 md:top-0 md:bottom-0 md:left-auto md:right-0 md:rounded-t-none md:rounded-l-3xl bg-bg-primary rounded-t-3xl shadow-2xl z-60 flex flex-col text-text-primary overflow-hidden"
           >
             {/* Top Drag Indicator (Mobile Only) */}
             <div 
-              className="w-full flex justify-center py-4 cursor-pointer md:hidden flex-shrink-0"
+              className="w-full flex justify-center py-4 cursor-pointer md:hidden shrink-0"
               onClick={closeSheet}
               aria-label="Close details"
             >
@@ -212,7 +212,7 @@ export default function ProductSheet() {
             </div>
 
             {/* Header / Top Bar */}
-            <div className="flex justify-between items-center px-6 pt-2 pb-4 md:pt-8 flex-shrink-0 border-b border-bg-surface">
+            <div className="flex justify-between items-center px-6 pt-2 pb-4 md:pt-8 shrink-0 border-b border-bg-surface">
               <span className="font-sans text-[10px] tracking-[0.25em] uppercase text-text-secondary">
                 {currentProduct.category}
               </span>
@@ -232,7 +232,7 @@ export default function ProductSheet() {
             {/* Scrollable Content Container */}
             <div className="flex-1 overflow-y-auto px-6 py-6 space-y-8 no-scrollbar pb-48">
               {/* Product Image */}
-              <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden bg-bg-surface flex-shrink-0">
+              <div className="relative aspect-4/3 w-full rounded-2xl overflow-hidden bg-bg-surface shrink-0">
                 <Image
                   src={image || currentProduct.image}
                   alt={currentProduct.alt}
@@ -396,7 +396,7 @@ export default function ProductSheet() {
                       className="flex items-center justify-between p-3.5 bg-brand-taupe/20 border border-brand-brown/5 rounded-2xl hover:bg-brand-taupe/35 transition-colors duration-200"
                     >
                       <div className="flex items-center gap-3.5">
-                        <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-brand-taupe flex-shrink-0">
+                        <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-brand-taupe shrink-0">
                           <Image
                             src={item.image}
                             alt={item.name}
@@ -472,7 +472,7 @@ export default function ProductSheet() {
                     {INITIAL_PHOTO_REVIEWS.map((photo, i) => (
                       <div
                         key={i}
-                        className="w-[200px] h-[250px] rounded-2xl overflow-hidden relative group flex-shrink-0 snap-start bg-brand-taupe shadow-md"
+                        className="w-50 h-62.5 rounded-2xl overflow-hidden relative group shrink-0 snap-start bg-brand-taupe shadow-md"
                       >
                         <Image
                           src={photo.image}
@@ -481,7 +481,7 @@ export default function ProductSheet() {
                           className="object-cover transition-transform duration-700 group-hover:scale-105"
                           sizes="200px"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-left pointer-events-none">
+                        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-left pointer-events-none">
                           <p className="text-white font-sans text-xs leading-relaxed mb-1 line-clamp-4 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
                             &ldquo;{photo.reviewText}&rdquo;
                           </p>
@@ -534,7 +534,7 @@ export default function ProductSheet() {
             </div>
 
             {/* Sticky Bottom CTA */}
-            <div className="absolute bottom-0 left-0 right-0 bg-brand-sand/95 border-t border-brand-brown/5 px-6 py-5 flex-shrink-0 z-10">
+            <div className="absolute bottom-0 left-0 right-0 bg-brand-sand/95 border-t border-brand-brown/5 px-6 py-5 shrink-0 z-10">
               {/* Shipping Motivator */}
               <div className="mb-3.5 space-y-1.5 text-left">
                 <div className="flex justify-between text-[11px] font-medium font-sans">
@@ -576,7 +576,7 @@ export default function ProductSheet() {
                   closeSheet();
                 }}
               >
-                <ShoppingBag className="w-4 h-4 stroke-[2]" />
+                <ShoppingBag className="w-4 h-4 stroke-2" />
                 Add to Bag — {displayPrice}
               </motion.button>
             </div>
