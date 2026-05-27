@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RUYRA - Botanical Rituals</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "clay-whisper": "#FAF9F6",
+                        "pebble-grey": "#F0EFEB",
+                        "deep-sage": "#4A5D4E",
+                        "terracotta": "#B97C66",
+                        "brass-gold": "#D4AF37",
+                        "surface-variant": "#e3e2e0",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#c0d5c2",
+                        "secondary-container": "#ffb9a0",
+                        "on-tertiary-container": "#ecc6ca",
+                        "on-secondary-container": "#7a4734",
+                        "on-tertiary-fixed-variant": "#5b4043",
+                        "surface-tint": "#506354",
+                        "primary-fixed": "#d3e8d5",
+                        "on-primary-fixed": "#0e1f13",
+                        "inverse-on-surface": "#f2f1ee",
+                        "secondary-fixed": "#ffdbcf",
+                        "on-tertiary": "#ffffff",
+                        "surface-bright": "#faf9f6",
+                        "primary": "#334537",
+                        "on-primary": "#ffffff",
+                        "surface": "#faf9f6",
+                        "surface-container-high": "#e9e8e5",
+                        "inverse-primary": "#b7ccb9",
+                        "tertiary-fixed-dim": "#e3bdc2",
+                        "on-surface": "#1a1c1a",
+                        "outline": "#737872",
+                        "on-primary-fixed-variant": "#394b3d",
+                        "surface-container-highest": "#e3e2e0",
+                        "tertiary-fixed": "#ffd9de",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#b7ccb9",
+                        "on-surface-variant": "#434843",
+                        "secondary-fixed-dim": "#fcb69e",
+                        "secondary": "#86513d",
+                        "surface-dim": "#dbdad7",
+                        "on-secondary-fixed": "#351003",
+                        "tertiary-container": "#6e5155",
+                        "background": "#faf9f6",
+                        "on-secondary-fixed-variant": "#6a3a28",
+                        "error": "#ba1a1a",
+                        "on-background": "#1a1c1a",
+                        "on-tertiary-fixed": "#2b1519",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c3c8c1",
+                        "inverse-surface": "#2f312f",
+                        "surface-container": "#efeeeb",
+                        "primary-container": "#4a5d4e",
+                        "on-error": "#ffffff",
+                        "tertiary": "#553a3e",
+                        "surface-container-low": "#f4f3f1",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "stack-md": "24px",
+                        "stack-lg": "40px",
+                        "stack-sm": "12px",
+                        "gutter": "16px",
+                        "container-margin": "20px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Playfair Display"],
+                        "body-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-xl": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "body-lg": ["Inter"],
+                        "button": ["Inter"],
+                        "headline-lg-mobile": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "button": ["16px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .bottom-sheet {
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .bottom-sheet.open {
+            transform: translateY(0);
+        }
+        .backdrop {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .text-outline-sage {
+            -webkit-text-stroke: 1px #4A5D4E;
+        }
+    </style>
+</head>
+<body class="bg-pebble-grey text-on-background font-body-md antialiased overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- Minimal Top Logo -->
+<header class="absolute top-0 w-full z-40 flex justify-center items-center py-6 pointer-events-none">
+<h1 class="font-headline-md text-[20px] text-white tracking-[0.2em] uppercase drop-shadow-md">RUYRA</h1>
+</header>
+<main class="pb-32">
+<!-- Redesigned Hero Section -->
+<section class="relative h-[100vh] w-full rounded-b-[40px] overflow-hidden">
+<img alt="The Amber Ritual" class="absolute inset-0 w-full h-full object-cover object-center" src="https://lh3.googleusercontent.com/aida/ADBb0uiIbscgd3Rkj0AiW7GXl_LyiK_WAIqrH-zlq3Q4JMgfsa_26JSrkXPMvg_5RymxAIFUmKSUKr1SXmTRNLt7ahzOKRlmeqLRmp6EPQTYGGrUpppXdYnpVQi1uIbMT7wXTfqkoKjq6ix9S5ZgaJ3Ds4kHXib-Mga-99ocvNrFO_TeMXH0jvtWlGRNx4a7ivXutisL8wyTXxr5VLLUQSJ-f7tEhb9kd9uCuNMgVyOvnmN1WA-DNz15RlWw2tt7"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10"></div>
+<div class="absolute inset-0 flex flex-col justify-end items-center text-center p-container-margin pb-24 z-10">
+<span class="bg-white/10 backdrop-blur-md text-white border border-white/20 font-label-md text-xs px-4 py-1.5 rounded-full mb-6 tracking-widest uppercase">
+                    New Collection
+                </span>
+<h2 class="font-headline-xl text-[48px] leading-[1.1] text-brass-gold mb-4 text-outline-sage drop-shadow-lg">The Amber<br/>Ritual</h2>
+<p class="text-white/90 font-body-sm max-w-[280px] mb-8 font-light">Embrace the warmth of nature's glow. Handcrafted to ground your spirit.</p>
+</div>
+</section>
+<!-- Carousel Section -->
+<section class="mt-stack-lg pl-container-margin pt-4">
+<h3 class="font-headline-md text-headline-md text-deep-sage mb-stack-md">Shop by Vibe</h3>
+<div class="flex overflow-x-auto gap-gutter hide-scrollbar pb-4 pr-container-margin snap-x snap-mandatory">
+<!-- Card 1 -->
+<div class="min-w-[280px] h-[380px] rounded-[24px] bg-clay-whisper overflow-hidden relative snap-center flex-shrink-0 group cursor-pointer" onclick="openSheet('Home Fragrance', 'https://lh3.googleusercontent.com/aida/ADBb0uiIbscgd3Rkj0AiW7GXl_LyiK_WAIqrH-zlq3Q4JMgfsa_26JSrkXPMvg_5RymxAIFUmKSUKr1SXmTRNLt7ahzOKRlmeqLRmp6EPQTYGGrUpppXdYnpVQi1uIbMT7wXTfqkoKjq6ix9S5ZgaJ3Ds4kHXib-Mga-99ocvNrFO_TeMXH0jvtWlGRNx4a7ivXutisL8wyTXxr5VLLUQSJ-f7tEhb9kd9uCuNMgVyOvnmN1WA-DNz15RlWw2tt7', '$45')">
+<img alt="Home Fragrance" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida/ADBb0uiIbscgd3Rkj0AiW7GXl_LyiK_WAIqrH-zlq3Q4JMgfsa_26JSrkXPMvg_5RymxAIFUmKSUKr1SXmTRNLt7ahzOKRlmeqLRmp6EPQTYGGrUpppXdYnpVQi1uIbMT7wXTfqkoKjq6ix9S5ZgaJ3Ds4kHXib-Mga-99ocvNrFO_TeMXH0jvtWlGRNx4a7ivXutisL8wyTXxr5VLLUQSJ-f7tEhb9kd9uCuNMgVyOvnmN1WA-DNz15RlWw2tt7"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 w-full flex justify-between items-end">
+<span class="font-headline-md text-headline-md text-white drop-shadow-md">Home Fragrance</span>
+<button class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-xl border border-white/30 flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="min-w-[280px] h-[380px] rounded-[24px] bg-clay-whisper overflow-hidden relative snap-center flex-shrink-0 group cursor-pointer" onclick="openSheet('Bath Rituals', 'https://lh3.googleusercontent.com/aida/ADBb0uiTXxJxNd22MSH8Z5bFRXlnAMzbMWSWozzTIxGE-HcclbC1M14lI-rWlcdFZA31Rp8jqhaMEDFvWvM9VUTvWvyJkzBjeDPhjxfEu4I02ZVoXR3niEp4I8Lv1OtAnteAaytm_H218QPtrMPd3Wn9-RWLzB_GvWhGamgCRKPtN6P_rtV2OQFo2Dg73A3-QCGV_G4IXaBr8wQa__0RBwHcMc8pHc9py_6OcxP5dSHGPoduNfghmN6yNzz6EGo', '$38')">
+<img alt="Bath Rituals" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida/ADBb0uiTXxJxNd22MSH8Z5bFRXlnAMzbMWSWozzTIxGE-HcclbC1M14lI-rWlcdFZA31Rp8jqhaMEDFvWvM9VUTvWvyJkzBjeDPhjxfEu4I02ZVoXR3niEp4I8Lv1OtAnteAaytm_H218QPtrMPd3Wn9-RWLzB_GvWhGamgCRKPtN6P_rtV2OQFo2Dg73A3-QCGV_G4IXaBr8wQa__0RBwHcMc8pHc9py_6OcxP5dSHGPoduNfghmN6yNzz6EGo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 w-full flex justify-between items-end">
+<span class="font-headline-md text-headline-md text-white drop-shadow-md">Bath Rituals</span>
+<button class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-xl border border-white/30 flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Grid Section -->
+<section class="mt-stack-lg px-container-margin">
+<h3 class="font-headline-md text-headline-md text-deep-sage mb-stack-md">Signature Pieces</h3>
+<div class="grid grid-cols-2 gap-4">
+<!-- Grid Item 1 -->
+<div class="flex flex-col gap-3 group cursor-pointer relative" onclick="openSheet('Earthen Taper Holder', 'https://lh3.googleusercontent.com/aida/ADBb0uhNziXwI4klBpkHu0hw7CXJLZzWQZKc3fO5gDegtOzZ-rEFIJa6h_vokid2VVaoqOrLzFe3LFUtXr782fEdKg1AONo2fjZVlYbb-EekQsnfJg3vUaz0jimmHPUIDM7TJNxSf1eeV1RZuh51lSt-4rFUDqI74yOXLSw9rJ0paoamqu08qrrxtk8padsxXHN_EVLEUOtvPXJqwlLq5q8QF13_7lGs4grky1fsJI3gi7KD971zakzyesJ1zl4Z', '$65')">
+<div class="w-full aspect-[4/5] rounded-[20px] bg-clay-whisper overflow-hidden relative">
+<img alt="Earthen Taper Holder" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida/ADBb0uhNziXwI4klBpkHu0hw7CXJLZzWQZKc3fO5gDegtOzZ-rEFIJa6h_vokid2VVaoqOrLzFe3LFUtXr782fEdKg1AONo2fjZVlYbb-EekQsnfJg3vUaz0jimmHPUIDM7TJNxSf1eeV1RZuh51lSt-4rFUDqI74yOXLSw9rJ0paoamqu08qrrxtk8padsxXHN_EVLEUOtvPXJqwlLq5q8QF13_7lGs4grky1fsJI3gi7KD971zakzyesJ1zl4Z"/>
+</div>
+<button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/60 backdrop-blur-md flex items-center justify-center text-deep-sage shadow-sm border border-white/40 z-10">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface font-medium">Earthen Taper Holder</p>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">$65</p>
+</div>
+</div>
+<!-- Grid Item 2 -->
+<div class="flex flex-col gap-3 group cursor-pointer relative" onclick="openSheet('Ritual Bath Salts', 'https://lh3.googleusercontent.com/aida/ADBb0uiTXxJxNd22MSH8Z5bFRXlnAMzbMWSWozzTIxGE-HcclbC1M14lI-rWlcdFZA31Rp8jqhaMEDFvWvM9VUTvWvyJkzBjeDPhjxfEu4I02ZVoXR3niEp4I8Lv1OtAnteAaytm_H218QPtrMPd3Wn9-RWLzB_GvWhGamgCRKPtN6P_rtV2OQFo2Dg73A3-QCGV_G4IXaBr8wQa__0RBwHcMc8pHc9py_6OcxP5dSHGPoduNfghmN6yNzz6EGo', '$38')">
+<div class="w-full aspect-[4/5] rounded-[20px] bg-clay-whisper overflow-hidden relative">
+<img alt="Ritual Bath Salts" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida/ADBb0uiTXxJxNd22MSH8Z5bFRXlnAMzbMWSWozzTIxGE-HcclbC1M14lI-rWlcdFZA31Rp8jqhaMEDFvWvM9VUTvWvyJkzBjeDPhjxfEu4I02ZVoXR3niEp4I8Lv1OtAnteAaytm_H218QPtrMPd3Wn9-RWLzB_GvWhGamgCRKPtN6P_rtV2OQFo2Dg73A3-QCGV_G4IXaBr8wQa__0RBwHcMc8pHc9py_6OcxP5dSHGPoduNfghmN6yNzz6EGo"/>
+</div>
+<button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/60 backdrop-blur-md flex items-center justify-center text-deep-sage shadow-sm border border-white/40 z-10">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface font-medium">Ritual Bath Salts</p>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">$38</p>
+</div>
+</div>
+<!-- Grid Item 3 -->
+<div class="flex flex-col gap-3 group cursor-pointer relative" onclick="openSheet('Resin Adornments', 'https://lh3.googleusercontent.com/aida/ADBb0uhBavEvRh42g7NR2UW0NGl98W98ms4lQ-74a-JDM1UMiPf_9rEQxoRF6jmG0YGy-MJC2cvzvHnUV-Aug-4QEuU85h4b1Bk_KdNeDV-W5oxa7U9GTnlqI5RaBm7LfTIVvPJ0Q0cSVnMYB7Bfel8gR1vr9q8bIIDwQ6bE4avOyLZjPSIHws87wnrctpyQnmBdDnxerEF7gAWSmmPTxVoIqTJ7TXADtHS_MSTBJpG4yoG_n_bBSTWfDf2joV1p', '$120')">
+<div class="w-full aspect-[4/5] rounded-[20px] bg-clay-whisper overflow-hidden relative">
+<img alt="Resin Adornments" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida/ADBb0uhBavEvRh42g7NR2UW0NGl98W98ms4lQ-74a-JDM1UMiPf_9rEQxoRF6jmG0YGy-MJC2cvzvHnUV-Aug-4QEuU85h4b1Bk_KdNeDV-W5oxa7U9GTnlqI5RaBm7LfTIVvPJ0Q0cSVnMYB7Bfel8gR1vr9q8bIIDwQ6bE4avOyLZjPSIHws87wnrctpyQnmBdDnxerEF7gAWSmmPTxVoIqTJ7TXADtHS_MSTBJpG4yoG_n_bBSTWfDf2joV1p"/>
+</div>
+<button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/60 backdrop-blur-md flex items-center justify-center text-deep-sage shadow-sm border border-white/40 z-10">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface font-medium">Resin Adornments</p>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">$120</p>
+</div>
+</div>
+<!-- Grid Item 4 -->
+<div class="flex flex-col gap-3 group cursor-pointer relative" onclick="openSheet('Amber Ritual Candle', 'https://lh3.googleusercontent.com/aida/ADBb0uiIbscgd3Rkj0AiW7GXl_LyiK_WAIqrH-zlq3Q4JMgfsa_26JSrkXPMvg_5RymxAIFUmKSUKr1SXmTRNLt7ahzOKRlmeqLRmp6EPQTYGGrUpppXdYnpVQi1uIbMT7wXTfqkoKjq6ix9S5ZgaJ3Ds4kHXib-Mga-99ocvNrFO_TeMXH0jvtWlGRNx4a7ivXutisL8wyTXxr5VLLUQSJ-f7tEhb9kd9uCuNMgVyOvnmN1WA-DNz15RlWw2tt7', '$45')">
+<div class="w-full aspect-[4/5] rounded-[20px] bg-clay-whisper overflow-hidden relative">
+<img alt="Amber Ritual Candle" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida/ADBb0uiIbscgd3Rkj0AiW7GXl_LyiK_WAIqrH-zlq3Q4JMgfsa_26JSrkXPMvg_5RymxAIFUmKSUKr1SXmTRNLt7ahzOKRlmeqLRmp6EPQTYGGrUpppXdYnpVQi1uIbMT7wXTfqkoKjq6ix9S5ZgaJ3Ds4kHXib-Mga-99ocvNrFO_TeMXH0jvtWlGRNx4a7ivXutisL8wyTXxr5VLLUQSJ-f7tEhb9kd9uCuNMgVyOvnmN1WA-DNz15RlWw2tt7"/>
+</div>
+<button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/60 backdrop-blur-md flex items-center justify-center text-deep-sage shadow-sm border border-white/40 z-10">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface font-medium">Amber Ritual Candle</p>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">$45</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Join Our Sanctuary -->
+<section class="mt-stack-lg mx-container-margin bg-clay-whisper rounded-[32px] p-8 text-center shadow-sm">
+<h3 class="font-headline-md text-[24px] text-deep-sage mb-2">Join our Sanctuary</h3>
+<p class="font-body-sm text-on-surface-variant mb-6">Receive early access to new rituals and exclusive botanical insights.</p>
+<form class="flex flex-col gap-4">
+<input class="w-full bg-pebble-grey border-none rounded-full px-6 py-4 text-body-sm focus:ring-2 focus:ring-deep-sage/20 outline-none" placeholder="Email address" type="email"/>
+<button class="w-full bg-terracotta text-white rounded-full py-4 font-button tracking-wide hover:opacity-90 transition-opacity" type="button">SUBSCRIBE</button>
+</form>
+</section>
+<!-- Footer -->
+<footer class="mt-16 px-container-margin pb-16 pt-8 border-t border-deep-sage/10">
+<div class="grid grid-cols-2 gap-8 mb-12">
+<div>
+<h4 class="font-label-md text-deep-sage mb-4 uppercase tracking-widest text-xs">Shop</h4>
+<ul class="flex flex-col gap-3 font-body-sm text-on-surface-variant">
+<li><a href="#">All Rituals</a></li>
+<li><a href="#">Home Fragrance</a></li>
+<li><a href="#">Bath &amp; Body</a></li>
+<li><a href="#">Adornments</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-md text-deep-sage mb-4 uppercase tracking-widest text-xs">About</h4>
+<ul class="flex flex-col gap-3 font-body-sm text-on-surface-variant">
+<li><a href="#">Our Story</a></li>
+<li><a href="#">Sustainability</a></li>
+<li><a href="#">Contact</a></li>
+<li><a href="#">FAQ</a></li>
+</ul>
+</div>
+</div>
+<div class="text-center">
+<h2 class="font-headline-md text-deep-sage tracking-[0.2em] uppercase mb-4 text-xl">RUYRA</h2>
+<p class="font-body-sm text-on-surface-variant text-xs">© 2024 Botanical Rituals. All rights reserved.</p>
+</div>
+</footer>
+</main>
+<!-- Floating Bottom Navigation -->
+<nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-auto min-w-[280px] z-40 bg-white/70 backdrop-blur-xl border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-full flex justify-between items-center px-6 py-3">
+<!-- Home (Active) -->
+<a class="flex flex-col items-center justify-center gap-1 active:scale-95 transition-transform" href="#">
+<div class="bg-terracotta/10 text-terracotta rounded-full p-2">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">home</span>
+</div>
+</a>
+<!-- Story -->
+<a class="text-on-surface-variant/60 hover:text-deep-sage transition-colors p-2 flex flex-col items-center justify-center gap-1" href="#">
+<span class="material-symbols-outlined text-[24px]">auto_stories</span>
+</a>
+<!-- Search -->
+<a class="text-on-surface-variant/60 hover:text-deep-sage transition-colors p-2 flex flex-col items-center justify-center gap-1" href="#">
+<span class="material-symbols-outlined text-[24px]">search</span>
+</a>
+<!-- Cart -->
+<a class="text-on-surface-variant/60 hover:text-deep-sage transition-colors p-2 flex flex-col items-center justify-center gap-1 relative" href="#">
+<span class="material-symbols-outlined text-[24px]">shopping_bag</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-terracotta rounded-full"></span>
+</a>
+</nav>
+<!-- Bottom Sheet Backdrop -->
+<div class="backdrop fixed inset-0 bg-black/60 z-50 backdrop-blur-sm" id="sheetBackdrop" onclick="closeSheet()"></div>
+<!-- Product Details Bottom Sheet -->
+<div class="bottom-sheet fixed bottom-0 left-0 w-full h-[85vh] bg-clay-whisper rounded-t-[40px] z-50 flex flex-col shadow-[0_-20px_60px_rgba(0,0,0,0.15)]" id="productSheet">
+<!-- Drag Handle -->
+<div class="w-full flex justify-center py-5 cursor-pointer" onclick="closeSheet()">
+<div class="w-12 h-1.5 rounded-full bg-black/10"></div>
+</div>
+<div class="flex-1 overflow-y-auto px-container-margin pb-32">
+<div class="w-full aspect-[4/3] rounded-[24px] bg-pebble-grey overflow-hidden mb-6 relative">
+<img alt="Product" class="w-full h-full object-cover" id="sheetImage" src=""/>
+</div>
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline-lg text-[28px] text-deep-sage leading-tight" id="sheetTitle">Product Title</h3>
+<span class="font-label-md text-[18px] text-on-surface font-medium mt-2" id="sheetPrice">$00</span>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-8 leading-relaxed">
+                Crafted from earth and intention. This piece brings warmth and grounding energy to your daily rituals. Each item is unique, reflecting the raw nature of its materials.
+            </p>
+<!-- Variant Selector -->
+<div class="mb-8">
+<h4 class="font-label-md text-xs uppercase tracking-widest text-on-surface-variant mb-3">Select Size</h4>
+<div class="flex gap-3">
+<button class="px-5 py-2.5 rounded-full border border-deep-sage bg-deep-sage text-white font-body-sm transition-colors">Standard</button>
+<button class="px-5 py-2.5 rounded-full border border-black/10 text-on-surface-variant font-body-sm hover:border-deep-sage/30 transition-colors">Large</button>
+</div>
+</div>
+</div>
+<!-- Sticky CTA -->
+<div class="absolute bottom-0 w-full p-container-margin bg-gradient-to-t from-clay-whisper via-clay-whisper to-transparent pt-12 pb-8">
+<button class="w-full h-14 bg-deep-sage text-white rounded-full font-button text-[16px] flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-xl shadow-deep-sage/20">
+                Add to Bag — <span id="btnPrice">$00</span>
+</button>
+</div>
+</div>
+<script>
+        const sheet = document.getElementById('productSheet');
+        const backdrop = document.getElementById('sheetBackdrop');
+        const sheetTitle = document.getElementById('sheetTitle');
+        const sheetImage = document.getElementById('sheetImage');
+        const sheetPrice = document.getElementById('sheetPrice');
+        const btnPrice = document.getElementById('btnPrice');
+
+        function openSheet(title, imageSrc, price) {
+            sheetTitle.textContent = title;
+            sheetImage.src = imageSrc;
+            sheetPrice.textContent = price;
+            btnPrice.textContent = price;
+            
+            sheet.classList.add('open');
+            backdrop.classList.add('open');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeSheet() {
+            sheet.classList.remove('open');
+            backdrop.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    </script>
+</body></html>

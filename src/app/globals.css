@@ -1,0 +1,169 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap");
+@import "tailwindcss";
+
+/* ─── RUYRA Design Tokens (Tailwind v4 @theme) ─── */
+@theme inline {
+  /* Colors */
+  --color-clay-whisper: #faf9f6;
+  --color-pebble-grey: #f0efeb;
+  --color-deep-sage: #4a5d4e;
+  --color-terracotta: #b97c66;
+  --color-brass-gold: #d4af37;
+  --color-on-surface: #1a1c1a;
+  --color-on-surface-variant: #434843;
+  --color-surface-variant: #e3e2e0;
+  --color-surface-container-lowest: #ffffff;
+  --color-outline-variant: #c3c8c1;
+  --color-outline: #737872;
+  --color-primary: #334537;
+  --color-primary-container: #4a5d4e;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #c0d5c2;
+  --color-secondary: #86513d;
+  --color-secondary-container: #ffb9a0;
+  --color-on-secondary-container: #7a4734;
+  --color-surface: #faf9f6;
+  --color-background: #faf9f6;
+  --color-on-background: #1a1c1a;
+  --color-inverse-surface: #2f312f;
+  --color-inverse-on-surface: #f2f1ee;
+  --color-surface-container: #efeeeb;
+  --color-surface-container-high: #e9e8e5;
+  --color-surface-container-highest: #e3e2e0;
+  --color-surface-container-low: #f4f3f1;
+  --color-surface-bright: #faf9f6;
+  --color-surface-dim: #dbdad7;
+  --color-surface-tint: #506354;
+
+  /* Typography */
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
+
+  /* Font sizes */
+  --text-body-sm: 0.875rem;
+  --text-body-md: 1rem;
+  --text-body-lg: 1.125rem;
+  --text-label-md: 0.875rem;
+  --text-button: 1rem;
+  --text-headline-sm: 1.25rem;
+  --text-headline-md: 1.5rem;
+  --text-headline-lg: 2rem;
+  --text-headline-xl: 2.5rem;
+
+  /* Border Radius */
+  --radius-card: 1.25rem;
+  --radius-card-lg: 1.5rem;
+  --radius-pill: 9999px;
+  --radius-sheet: 2.5rem;
+}
+
+/* ─── Base Resets ─── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: #f0efeb;
+  color: #1a1c1a;
+  font-family: "Inter", system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ─── Scrollbar Utility ─── */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ─── Text Outline ─── */
+.text-outline-sage {
+  -webkit-text-stroke: 1px #4a5d4e;
+}
+
+/* ─── Bottom Sheet Animation ─── */
+.bottom-sheet {
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bottom-sheet.open {
+  transform: translateY(0);
+}
+
+/* ─── Backdrop Animation ─── */
+.sheet-backdrop {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.sheet-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ─── Desktop Sidebar Nav ─── */
+.desktop-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 260px;
+  background: rgba(250, 249, 246, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(195, 200, 193, 0.4);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+}
+
+/* ─── Tablet Top Nav ─── */
+.tablet-topnav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: rgba(250, 249, 246, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(195, 200, 193, 0.3);
+}
+
+/* ─── Hover scale group ─── */
+.product-card:hover .product-img {
+  transform: scale(1.05);
+}
+.product-img {
+  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ─── Desktop grid layout ─── */
+@media (min-width: 1024px) {
+  .desktop-layout {
+    margin-left: 260px;
+  }
+}
+
+/* ─── Tablet layout ─── */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .tablet-layout {
+    padding-top: 72px;
+  }
+}
+
+/* ─── Hero text shadow ─── */
+.hero-headline {
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
