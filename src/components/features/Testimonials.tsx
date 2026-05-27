@@ -93,7 +93,7 @@ export default function Testimonials() {
                 variants={itemVariants}
                 whileHover={{ y: -5 }}
                 style={{ top: `${stickyTop}px`, zIndex: index + 10 }}
-                className="sticky md:relative md:!top-auto bg-[#F5F2EB] md:bg-brand-taupe/20 border border-brand-brown/10 md:border-brand-brown/5 rounded-[2rem] md:rounded-4xl p-8 md:p-10 flex flex-col justify-between space-y-8 hover:bg-[#EAE4DB] md:hover:bg-brand-taupe/35 hover:border-brand-brown/15 md:hover:border-brand-brown/10 transition-all duration-300 shadow-md md:shadow-sm"
+                className="sticky md:relative md:top-auto! bg-[#F5F2EB] md:bg-brand-taupe/20 border border-brand-brown/10 md:border-brand-brown/5 rounded-4xl md:rounded-4xl p-8 md:p-10 flex flex-col justify-between space-y-8 hover:bg-[#EAE4DB] md:hover:bg-brand-taupe/35 hover:border-brand-brown/15 md:hover:border-brand-brown/10 transition-all duration-300 shadow-md md:shadow-sm"
               >
               {/* Rating stars */}
               <div className="flex items-center gap-0.5 text-brand-terracotta">
