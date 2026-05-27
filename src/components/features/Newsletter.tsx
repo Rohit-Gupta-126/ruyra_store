@@ -17,7 +17,7 @@ export default function Newsletter() {
   };
 
   return (
-    <section id="sustainability-section" className="bg-bg-primary py-24 px-6 md:px-12 border-t border-bg-surface flex justify-center items-center w-full overflow-x-hidden">
+    <section id="newsletter-section" className="bg-bg-primary py-24 px-6 md:px-12 border-t border-bg-surface flex justify-center items-center w-full overflow-x-hidden">
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}

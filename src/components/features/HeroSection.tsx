@@ -332,7 +332,7 @@ export default function HeroSection() {
               <ArrowRight className="w-3.5 h-3.5 stroke-[2] transition-transform duration-300 group-hover:translate-x-1" />
             </a>
             <a
-              href="#sustainability-section"
+              href="/journal"
               className="flex-1 landscape:flex-none inline-flex items-center justify-center px-4 sm:px-6 py-3.5 border border-brand-brown/20 text-brand-brown font-sans text-[10px] sm:text-xs font-bold tracking-widest uppercase hover:bg-brand-brown/5 transition-all duration-300 rounded-md cursor-pointer"
             >
               Our Story

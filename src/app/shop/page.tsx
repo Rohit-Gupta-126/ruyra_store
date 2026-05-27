@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { SlidersHorizontal, X, ArrowUpDown, HelpCircle } from "lucide-react";
+import { SlidersHorizontal, X, ArrowUpDown, HelpCircle, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { products } from "@/lib/data/products";
 import { useProductSheet } from "@/components/features/ProductSheetContext";
@@ -32,6 +32,7 @@ export default function ShopPage() {
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedScents, setSelectedScents] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<"default" | "price-asc" | "price-desc">("default");
+  const [searchQuery, setSearchQuery] = useState("");
   
   // Mobile filter drawer state
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -57,11 +58,22 @@ export default function ShopPage() {
     setSelectedTypes([]);
     setSelectedScents([]);
     setSortBy("default");
+    setSearchQuery("");
   };
 
   // Filter & Sort Logic
   const filteredProducts = useMemo(() => {
     let result = [...products];
+
+    // Filter by search query
+    if (searchQuery.trim() !== "") {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(prod =>
+        prod.name.toLowerCase().includes(q) ||
+        prod.category.toLowerCase().includes(q) ||
+        prod.description.toLowerCase().includes(q)
+      );
+    }
 
     // Filter by type
     if (selectedTypes.length > 0) {
@@ -95,7 +107,7 @@ export default function ShopPage() {
     }
 
     return result;
-  }, [selectedTypes, selectedScents, sortBy]);
+  }, [selectedTypes, selectedScents, sortBy, searchQuery]);
 
   // Framer Motion variants
   const gridContainerVariants = {
@@ -121,6 +133,29 @@ export default function ShopPage() {
             <p className="font-sans text-xs uppercase tracking-widest text-text-secondary">
               Filter by intention or scent profile
             </p>
+          </div>
+          
+          {/* Mobile/Tablet Search Bar */}
+          <div className="block md:hidden w-full">
+            <div className="relative flex items-center bg-bg-surface border border-brand-brown/10 rounded-full px-4 py-2.5 focus-within:border-brand-terracotta/40 transition-all shadow-sm">
+              <Search className="w-4 h-4 text-text-secondary mr-2 shrink-0" />
+              <input
+                type="text"
+                placeholder="Search rituals..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="bg-transparent w-full outline-none font-sans text-sm text-text-primary placeholder:text-text-secondary/50"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="p-1 hover:text-brand-terracotta text-text-secondary transition-colors focus:outline-none"
+                  aria-label="Clear search query"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
           </div>
           
           {/* Sorting Dropdown */}

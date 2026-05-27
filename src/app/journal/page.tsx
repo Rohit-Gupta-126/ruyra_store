@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { X, ArrowRight, Calendar, User } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { ArrowRight, ArrowDown } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Footer from "@/components/layout/Footer";
 
 interface Article {
@@ -17,7 +18,6 @@ interface Article {
   quote: string;
   image: string;
   alt: string;
-  isFeature: boolean;
 }
 
 const articles: Article[] = [
@@ -30,7 +30,6 @@ const articles: Article[] = [
     description: "How we choose to illuminate our spaces shapes our internal geography. A study in the warmth of natural soy wax and slow-burning amber flames.",
     image: "https://images.unsplash.com/photo-1603006905003-be475563bc59?q=80&w=1200&auto=format&fit=crop",
     alt: "Glowing amber jar candle set against a dark volcanic stone setup",
-    isFeature: true,
     content: [
       "Lighting a candle is more than a way to push back the dark; it is an act of quiet creation. In our modern search for hyper-efficiency, we have swapped the rich, shifting glow of fire for the static hum of LED panels. We live in constant, sterile illumination that denies the transition of day into night. To light a candle is to declare that for the next three hours, time belongs to the flame.",
       "We explore how slow, natural light grounds our nervous system and invites a meditative state. Scientific observations show that flickering candlelight at a slow frequency mimics our brains' resting alpha waves, immediately triggering a sense of calm. In this sanctuary, we seek the raw organic materials that carry ancient histories—natural soy wax, botanical essential oils, and wood-fired ceramics that hold soil in their bones.",
@@ -47,7 +46,6 @@ const articles: Article[] = [
     description: "Reclaiming the bath as a quiet boundary between labor and rest. The chemical grounding of unrefined minerals and botanical steam.",
     image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop",
     alt: "Coarse pink Himalayan salt crystals mixed with lavender petals in a stoneware bowl",
-    isFeature: false,
     content: [
       "Water carries memory, and immersion washes away the noise of the day. Modern life treats hygiene as a transactional task, a brief box to check in the morning. When we slow the bath down, adding unrefined salts, lavender blossoms, and woodsmoke infusions, it becomes a threshold. We pass from the sphere of labor into the sphere of rest.",
       "The warmth of the water triggers a physical softening, dilating blood vessels and releasing lactic acid built up in muscles. Simultaneously, mineral-dense deposits of magnesium and potassium replenish the skin's barrier. By intention, we turn the bath into a sanctuary, a ritual of preservation.",
@@ -64,7 +62,6 @@ const articles: Article[] = [
     description: "Exploring the irregularities of wood-fired clay. Why imperfect objects ground us in the physical world.",
     image: "https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?q=80&w=800&auto=format&fit=crop",
     alt: "Artisanal clay candle holder displaying rustic sandy grain texture",
-    isFeature: false,
     content: [
       "Irregularities are the voice of the materials speaking. When an object is perfectly uniform, it ceases to command attention; it disappears into the background of our sight. A wood-fired clay vessel, however, carries the erratic signature of the flame. It has iron-spot freckles, running glazes, and tactile ridges where the potter's fingers pressed.",
       "In a digital world of smooth screens and frictionless glass, these rough geometries draw our hands. They hold us in the tangible present. Touching the gritty sand-texture of a clay holder reminds us of the earth it came from and the kiln fire that made it solid.",
@@ -74,216 +71,385 @@ const articles: Article[] = [
   }
 ];
 
-export default function JournalPage() {
-  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+function StorySection({ article, index }: { article: Article; index: number }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Hook into scroll progress of this container
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  // Transforms for desktop view
+  const imgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.1, 1.03, 1.0]);
+  const imgOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0.8, 1, 1, 0.8]);
+  
+  // Slide progress transforms
+  const p1Opacity = useTransform(scrollYProgress, [0.05, 0.15, 0.28, 0.38], [0, 1, 1, 0]);
+  const p1Y = useTransform(scrollYProgress, [0.05, 0.15, 0.28, 0.38], [30, 0, 0, -30]);
+
+  const p2Opacity = useTransform(scrollYProgress, [0.38, 0.48, 0.62, 0.72], [0, 1, 1, 0]);
+  const p2Y = useTransform(scrollYProgress, [0.38, 0.48, 0.62, 0.72], [30, 0, 0, -30]);
+
+  const p3Opacity = useTransform(scrollYProgress, [0.72, 0.82, 0.92, 0.98], [0, 1, 1, 1]);
+  const p3Y = useTransform(scrollYProgress, [0.72, 0.82, 0.92, 0.98], [30, 0, 0, 0]);
+
+  // Active bullet dot state
+  const [activeDot, setActiveDot] = useState(0);
+  
+  // Track the active dot by listening to scrollYProgress
+  useEffect(() => {
+    return scrollYProgress.on("change", (latest) => {
+      if (latest < 0.36) {
+        setActiveDot(0);
+      } else if (latest >= 0.36 && latest < 0.70) {
+        setActiveDot(1);
+      } else {
+        setActiveDot(2);
+      }
+    });
+  }, [scrollYProgress]);
+
+  const isEven = index % 2 === 0;
 
   return (
-    <div className="bg-bg-primary text-text-primary min-h-screen flex flex-col">
-      
-      {/* ── Masthead Hero ── */}
-      <section className="h-[50vh] w-full flex flex-col items-center justify-center text-center px-6 border-b border-bg-surface">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+    <div 
+      ref={containerRef} 
+      className="relative w-full h-[220vh] bg-bg-primary text-text-primary border-b border-bg-surface/50"
+    >
+      {/* ── Desktop view: Sticky scroll-scrub split layout ── */}
+      <div className="hidden md:flex sticky top-0 h-screen w-full overflow-hidden items-center">
+        
+        {/* Alternating image columns */}
+        {isEven ? (
+          <>
+            {/* Image Left */}
+            <div className="w-1/2 h-full flex items-center justify-center p-12 lg:p-16 relative">
+              <div className="relative aspect-[4/5] w-full max-w-[420px] lg:max-w-[460px] rounded-3xl overflow-hidden shadow-2xl bg-bg-surface">
+                <motion.div style={{ scale: imgScale, opacity: imgOpacity }} className="w-full h-full relative">
+                  <Image
+                    src={article.image}
+                    alt={article.alt}
+                    fill
+                    className="object-cover"
+                    sizes="50vw"
+                  />
+                </motion.div>
+                <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full text-[9px] font-sans font-bold tracking-widest uppercase text-brand-brown">
+                  {article.category}
+                </div>
+              </div>
+            </div>
+
+            {/* Text Right */}
+            <div className="w-1/2 h-full flex flex-col justify-center pl-16 pr-16 lg:pl-24 lg:pr-32 relative">
+              {/* Category Indicator & Progress Indicator dots on the left of text */}
+              <div className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-3">
+                <div className="font-sans text-[9px] tracking-widest text-text-secondary uppercase rotate-90 origin-left translate-x-[3px] mb-8 font-bold">
+                  0{index + 1}
+                </div>
+                {[0, 1, 2].map((dotIndex) => (
+                  <div 
+                    key={dotIndex}
+                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                      activeDot === dotIndex ? "bg-brand-terracotta scale-125" : "bg-brand-brown/20"
+                    }`}
+                  />
+                ))}
+              </div>
+
+              {/* Title */}
+              <div className="space-y-2 mb-8">
+                <span className="font-sans text-[10px] tracking-[0.3em] font-bold text-accent-secondary uppercase">
+                  CHAPTER 0{index + 1}
+                </span>
+                <h2 className="font-serif text-3xl lg:text-5xl font-bold leading-[1.15] text-brand-brown">
+                  {article.title}
+                </h2>
+                <div className="flex items-center gap-3 text-[10px] font-sans text-text-secondary uppercase tracking-widest font-semibold pt-1">
+                  <span>{article.date}</span>
+                  <span>•</span>
+                  <span>By {article.author}</span>
+                </div>
+              </div>
+
+              {/* Content Slides */}
+              <div className="relative w-full h-[280px] lg:h-[320px]">
+                {/* Paragraph 1 */}
+                <motion.p 
+                  style={{ opacity: p1Opacity, y: p1Y }}
+                  className="absolute inset-0 font-sans text-base lg:text-lg text-text-secondary leading-relaxed font-light first-letter:float-left first-letter:text-6xl first-letter:font-serif first-letter:mr-3 first-letter:font-bold first-letter:text-brand-terracotta first-letter:mt-1"
+                >
+                  {article.content[0]}
+                </motion.p>
+
+                {/* Quote (Paragraph 2 in flow) */}
+                <motion.blockquote 
+                  style={{ opacity: p2Opacity, y: p2Y }}
+                  className="absolute inset-0 flex flex-col justify-center border-l-2 border-brand-terracotta/30 pl-6 py-2"
+                >
+                  <p className="font-serif text-xl lg:text-2xl italic text-brand-terracotta leading-relaxed font-medium">
+                    &ldquo;{article.quote}&rdquo;
+                  </p>
+                </motion.blockquote>
+
+                {/* Paragraph 2 & 3 Combined */}
+                <motion.div 
+                  style={{ opacity: p3Opacity, y: p3Y }}
+                  className="absolute inset-0 overflow-y-auto no-scrollbar font-sans text-base lg:text-lg text-text-secondary leading-relaxed font-light space-y-4"
+                >
+                  <p>{article.content[1]}</p>
+                  <p>{article.content[2]}</p>
+                </motion.div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            {/* Text Left */}
+            <div className="w-1/2 h-full flex flex-col justify-center pl-16 pr-16 lg:pl-24 lg:pr-32 relative">
+              {/* Category Indicator & Progress Indicator dots on the left of text */}
+              <div className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-3">
+                <div className="font-sans text-[9px] tracking-widest text-text-secondary uppercase rotate-90 origin-left translate-x-[3px] mb-8 font-bold">
+                  0{index + 1}
+                </div>
+                {[0, 1, 2].map((dotIndex) => (
+                  <div 
+                    key={dotIndex}
+                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                      activeDot === dotIndex ? "bg-brand-terracotta scale-125" : "bg-brand-brown/20"
+                    }`}
+                  />
+                ))}
+              </div>
+
+              {/* Title */}
+              <div className="space-y-2 mb-8">
+                <span className="font-sans text-[10px] tracking-[0.3em] font-bold text-accent-secondary uppercase">
+                  CHAPTER 0{index + 1}
+                </span>
+                <h2 className="font-serif text-3xl lg:text-5xl font-bold leading-[1.15] text-brand-brown">
+                  {article.title}
+                </h2>
+                <div className="flex items-center gap-3 text-[10px] font-sans text-text-secondary uppercase tracking-widest font-semibold pt-1">
+                  <span>{article.date}</span>
+                  <span>•</span>
+                  <span>By {article.author}</span>
+                </div>
+              </div>
+
+              {/* Content Slides */}
+              <div className="relative w-full h-[280px] lg:h-[320px]">
+                {/* Paragraph 1 */}
+                <motion.p 
+                  style={{ opacity: p1Opacity, y: p1Y }}
+                  className="absolute inset-0 font-sans text-base lg:text-lg text-text-secondary leading-relaxed font-light first-letter:float-left first-letter:text-6xl first-letter:font-serif first-letter:mr-3 first-letter:font-bold first-letter:text-brand-terracotta first-letter:mt-1"
+                >
+                  {article.content[0]}
+                </motion.p>
+
+                {/* Quote (Paragraph 2 in flow) */}
+                <motion.blockquote 
+                  style={{ opacity: p2Opacity, y: p2Y }}
+                  className="absolute inset-0 flex flex-col justify-center border-l-2 border-brand-terracotta/30 pl-6 py-2"
+                >
+                  <p className="font-serif text-xl lg:text-2xl italic text-brand-terracotta leading-relaxed font-medium">
+                    &ldquo;{article.quote}&rdquo;
+                  </p>
+                </motion.blockquote>
+
+                {/* Paragraph 2 & 3 Combined */}
+                <motion.div 
+                  style={{ opacity: p3Opacity, y: p3Y }}
+                  className="absolute inset-0 overflow-y-auto no-scrollbar font-sans text-base lg:text-lg text-text-secondary leading-relaxed font-light space-y-4"
+                >
+                  <p>{article.content[1]}</p>
+                  <p>{article.content[2]}</p>
+                </motion.div>
+              </div>
+            </div>
+
+            {/* Image Right */}
+            <div className="w-1/2 h-full flex items-center justify-center p-12 lg:p-16 relative">
+              <div className="relative aspect-[4/5] w-full max-w-[420px] lg:max-w-[460px] rounded-3xl overflow-hidden shadow-2xl bg-bg-surface">
+                <motion.div style={{ scale: imgScale, opacity: imgOpacity }} className="w-full h-full relative">
+                  <Image
+                    src={article.image}
+                    alt={article.alt}
+                    fill
+                    className="object-cover"
+                    sizes="50vw"
+                  />
+                </motion.div>
+                <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full text-[9px] font-sans font-bold tracking-widest uppercase text-brand-brown">
+                  {article.category}
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* ── Mobile view: Clean vertical editorial layout ── */}
+      <div className="flex md:hidden flex-col px-6 py-16 w-full gap-6">
+        
+        {/* Monospace Badge */}
+        <div className="flex items-center justify-between">
+          <span className="font-sans text-[10px] tracking-[0.25em] font-bold text-accent-secondary uppercase">
+            CHAPTER 0{index + 1} / {article.category}
+          </span>
+          <span className="font-sans text-[11px] text-text-secondary uppercase tracking-widest font-bold">
+            0{index + 1}
+          </span>
+        </div>
+
+        {/* Title */}
+        <h2 className="font-serif text-3xl font-bold text-brand-brown leading-tight">
+          {article.title}
+        </h2>
+        
+        {/* Metadata */}
+        <div className="flex items-center gap-4 text-[10px] font-sans text-text-secondary uppercase tracking-widest font-bold pb-2">
+          <span>{article.date}</span>
+          <span>•</span>
+          <span>By {article.author}</span>
+        </div>
+
+        {/* Hero Image */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8 }}
-          className="space-y-4 max-w-xl"
+          className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden shadow-lg bg-bg-surface"
         >
-          <span className="font-sans text-[10px] tracking-[0.3em] uppercase font-bold text-accent-secondary">
+          <Image
+            src={article.image}
+            alt={article.alt}
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
+        </motion.div>
+
+        {/* Text Body */}
+        <div className="space-y-6 font-sans text-[15px] text-text-secondary leading-relaxed font-light pt-2">
+          {/* Paragraph 1 */}
+          <p className="first-letter:float-left first-letter:text-6xl first-letter:font-serif first-letter:mr-2.5 first-letter:font-bold first-letter:text-brand-terracotta first-letter:mt-1">
+            {article.content[0]}
+          </p>
+
+          {/* Pull Quote */}
+          <blockquote className="my-8 py-6 border-y border-brand-brown/10 px-4 text-center">
+            <p className="font-serif text-lg italic text-brand-terracotta leading-relaxed">
+              &ldquo;{article.quote}&rdquo;
+            </p>
+          </blockquote>
+
+          {/* Paragraph 2 */}
+          <p>{article.content[1]}</p>
+
+          {/* Paragraph 3 */}
+          <p>{article.content[2]}</p>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+export default function JournalPage() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress: heroScroll } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end end"]
+  });
+
+  const heroOpacity = useTransform(heroScroll, [0, 0.8], [1, 0]);
+  const heroScale = useTransform(heroScroll, [0, 0.8], [1, 0.96]);
+  const heroY = useTransform(heroScroll, [0, 0.8], [0, -40]);
+
+  return (
+    <div className="bg-bg-primary text-text-primary min-h-screen flex flex-col overflow-x-hidden selection:bg-brand-terracotta selection:text-white">
+      
+      {/* ── Intro Hero Section ── */}
+      <section 
+        ref={heroRef}
+        className="h-screen w-full flex flex-col items-center justify-center text-center px-6 relative bg-bg-primary overflow-hidden border-b border-bg-surface"
+      >
+        <motion.div
+          style={{ opacity: heroOpacity, scale: heroScale, y: heroY }}
+          className="space-y-6 max-w-2xl z-10 flex flex-col items-center"
+        >
+          <span className="font-sans text-[10px] tracking-[0.4em] uppercase font-bold text-accent-secondary">
             THE JOURNAL
           </span>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.1] font-bold">
-            Notes on Intentional Living
+          <h1 className="font-serif text-4xl sm:text-5xl md:text-7xl leading-[1.1] font-bold text-brand-brown">
+            Notes on <br />
+            <span className="italic font-normal">Intentional Living</span>
           </h1>
-          <div className="w-12 h-px bg-accent-primary/30 mx-auto mt-6" />
+          <div className="w-12 h-px bg-brand-terracotta/40 my-6" />
+          <p className="font-sans text-xs sm:text-sm text-brand-text-muted max-w-md leading-relaxed font-light">
+            A collection of essays exploring the wabi-sabi aesthetic, sensory grounding, and the quiet spaces we construct for the mind.
+          </p>
+        </motion.div>
+
+        {/* Floating background shape */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-taupe/15 rounded-full blur-[100px] pointer-events-none -z-10" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand-terracotta/5 rounded-full blur-[120px] pointer-events-none -z-10" />
+
+        {/* Scroll indicator */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 1 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer pointer-events-none"
+        >
+          <span className="font-sans text-[9px] tracking-[0.25em] uppercase font-bold text-brand-brown/50">
+            Scroll to read
+          </span>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+          >
+            <ArrowDown className="w-3.5 h-3.5 text-brand-terracotta" />
+          </motion.div>
         </motion.div>
       </section>
 
-      {/* ── Editorial Asymmetrical Article Grid ── */}
-      <main className="max-w-7xl mx-auto w-full px-6 md:px-12 py-24 flex-1">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
-          
-          {articles.map((article, index) => {
-            const isFeature = article.isFeature;
-            return (
-              <motion.div
-                key={article.id}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ type: "spring", stiffness: 60, damping: 15, delay: index * 0.15 }}
-                onClick={() => setSelectedArticle(article)}
-                className={`group cursor-pointer flex flex-col gap-6 ${
-                  isFeature ? "md:col-span-2" : "col-span-1"
-                }`}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setSelectedArticle(article);
-                  }
-                }}
-                aria-label={`Read article: ${article.title}`}
-              >
-                {/* Asymmetrical Image Container */}
-                <div 
-                  className={`relative w-full rounded-2xl overflow-hidden bg-bg-surface ${
-                    isFeature ? "aspect-[21/9] h-[260px] sm:h-[320px] md:h-[450px]" : "aspect-[4/3] md:aspect-[3/4] h-auto"
-                  }`}
-                >
-                  <motion.div
-                    whileHover={{ scale: 1.03 }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    className="w-full h-full relative sepia-[.20] contrast-100 group-hover:sepia-0 transition-all duration-700"
-                  >
-                    <Image
-                      src={article.image}
-                      alt={article.alt}
-                      fill
-                      className="object-cover"
-                      sizes={isFeature ? "100vw" : "(max-width: 768px) 100vw, 50vw"}
-                    />
-                  </motion.div>
-                  
-                  {/* Category label badge */}
-                  <span className="absolute top-4 left-4 bg-white/80 backdrop-blur-sm text-text-primary font-sans text-[9px] font-bold tracking-widest px-3 py-1 rounded-full uppercase">
-                    {article.category}
-                  </span>
-                </div>
-
-                {/* Article Info */}
-                <div className={`space-y-3 ${isFeature ? "max-w-2xl" : "w-full"}`}>
-                  <div className="flex items-center gap-4 text-[10px] font-sans text-text-secondary uppercase tracking-wider font-semibold">
-                    <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {article.date}</span>
-                    <span className="flex items-center gap-1"><User className="w-3 h-3" /> {article.author}</span>
-                  </div>
-                  <h2 className="font-serif text-2xl md:text-3xl font-bold group-hover:text-accent-primary transition-colors leading-tight">
-                    {article.title}
-                  </h2>
-                  <p className="font-sans text-sm text-text-secondary leading-relaxed font-light line-clamp-3">
-                    {article.description}
-                  </p>
-                  
-                  <span className="inline-flex items-center gap-2 font-sans text-xs tracking-wider uppercase font-semibold text-accent-primary mt-2 border-b border-accent-primary/20 pb-0.5 group-hover:border-accent-primary transition-colors">
-                    Read Essay <ArrowRight className="w-3 h-3" />
-                  </span>
-                </div>
-              </motion.div>
-            );
-          })}
-
-        </div>
+      {/* ── Chapters ── */}
+      <main className="w-full">
+        {articles.map((article, index) => (
+          <StorySection key={article.id} article={article} index={index} />
+        ))}
       </main>
 
-      {/* ── Article Read View Modal (AnimatePresence Overlay) ── */}
-      <AnimatePresence>
-        {selectedArticle && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedArticle(null)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-md z-95"
-              aria-hidden="true"
-            />
-
-            {/* Essay Modal Container */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ type: "spring", stiffness: 200, damping: 22 }}
-              className="fixed inset-4 sm:inset-6 md:inset-12 lg:inset-20 bg-bg-primary rounded-3xl shadow-2xl z-100 flex flex-col text-text-primary overflow-hidden"
-              role="dialog"
-              aria-modal="true"
-              aria-label={selectedArticle.title}
-            >
-              {/* Close Button Header - Fixed at Top */}
-              <div className="flex justify-between items-center px-6 py-4 md:px-12 md:py-6 border-b border-bg-surface shrink-0 z-20 bg-bg-primary/95 backdrop-blur-sm">
-                <span className="font-sans text-[10px] tracking-[0.25em] uppercase text-text-secondary font-bold">
-                  {selectedArticle.category}
-                </span>
-                <button
-                  onClick={() => setSelectedArticle(null)}
-                  className="w-10 h-10 rounded-full bg-bg-surface flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-gray-200 transition-colors focus:outline-none"
-                  aria-label="Close article"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Scrollable Essay Content */}
-              <div className="flex-1 overflow-y-auto px-6 py-10 md:py-16 md:px-12 no-scrollbar">
-                <article className="max-w-3xl mx-auto space-y-10">
-                  
-                  {/* Essay Header */}
-                  <div className="text-center space-y-3">
-                    <h1 className="font-serif text-2xl sm:text-3xl md:text-5xl font-bold leading-tight max-w-2xl mx-auto">
-                      {selectedArticle.title}
-                    </h1>
-                    <div className="flex items-center justify-center gap-4 text-xs font-sans text-text-secondary uppercase tracking-widest pt-2">
-                      <span>{selectedArticle.date}</span>
-                      <span>•</span>
-                      <span>By {selectedArticle.author}</span>
-                    </div>
-                  </div>
-
-                  {/* Feature Image inside Article */}
-                  <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-bg-surface">
-                    <Image
-                      src={selectedArticle.image}
-                      alt={selectedArticle.alt}
-                      fill
-                      className="object-cover"
-                      sizes="100vw"
-                    />
-                  </div>
-
-                  {/* Article Body */}
-                  <div className="max-w-prose mx-auto font-sans text-base md:text-lg text-text-primary leading-[1.9] font-light space-y-8">
-                    
-                    {/* First Paragraph with massive serif Drop Cap */}
-                    <p className="first-letter:float-left first-letter:text-7xl first-letter:font-serif first-letter:mr-3 first-letter:font-bold first-letter:text-accent-primary first-letter:mt-2">
-                      {selectedArticle.content[0]}
-                    </p>
-
-                    {/* Breakout Pull Quote */}
-                    <blockquote className="w-full md:w-[110%] md:ml-[-5%] py-8 border-y border-bg-surface flex flex-col items-center justify-center text-center my-10">
-                      <p className="font-serif text-xl md:text-2xl italic text-accent-primary font-medium max-w-xl leading-relaxed">
-                        &ldquo;{selectedArticle.quote}&rdquo;
-                      </p>
-                    </blockquote>
-
-                    {/* Remaining Paragraphs */}
-                    {selectedArticle.content.slice(1).map((para, i) => (
-                      <p key={i}>
-                        {para}
-                      </p>
-                    ))}
-
-                  </div>
-
-                  {/* Essay Footer */}
-                  <div className="max-w-prose mx-auto pt-12 border-t border-bg-surface text-center space-y-4">
-                    <p className="font-serif text-sm italic text-text-secondary">
-                      Thank you for reading the RUYRA Journal.
-                    </p>
-                    <button
-                      onClick={() => setSelectedArticle(null)}
-                      className="px-6 py-2.5 bg-accent-primary text-white rounded-full font-sans text-xs uppercase tracking-widest font-semibold hover:bg-opacity-95 transition-all"
-                    >
-                      Return to Journal
-                    </button>
-                  </div>
-
-                </article>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      {/* ── Outro / Call-To-Action ── */}
+      <section className="h-[80vh] w-full flex flex-col items-center justify-center text-center px-6 relative bg-bg-primary">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1 }}
+          className="space-y-8 max-w-xl flex flex-col items-center"
+        >
+          <span className="font-sans text-[9px] tracking-[0.3em] uppercase font-bold text-accent-secondary">
+            CODA
+          </span>
+          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl italic font-normal leading-relaxed text-brand-brown">
+            &ldquo;To live with intention is to choose light that leaves room for shadow.&rdquo;
+          </h2>
+          <div className="w-12 h-px bg-brand-terracotta/40 my-2" />
+          
+          <Link
+            href="/shop"
+            className="inline-flex items-center gap-2 px-8 py-3.5 bg-brand-brown hover:bg-brand-brown/95 text-white font-sans text-xs uppercase tracking-widest font-semibold rounded-full shadow-lg transition-all hover:scale-105 active:scale-95 cursor-pointer"
+          >
+            Explore the Collection <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </motion.div>
+      </section>
 
       {/* Footer */}
       <Footer />

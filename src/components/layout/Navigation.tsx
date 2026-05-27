@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, ShoppingBag, Compass, Feather } from "lucide-react";
+import { Search, ShoppingBag, Compass, Store } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCart } from "@/lib/context/CartContext";
 import { useSearch } from "@/lib/context/SearchContext";
@@ -16,7 +16,7 @@ const navLinks = [
 
 const mobileNavItems = [
   { id: "home", label: "Home", icon: Compass, href: "/" },
-  { id: "story", label: "Story", icon: Feather, href: "/journal" },
+  { id: "shop", label: "Shop", icon: Store, href: "/shop" },
   { id: "search", label: "Search", icon: Search, href: "#", isSearchButton: true },
   { id: "cart", label: "Cart", icon: ShoppingBag, href: "#", isCartButton: true },
 ];

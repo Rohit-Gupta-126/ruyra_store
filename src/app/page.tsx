@@ -24,7 +24,9 @@ export default function Home() {
       <SignaturePieces />
 
       {/* Dynamic Value Marquee */}
-      <ValueMarquee />
+      <div id="sustainability-section">
+        <ValueMarquee />
+      </div>
 
       {/* Customer Testimonials Section */}
       <Testimonials />
