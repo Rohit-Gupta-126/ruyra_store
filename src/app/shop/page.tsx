@@ -111,8 +111,8 @@ export default function ShopPage() {
   return (
     <div className="bg-bg-primary text-text-primary min-h-screen flex flex-col">
       
-      {/* ── Page Header (Sticky top-20 to stack under Navigation) ── */}
-      <div className="sticky top-16 md:top-20 z-30 bg-bg-primary/95 backdrop-blur-md border-b border-bg-surface pt-16 pb-8 px-6 md:px-12">
+      {/* ── Page Header (Static top header under Navigation) ── */}
+      <div className="bg-bg-primary border-b border-bg-surface pt-12 pb-8 px-6 md:px-12">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="space-y-2">
             <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight">
@@ -185,7 +185,7 @@ export default function ShopPage() {
       <div className="max-w-7xl mx-auto w-full px-6 md:px-12 py-24 flex-1 flex gap-12 relative">
         
         {/* ── Desktop Filters Sidebar (md+) ── */}
-        <aside className="w-64 shrink-0 sticky top-64 h-[calc(100vh-280px)] overflow-y-auto pr-6 hidden md:block no-scrollbar space-y-8">
+        <aside className="w-64 shrink-0 sticky top-24 h-[calc(100vh-140px)] overflow-y-auto pr-6 hidden md:block no-scrollbar space-y-8">
           
           {/* Ritual Type Accordion */}
           <div className="space-y-4">
