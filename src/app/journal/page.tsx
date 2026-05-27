@@ -71,289 +71,383 @@ const articles: Article[] = [
   }
 ];
 
-function StorySection({ article, index }: { article: Article; index: number }) {
+function DesktopScrollytelling() {
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  // Hook into scroll progress of this container
+
+  // Hook scroll progress of the entire scrollytelling container
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  // Transforms for desktop view
-  const imgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.1, 1.03, 1.0]);
-  const imgOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0.8, 1, 1, 0.8]);
-  
-  // Slide progress transforms
-  const p1Opacity = useTransform(scrollYProgress, [0.05, 0.15, 0.28, 0.38], [0, 1, 1, 0]);
-  const p1Y = useTransform(scrollYProgress, [0.05, 0.15, 0.28, 0.38], [30, 0, 0, -30]);
+  // 1. Dynamic Background Color Transition
+  const bgColor = useTransform(
+    scrollYProgress,
+    [0, 0.31, 0.34, 0.65, 0.68, 0.98],
+    ["#F6F4F0", "#F6F4F0", "#EFECE6", "#EFECE6", "#EAE6DF", "#EAE6DF"]
+  );
 
-  const p2Opacity = useTransform(scrollYProgress, [0.38, 0.48, 0.62, 0.72], [0, 1, 1, 0]);
-  const p2Y = useTransform(scrollYProgress, [0.38, 0.48, 0.62, 0.72], [30, 0, 0, -30]);
+  // 2. Image Transformations (Opacity & Scale)
+  const img1Opacity = useTransform(scrollYProgress, [0, 0.31, 0.34], [1, 1, 0]);
+  const img1Scale = useTransform(scrollYProgress, [0, 0.31], [1.08, 1.0]);
 
-  const p3Opacity = useTransform(scrollYProgress, [0.72, 0.82, 0.92, 0.98], [0, 1, 1, 1]);
-  const p3Y = useTransform(scrollYProgress, [0.72, 0.82, 0.92, 0.98], [30, 0, 0, 0]);
+  const img2Opacity = useTransform(scrollYProgress, [0.31, 0.34, 0.65, 0.68], [0, 1, 1, 0]);
+  const img2Scale = useTransform(scrollYProgress, [0.34, 0.65], [1.08, 1.0]);
 
-  // Active bullet dot state
-  const [activeDot, setActiveDot] = useState(0);
-  
-  // Track the active dot by listening to scrollYProgress
+  const img3Opacity = useTransform(scrollYProgress, [0.65, 0.68, 0.98], [0, 1, 1]);
+  const img3Scale = useTransform(scrollYProgress, [0.68, 0.98], [1.08, 1.0]);
+
+  // 3. Title Transformations (Opacity & Translation Y)
+  const title1Opacity = useTransform(scrollYProgress, [0, 0.31, 0.34], [1, 1, 0]);
+  const title1Y = useTransform(scrollYProgress, [0, 0.31, 0.34], [0, 0, -20]);
+
+  const title2Opacity = useTransform(scrollYProgress, [0.31, 0.34, 0.65, 0.68], [0, 1, 1, 0]);
+  const title2Y = useTransform(scrollYProgress, [0.31, 0.34, 0.65, 0.68], [20, 0, 0, -20]);
+
+  const title3Opacity = useTransform(scrollYProgress, [0.65, 0.68, 0.98], [0, 1, 1]);
+  const title3Y = useTransform(scrollYProgress, [0.65, 0.68, 0.98], [20, 0, 0]);
+
+  // 4. Paragraph/Slide Transforms for Chapter 1
+  const c1p1Opacity = useTransform(scrollYProgress, [0.01, 0.08, 0.11, 0.13], [0, 1, 1, 0]);
+  const c1p1Y = useTransform(scrollYProgress, [0.01, 0.08, 0.11, 0.13], [20, 0, 0, -20]);
+
+  const c1p2Opacity = useTransform(scrollYProgress, [0.13, 0.18, 0.21, 0.23], [0, 1, 1, 0]);
+  const c1p2Y = useTransform(scrollYProgress, [0.13, 0.18, 0.21, 0.23], [20, 0, 0, -20]);
+
+  const c1p3Opacity = useTransform(scrollYProgress, [0.23, 0.28, 0.31, 0.34], [0, 1, 1, 0]);
+  const c1p3Y = useTransform(scrollYProgress, [0.23, 0.28, 0.31, 0.34], [20, 0, 0, -20]);
+
+  // 5. Paragraph/Slide Transforms for Chapter 2
+  const c2p1Opacity = useTransform(scrollYProgress, [0.34, 0.39, 0.42, 0.44], [0, 1, 1, 0]);
+  const c2p1Y = useTransform(scrollYProgress, [0.34, 0.39, 0.42, 0.44], [20, 0, 0, -20]);
+
+  const c2p2Opacity = useTransform(scrollYProgress, [0.44, 0.49, 0.52, 0.54], [0, 1, 1, 0]);
+  const c2p2Y = useTransform(scrollYProgress, [0.44, 0.49, 0.52, 0.54], [20, 0, 0, -20]);
+
+  const c2p3Opacity = useTransform(scrollYProgress, [0.54, 0.59, 0.62, 0.65], [0, 1, 1, 0]);
+  const c2p3Y = useTransform(scrollYProgress, [0.54, 0.59, 0.62, 0.65], [20, 0, 0, -20]);
+
+  // 6. Paragraph/Slide Transforms for Chapter 3
+  const c3p1Opacity = useTransform(scrollYProgress, [0.65, 0.70, 0.73, 0.75], [0, 1, 1, 0]);
+  const c3p1Y = useTransform(scrollYProgress, [0.65, 0.70, 0.73, 0.75], [20, 0, 0, -20]);
+
+  const c3p2Opacity = useTransform(scrollYProgress, [0.75, 0.80, 0.83, 0.85], [0, 1, 1, 0]);
+  const c3p2Y = useTransform(scrollYProgress, [0.75, 0.80, 0.83, 0.85], [20, 0, 0, -20]);
+
+  const c3p3Opacity = useTransform(scrollYProgress, [0.85, 0.90, 0.96, 0.98], [0, 1, 1, 1]);
+  const c3p3Y = useTransform(scrollYProgress, [0.85, 0.90, 0.96, 0.98], [20, 0, 0, 0]);
+
+  // Active state indicators
+  const [activeChapter, setActiveChapter] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(0);
+
   useEffect(() => {
-    return scrollYProgress.on("change", (latest) => {
-      if (latest < 0.36) {
-        setActiveDot(0);
-      } else if (latest >= 0.36 && latest < 0.70) {
-        setActiveDot(1);
+    return scrollYProgress.on("change", (p) => {
+      // Set active chapter
+      if (p < 0.325) {
+        setActiveChapter(0);
+        // Set active slide
+        if (p < 0.12) setActiveSlide(0);
+        else if (p >= 0.12 && p < 0.22) setActiveSlide(1);
+        else setActiveSlide(2);
+      } else if (p >= 0.325 && p < 0.665) {
+        setActiveChapter(1);
+        // Set active slide
+        if (p < 0.43) setActiveSlide(0);
+        else if (p >= 0.43 && p < 0.53) setActiveSlide(1);
+        else setActiveSlide(2);
       } else {
-        setActiveDot(2);
+        setActiveChapter(2);
+        // Set active slide
+        if (p < 0.74) setActiveSlide(0);
+        else if (p >= 0.74 && p < 0.84) setActiveSlide(1);
+        else setActiveSlide(2);
       }
     });
   }, [scrollYProgress]);
 
-  const isEven = index % 2 === 0;
-
   return (
-    <div 
+    <motion.div 
       ref={containerRef} 
-      className="relative w-full h-[220vh] bg-bg-primary text-text-primary border-b border-bg-surface/50"
+      className="relative w-full h-[400vh]"
+      style={{ backgroundColor: bgColor }}
     >
-      {/* ── Desktop view: Sticky scroll-scrub split layout ── */}
-      <div className="hidden md:flex sticky top-0 h-screen w-full overflow-hidden items-center">
+      <div className="sticky top-0 h-screen w-full flex overflow-hidden items-center">
         
-        {/* Alternating image columns */}
-        {isEven ? (
-          <>
-            {/* Image Left */}
-            <div className="w-1/2 h-full flex items-center justify-center p-12 lg:p-16 relative">
-              <div className="relative aspect-[4/5] w-full max-w-[420px] lg:max-w-[460px] rounded-3xl overflow-hidden shadow-2xl bg-bg-surface">
-                <motion.div style={{ scale: imgScale, opacity: imgOpacity }} className="w-full h-full relative">
-                  <Image
-                    src={article.image}
-                    alt={article.alt}
-                    fill
-                    className="object-cover"
-                    sizes="50vw"
-                  />
-                </motion.div>
-                <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full text-[9px] font-sans font-bold tracking-widest uppercase text-brand-brown">
-                  {article.category}
-                </div>
-              </div>
+        {/* Left Column: Visual Panel (Fixed Image space) */}
+        <div className="w-1/2 h-full flex items-center justify-center p-12 lg:p-16 relative">
+          <div className="relative aspect-[4/5] w-full max-w-[420px] lg:max-w-[460px] rounded-3xl overflow-hidden shadow-2xl bg-bg-surface border border-brand-brown/5">
+            
+            {/* Image Chapter 1 */}
+            <motion.div style={{ opacity: img1Opacity, scale: img1Scale }} className="absolute inset-0">
+              <Image
+                src={articles[0].image}
+                alt={articles[0].alt}
+                fill
+                className="object-cover"
+                sizes="50vw"
+                priority
+              />
+            </motion.div>
+
+            {/* Image Chapter 2 */}
+            <motion.div style={{ opacity: img2Opacity, scale: img2Scale }} className="absolute inset-0">
+              <Image
+                src={articles[1].image}
+                alt={articles[1].alt}
+                fill
+                className="object-cover"
+                sizes="50vw"
+              />
+            </motion.div>
+
+            {/* Image Chapter 3 */}
+            <motion.div style={{ opacity: img3Opacity, scale: img3Scale }} className="absolute inset-0">
+              <Image
+                src={articles[2].image}
+                alt={articles[2].alt}
+                fill
+                className="object-cover"
+                sizes="50vw"
+              />
+            </motion.div>
+
+            {/* Float Category Label */}
+            <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full text-[9px] font-sans font-bold tracking-widest uppercase text-brand-brown">
+              {activeChapter === 0 ? articles[0].category : activeChapter === 1 ? articles[1].category : articles[2].category}
             </div>
+          </div>
+        </div>
 
-            {/* Text Right */}
-            <div className="w-1/2 h-full flex flex-col justify-center pl-16 pr-16 lg:pl-24 lg:pr-32 relative">
-              {/* Category Indicator & Progress Indicator dots on the left of text */}
-              <div className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-3">
-                <div className="font-sans text-[9px] tracking-widest text-text-secondary uppercase rotate-90 origin-left translate-x-[3px] mb-8 font-bold">
-                  0{index + 1}
-                </div>
-                {[0, 1, 2].map((dotIndex) => (
-                  <div 
-                    key={dotIndex}
-                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                      activeDot === dotIndex ? "bg-brand-terracotta scale-125" : "bg-brand-brown/20"
-                    }`}
-                  />
-                ))}
+        {/* Right Column: Narrative Panel */}
+        <div className="w-1/2 h-full flex flex-col justify-center pl-16 pr-16 lg:pl-24 lg:pr-32 relative">
+          
+          {/* Progress Indicators */}
+          <div className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-3">
+            <span className="font-sans text-[9px] tracking-widest text-text-secondary uppercase rotate-90 origin-left translate-x-[3px] mb-8 font-bold">
+              0{activeChapter + 1}
+            </span>
+            {[0, 1, 2].map((dotIndex) => (
+              <div 
+                key={dotIndex}
+                className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                  activeSlide === dotIndex ? "bg-brand-terracotta scale-125" : "bg-brand-brown/20"
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Dynamic Titles Container */}
+          <div className="relative w-full h-[140px] shrink-0 mb-6">
+            
+            {/* Title Chapter 1 */}
+            <motion.div 
+              style={{ opacity: title1Opacity, y: title1Y }} 
+              className="absolute inset-0 flex flex-col justify-end"
+            >
+              <span className="font-sans text-[10px] tracking-[0.3em] font-bold text-accent-secondary uppercase">
+                CHAPTER 01
+              </span>
+              <h2 className="font-serif text-3xl lg:text-5xl font-bold leading-tight text-brand-brown mt-1">
+                {articles[0].title}
+              </h2>
+              <div className="flex items-center gap-3 text-[10px] font-sans text-text-secondary uppercase tracking-widest font-semibold pt-1">
+                <span>{articles[0].date}</span>
+                <span>•</span>
+                <span>By {articles[0].author}</span>
               </div>
+            </motion.div>
 
-              {/* Title */}
-              <div className="space-y-2 mb-8">
-                <span className="font-sans text-[10px] tracking-[0.3em] font-bold text-accent-secondary uppercase">
-                  CHAPTER 0{index + 1}
-                </span>
-                <h2 className="font-serif text-3xl lg:text-5xl font-bold leading-[1.15] text-brand-brown">
-                  {article.title}
-                </h2>
-                <div className="flex items-center gap-3 text-[10px] font-sans text-text-secondary uppercase tracking-widest font-semibold pt-1">
-                  <span>{article.date}</span>
-                  <span>•</span>
-                  <span>By {article.author}</span>
-                </div>
+            {/* Title Chapter 2 */}
+            <motion.div 
+              style={{ opacity: title2Opacity, y: title2Y }} 
+              className="absolute inset-0 flex flex-col justify-end"
+            >
+              <span className="font-sans text-[10px] tracking-[0.3em] font-bold text-accent-secondary uppercase">
+                CHAPTER 02
+              </span>
+              <h2 className="font-serif text-3xl lg:text-5xl font-bold leading-tight text-brand-brown mt-1">
+                {articles[1].title}
+              </h2>
+              <div className="flex items-center gap-3 text-[10px] font-sans text-text-secondary uppercase tracking-widest font-semibold pt-1">
+                <span>{articles[1].date}</span>
+                <span>•</span>
+                <span>By {articles[1].author}</span>
               </div>
+            </motion.div>
 
-              {/* Content Slides */}
-              <div className="relative w-full h-[280px] lg:h-[320px]">
-                {/* Paragraph 1 */}
-                <motion.p 
-                  style={{ opacity: p1Opacity, y: p1Y }}
-                  className="absolute inset-0 font-sans text-base lg:text-lg text-text-secondary leading-relaxed font-light first-letter:float-left first-letter:text-6xl first-letter:font-serif first-letter:mr-3 first-letter:font-bold first-letter:text-brand-terracotta first-letter:mt-1"
-                >
-                  {article.content[0]}
-                </motion.p>
-
-                {/* Quote (Paragraph 2 in flow) */}
-                <motion.blockquote 
-                  style={{ opacity: p2Opacity, y: p2Y }}
-                  className="absolute inset-0 flex flex-col justify-center border-l-2 border-brand-terracotta/30 pl-6 py-2"
-                >
-                  <p className="font-serif text-xl lg:text-2xl italic text-brand-terracotta leading-relaxed font-medium">
-                    &ldquo;{article.quote}&rdquo;
-                  </p>
-                </motion.blockquote>
-
-                {/* Paragraph 2 & 3 Combined */}
-                <motion.div 
-                  style={{ opacity: p3Opacity, y: p3Y }}
-                  className="absolute inset-0 overflow-y-auto no-scrollbar font-sans text-base lg:text-lg text-text-secondary leading-relaxed font-light space-y-4"
-                >
-                  <p>{article.content[1]}</p>
-                  <p>{article.content[2]}</p>
-                </motion.div>
+            {/* Title Chapter 3 */}
+            <motion.div 
+              style={{ opacity: title3Opacity, y: title3Y }} 
+              className="absolute inset-0 flex flex-col justify-end"
+            >
+              <span className="font-sans text-[10px] tracking-[0.3em] font-bold text-accent-secondary uppercase">
+                CHAPTER 03
+              </span>
+              <h2 className="font-serif text-3xl lg:text-5xl font-bold leading-tight text-brand-brown mt-1">
+                {articles[2].title}
+              </h2>
+              <div className="flex items-center gap-3 text-[10px] font-sans text-text-secondary uppercase tracking-widest font-semibold pt-1">
+                <span>{articles[2].date}</span>
+                <span>•</span>
+                <span>By {articles[2].author}</span>
               </div>
-            </div>
-          </>
-        ) : (
-          <>
-            {/* Text Left */}
-            <div className="w-1/2 h-full flex flex-col justify-center pl-16 pr-16 lg:pl-24 lg:pr-32 relative">
-              {/* Category Indicator & Progress Indicator dots on the left of text */}
-              <div className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-3">
-                <div className="font-sans text-[9px] tracking-widest text-text-secondary uppercase rotate-90 origin-left translate-x-[3px] mb-8 font-bold">
-                  0{index + 1}
-                </div>
-                {[0, 1, 2].map((dotIndex) => (
-                  <div 
-                    key={dotIndex}
-                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                      activeDot === dotIndex ? "bg-brand-terracotta scale-125" : "bg-brand-brown/20"
-                    }`}
-                  />
-                ))}
-              </div>
+            </motion.div>
+          </div>
 
-              {/* Title */}
-              <div className="space-y-2 mb-8">
-                <span className="font-sans text-[10px] tracking-[0.3em] font-bold text-accent-secondary uppercase">
-                  CHAPTER 0{index + 1}
-                </span>
-                <h2 className="font-serif text-3xl lg:text-5xl font-bold leading-[1.15] text-brand-brown">
-                  {article.title}
-                </h2>
-                <div className="flex items-center gap-3 text-[10px] font-sans text-text-secondary uppercase tracking-widest font-semibold pt-1">
-                  <span>{article.date}</span>
-                  <span>•</span>
-                  <span>By {article.author}</span>
-                </div>
-              </div>
+          {/* Dynamic Content Slides Container */}
+          <div className="relative w-full h-[280px] lg:h-[320px]">
+            
+            {/* ──── CHAPTER 1 CONTENT SLIDES ──── */}
+            {/* Slide 1 */}
+            <motion.p 
+              style={{ opacity: c1p1Opacity, y: c1p1Y }}
+              className="absolute inset-0 font-sans text-base lg:text-lg text-text-secondary leading-relaxed font-light first-letter:float-left first-letter:text-6xl first-letter:font-serif first-letter:mr-3 first-letter:font-bold first-letter:text-brand-terracotta first-letter:mt-1 pointer-events-none"
+            >
+              {articles[0].content[0]}
+            </motion.p>
+            {/* Slide 2 */}
+            <motion.blockquote 
+              style={{ opacity: c1p2Opacity, y: c1p2Y }}
+              className="absolute inset-0 flex flex-col justify-center border-l-2 border-brand-terracotta/30 pl-6 py-2 pointer-events-none"
+            >
+              <p className="font-serif text-xl lg:text-2xl italic text-brand-terracotta leading-relaxed font-medium">
+                &ldquo;{articles[0].quote}&rdquo;
+              </p>
+            </motion.blockquote>
+            {/* Slide 3 */}
+            <motion.div 
+              style={{ opacity: c1p3Opacity, y: c1p3Y }}
+              className="absolute inset-0 overflow-y-auto no-scrollbar font-sans text-base lg:text-lg text-text-secondary leading-relaxed font-light space-y-4"
+            >
+              <p>{articles[0].content[1]}</p>
+              <p>{articles[0].content[2]}</p>
+            </motion.div>
 
-              {/* Content Slides */}
-              <div className="relative w-full h-[280px] lg:h-[320px]">
-                {/* Paragraph 1 */}
-                <motion.p 
-                  style={{ opacity: p1Opacity, y: p1Y }}
-                  className="absolute inset-0 font-sans text-base lg:text-lg text-text-secondary leading-relaxed font-light first-letter:float-left first-letter:text-6xl first-letter:font-serif first-letter:mr-3 first-letter:font-bold first-letter:text-brand-terracotta first-letter:mt-1"
-                >
-                  {article.content[0]}
-                </motion.p>
+            {/* ──── CHAPTER 2 CONTENT SLIDES ──── */}
+            {/* Slide 1 */}
+            <motion.p 
+              style={{ opacity: c2p1Opacity, y: c2p1Y }}
+              className="absolute inset-0 font-sans text-base lg:text-lg text-text-secondary leading-relaxed font-light first-letter:float-left first-letter:text-6xl first-letter:font-serif first-letter:mr-3 first-letter:font-bold first-letter:text-brand-terracotta first-letter:mt-1 pointer-events-none"
+            >
+              {articles[1].content[0]}
+            </motion.p>
+            {/* Slide 2 */}
+            <motion.blockquote 
+              style={{ opacity: c2p2Opacity, y: c2p2Y }}
+              className="absolute inset-0 flex flex-col justify-center border-l-2 border-brand-terracotta/30 pl-6 py-2 pointer-events-none"
+            >
+              <p className="font-serif text-xl lg:text-2xl italic text-brand-terracotta leading-relaxed font-medium">
+                &ldquo;{articles[1].quote}&rdquo;
+              </p>
+            </motion.blockquote>
+            {/* Slide 3 */}
+            <motion.div 
+              style={{ opacity: c2p3Opacity, y: c2p3Y }}
+              className="absolute inset-0 overflow-y-auto no-scrollbar font-sans text-base lg:text-lg text-text-secondary leading-relaxed font-light space-y-4"
+            >
+              <p>{articles[1].content[1]}</p>
+              <p>{articles[1].content[2]}</p>
+            </motion.div>
 
-                {/* Quote (Paragraph 2 in flow) */}
-                <motion.blockquote 
-                  style={{ opacity: p2Opacity, y: p2Y }}
-                  className="absolute inset-0 flex flex-col justify-center border-l-2 border-brand-terracotta/30 pl-6 py-2"
-                >
-                  <p className="font-serif text-xl lg:text-2xl italic text-brand-terracotta leading-relaxed font-medium">
-                    &ldquo;{article.quote}&rdquo;
-                  </p>
-                </motion.blockquote>
-
-                {/* Paragraph 2 & 3 Combined */}
-                <motion.div 
-                  style={{ opacity: p3Opacity, y: p3Y }}
-                  className="absolute inset-0 overflow-y-auto no-scrollbar font-sans text-base lg:text-lg text-text-secondary leading-relaxed font-light space-y-4"
-                >
-                  <p>{article.content[1]}</p>
-                  <p>{article.content[2]}</p>
-                </motion.div>
-              </div>
-            </div>
-
-            {/* Image Right */}
-            <div className="w-1/2 h-full flex items-center justify-center p-12 lg:p-16 relative">
-              <div className="relative aspect-[4/5] w-full max-w-[420px] lg:max-w-[460px] rounded-3xl overflow-hidden shadow-2xl bg-bg-surface">
-                <motion.div style={{ scale: imgScale, opacity: imgOpacity }} className="w-full h-full relative">
-                  <Image
-                    src={article.image}
-                    alt={article.alt}
-                    fill
-                    className="object-cover"
-                    sizes="50vw"
-                  />
-                </motion.div>
-                <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full text-[9px] font-sans font-bold tracking-widest uppercase text-brand-brown">
-                  {article.category}
-                </div>
-              </div>
-            </div>
-          </>
-        )}
+            {/* ──── CHAPTER 3 CONTENT SLIDES ──── */}
+            {/* Slide 1 */}
+            <motion.p 
+              style={{ opacity: c3p1Opacity, y: c3p1Y }}
+              className="absolute inset-0 font-sans text-base lg:text-lg text-text-secondary leading-relaxed font-light first-letter:float-left first-letter:text-6xl first-letter:font-serif first-letter:mr-3 first-letter:font-bold first-letter:text-brand-terracotta first-letter:mt-1 pointer-events-none"
+            >
+              {articles[2].content[0]}
+            </motion.p>
+            {/* Slide 2 */}
+            <motion.blockquote 
+              style={{ opacity: c3p2Opacity, y: c3p2Y }}
+              className="absolute inset-0 flex flex-col justify-center border-l-2 border-brand-terracotta/30 pl-6 py-2 pointer-events-none"
+            >
+              <p className="font-serif text-xl lg:text-2xl italic text-brand-terracotta leading-relaxed font-medium">
+                &ldquo;{articles[2].quote}&rdquo;
+              </p>
+            </motion.blockquote>
+            {/* Slide 3 */}
+            <motion.div 
+              style={{ opacity: c3p3Opacity, y: c3p3Y }}
+              className="absolute inset-0 overflow-y-auto no-scrollbar font-sans text-base lg:text-lg text-text-secondary leading-relaxed font-light space-y-4"
+            >
+              <p>{articles[2].content[1]}</p>
+              <p>{articles[2].content[2]}</p>
+            </motion.div>
+          </div>
+        </div>
       </div>
+    </motion.div>
+  );
+}
 
-      {/* ── Mobile view: Clean vertical editorial layout ── */}
-      <div className="flex md:hidden flex-col px-6 py-16 w-full gap-6">
-        
-        {/* Monospace Badge */}
-        <div className="flex items-center justify-between">
-          <span className="font-sans text-[10px] tracking-[0.25em] font-bold text-accent-secondary uppercase">
-            CHAPTER 0{index + 1} / {article.category}
-          </span>
-          <span className="font-sans text-[11px] text-text-secondary uppercase tracking-widest font-bold">
-            0{index + 1}
-          </span>
-        </div>
+function MobileEditorial() {
+  return (
+    <div className="flex md:hidden flex-col bg-bg-primary divide-y divide-bg-surface/60">
+      {articles.map((article, index) => (
+        <div key={article.id} className="flex flex-col px-6 py-12 w-full gap-6">
+          {/* Monospace Badge */}
+          <div className="flex items-center justify-between">
+            <span className="font-sans text-[9px] tracking-[0.25em] font-bold text-accent-secondary uppercase">
+              CHAPTER 0{index + 1} / {article.category}
+            </span>
+            <span className="font-sans text-[11px] text-text-secondary uppercase tracking-widest font-bold">
+              0{index + 1}
+            </span>
+          </div>
 
-        {/* Title */}
-        <h2 className="font-serif text-3xl font-bold text-brand-brown leading-tight">
-          {article.title}
-        </h2>
-        
-        {/* Metadata */}
-        <div className="flex items-center gap-4 text-[10px] font-sans text-text-secondary uppercase tracking-widest font-bold pb-2">
-          <span>{article.date}</span>
-          <span>•</span>
-          <span>By {article.author}</span>
-        </div>
+          {/* Title */}
+          <h2 className="font-serif text-2xl font-bold text-brand-brown leading-tight">
+            {article.title}
+          </h2>
+          
+          {/* Metadata */}
+          <div className="flex items-center gap-4 text-[9px] font-sans text-text-secondary uppercase tracking-widest font-bold pb-2">
+            <span>{article.date}</span>
+            <span>•</span>
+            <span>By {article.author}</span>
+          </div>
 
-        {/* Hero Image */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.98 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.8 }}
-          className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden shadow-lg bg-bg-surface"
-        >
-          <Image
-            src={article.image}
-            alt={article.alt}
-            fill
-            className="object-cover"
-            sizes="100vw"
-          />
-        </motion.div>
+          {/* Hero Image */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.98 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8 }}
+            className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden shadow-md bg-bg-surface"
+          >
+            <Image
+              src={article.image}
+              alt={article.alt}
+              fill
+              className="object-cover"
+              sizes="100vw"
+            />
+          </motion.div>
 
-        {/* Text Body */}
-        <div className="space-y-6 font-sans text-[15px] text-text-secondary leading-relaxed font-light pt-2">
-          {/* Paragraph 1 */}
-          <p className="first-letter:float-left first-letter:text-6xl first-letter:font-serif first-letter:mr-2.5 first-letter:font-bold first-letter:text-brand-terracotta first-letter:mt-1">
-            {article.content[0]}
-          </p>
-
-          {/* Pull Quote */}
-          <blockquote className="my-8 py-6 border-y border-brand-brown/10 px-4 text-center">
-            <p className="font-serif text-lg italic text-brand-terracotta leading-relaxed">
-              &ldquo;{article.quote}&rdquo;
+          {/* Text Body */}
+          <div className="space-y-6 font-sans text-sm text-text-secondary leading-relaxed font-light pt-2">
+            {/* Paragraph 1 */}
+            <p className="first-letter:float-left first-letter:text-5xl first-letter:font-serif first-letter:mr-2.5 first-letter:font-bold first-letter:text-brand-terracotta first-letter:mt-1">
+              {article.content[0]}
             </p>
-          </blockquote>
 
-          {/* Paragraph 2 */}
-          <p>{article.content[1]}</p>
+            {/* Pull Quote */}
+            <blockquote className="my-6 py-5 border-y border-brand-brown/10 px-4 text-center">
+              <p className="font-serif text-base italic text-brand-terracotta leading-relaxed">
+                &ldquo;{article.quote}&rdquo;
+              </p>
+            </blockquote>
 
-          {/* Paragraph 3 */}
-          <p>{article.content[2]}</p>
+            {/* Paragraph 2 */}
+            <p>{article.content[1]}</p>
+
+            {/* Paragraph 3 */}
+            <p>{article.content[2]}</p>
+          </div>
         </div>
-
-      </div>
+      ))}
     </div>
   );
 }
@@ -418,11 +512,17 @@ export default function JournalPage() {
         </motion.div>
       </section>
 
-      {/* ── Chapters ── */}
+      {/* ── Desktop Scrollytelling & Mobile Editorial Sections ── */}
       <main className="w-full">
-        {articles.map((article, index) => (
-          <StorySection key={article.id} article={article} index={index} />
-        ))}
+        {/* Desktop Layout */}
+        <div className="hidden md:block">
+          <DesktopScrollytelling />
+        </div>
+
+        {/* Mobile Layout */}
+        <div className="block md:hidden">
+          <MobileEditorial />
+        </div>
       </main>
 
       {/* ── Outro / Call-To-Action ── */}
