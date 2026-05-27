@@ -152,10 +152,10 @@ export default function JournalPage() {
       </section>
 
       {/* ── Main Editorial Content ── */}
-      <main className="max-w-7xl mx-auto w-full flex flex-col md:flex-row gap-12 relative py-12 md:py-24">
+      <main className="max-w-7xl mx-auto w-full flex flex-col md:flex-row md:items-start gap-12 relative py-12 md:py-24">
         
         {/* Sticky Visual Column (Desktop only, pins on left) */}
-        <div className="hidden md:block w-1/2 h-screen sticky top-0 flex items-center justify-center p-12 lg:p-16">
+        <div className="hidden md:block w-1/2 h-[calc(100vh-80px)] sticky top-[80px] flex items-center justify-center p-12 lg:p-16">
           <div className="relative aspect-[4/5] w-full max-w-[420px] rounded-3xl overflow-hidden shadow-2xl bg-bg-surface border border-brand-brown/5">
             {articles.map((article, idx) => (
               <motion.div
