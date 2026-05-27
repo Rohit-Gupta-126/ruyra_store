@@ -128,7 +128,7 @@ export default function JournalPage() {
                 {/* Asymmetrical Image Container */}
                 <div 
                   className={`relative w-full rounded-2xl overflow-hidden bg-bg-surface ${
-                    isFeature ? "aspect-21/9 h-75 md:h-112.5" : "aspect-4/3 md:aspect-3/4 h-auto"
+                    isFeature ? "aspect-[21/9] h-[260px] sm:h-[320px] md:h-[450px]" : "aspect-[4/3] md:aspect-[3/4] h-auto"
                   }`}
                 >
                   <motion.div
@@ -195,30 +195,32 @@ export default function JournalPage() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", stiffness: 200, damping: 22 }}
-              className="fixed inset-6 md:inset-12 lg:inset-20 bg-bg-primary rounded-3xl shadow-2xl z-100 flex flex-col text-text-primary overflow-hidden"
+              className="fixed inset-4 sm:inset-6 md:inset-12 lg:inset-20 bg-bg-primary rounded-3xl shadow-2xl z-100 flex flex-col text-text-primary overflow-hidden"
               role="dialog"
               aria-modal="true"
               aria-label={selectedArticle.title}
             >
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedArticle(null)}
-                className="absolute top-6 right-6 w-10 h-10 rounded-full bg-bg-surface flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-gray-200 transition-colors z-20 focus:outline-none"
-                aria-label="Close article"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              {/* Close Button Header - Fixed at Top */}
+              <div className="flex justify-between items-center px-6 py-4 md:px-12 md:py-6 border-b border-bg-surface shrink-0 z-20 bg-bg-primary/95 backdrop-blur-sm">
+                <span className="font-sans text-[10px] tracking-[0.25em] uppercase text-text-secondary font-bold">
+                  {selectedArticle.category}
+                </span>
+                <button
+                  onClick={() => setSelectedArticle(null)}
+                  className="w-10 h-10 rounded-full bg-bg-surface flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-gray-200 transition-colors focus:outline-none"
+                  aria-label="Close article"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
               {/* Scrollable Essay Content */}
-              <div className="flex-1 overflow-y-auto px-6 py-12 md:py-20 md:px-12 no-scrollbar">
-                <article className="max-w-3xl mx-auto space-y-12">
+              <div className="flex-1 overflow-y-auto px-6 py-10 md:py-16 md:px-12 no-scrollbar">
+                <article className="max-w-3xl mx-auto space-y-10">
                   
                   {/* Essay Header */}
-                  <div className="text-center space-y-4">
-                    <span className="font-sans text-[10px] tracking-[0.3em] uppercase font-bold text-accent-secondary">
-                      {selectedArticle.category}
-                    </span>
-                    <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight max-w-2xl mx-auto">
+                  <div className="text-center space-y-3">
+                    <h1 className="font-serif text-2xl sm:text-3xl md:text-5xl font-bold leading-tight max-w-2xl mx-auto">
                       {selectedArticle.title}
                     </h1>
                     <div className="flex items-center justify-center gap-4 text-xs font-sans text-text-secondary uppercase tracking-widest pt-2">
