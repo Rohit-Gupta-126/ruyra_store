@@ -3,54 +3,27 @@
 
 /* ─── RUYRA Design Tokens (Tailwind v4 @theme) ─── */
 @theme inline {
-  /* Colors */
-  --color-clay-whisper: #faf9f6;
-  --color-pebble-grey: #f0efeb;
-  --color-deep-sage: #4a5d4e;
-  --color-terracotta: #b97c66;
-  --color-brass-gold: #d4af37;
-  --color-on-surface: #1a1c1a;
-  --color-on-surface-variant: #434843;
-  --color-surface-variant: #e3e2e0;
-  --color-surface-container-lowest: #ffffff;
-  --color-outline-variant: #c3c8c1;
-  --color-outline: #737872;
-  --color-primary: #334537;
-  --color-primary-container: #4a5d4e;
-  --color-on-primary: #ffffff;
-  --color-on-primary-container: #c0d5c2;
-  --color-secondary: #86513d;
-  --color-secondary-container: #ffb9a0;
-  --color-on-secondary-container: #7a4734;
-  --color-surface: #faf9f6;
-  --color-background: #faf9f6;
-  --color-on-background: #1a1c1a;
-  --color-inverse-surface: #2f312f;
-  --color-inverse-on-surface: #f2f1ee;
-  --color-surface-container: #efeeeb;
-  --color-surface-container-high: #e9e8e5;
-  --color-surface-container-highest: #e3e2e0;
-  --color-surface-container-low: #f4f3f1;
-  --color-surface-bright: #faf9f6;
-  --color-surface-dim: #dbdad7;
-  --color-surface-tint: #506354;
+  /* Brand Palette */
+  --color-brand-brown: #3E2C24;
+  --color-brand-sand: #F6F4F0;
+  --color-brand-taupe: #EAE4DB;
+  --color-brand-terracotta: #B85B3F;
+  --color-brand-text-muted: #7A6F69;
+
+  /* Colors mapped to Brand Palette */
+  --color-bg-primary: var(--color-brand-sand);
+  --color-bg-surface: var(--color-brand-taupe);
+  --color-text-primary: var(--color-brand-brown);
+  --color-text-secondary: var(--color-brand-text-muted);
+  --color-accent-primary: var(--color-brand-terracotta);
+  --color-accent-secondary: var(--color-brand-terracotta);
+  --color-accent-gold: #D4AF37;
 
   /* Typography */
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-display: "Playfair Display", Georgia, serif;
+  --font-sans: var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-serif: var(--font-playfair), "Playfair Display", Georgia, serif;
 
-  /* Font sizes */
-  --text-body-sm: 0.875rem;
-  --text-body-md: 1rem;
-  --text-body-lg: 1.125rem;
-  --text-label-md: 0.875rem;
-  --text-button: 1rem;
-  --text-headline-sm: 1.25rem;
-  --text-headline-md: 1.5rem;
-  --text-headline-lg: 2rem;
-  --text-headline-xl: 2.5rem;
-
-  /* Border Radius */
+  /* Custom Spacing & Border Radius */
   --radius-card: 1.25rem;
   --radius-card-lg: 1.5rem;
   --radius-pill: 9999px;
@@ -71,24 +44,26 @@ html {
 }
 
 body {
-  background-color: #f0efeb;
-  color: #1a1c1a;
-  font-family: "Inter", system-ui, sans-serif;
+  background-color: var(--color-brand-sand);
+  color: var(--color-brand-brown);
+  font-family: var(--font-inter), "Inter", system-ui, sans-serif;
   overflow-x: hidden;
 }
 
 /* ─── Scrollbar Utility ─── */
-.hide-scrollbar::-webkit-scrollbar {
+.hide-scrollbar::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
   display: none;
 }
-.hide-scrollbar {
+.hide-scrollbar,
+.no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
 /* ─── Text Outline ─── */
-.text-outline-sage {
-  -webkit-text-stroke: 1px #4a5d4e;
+.text-outline-brown {
+  -webkit-text-stroke: 1px var(--color-brand-brown);
 }
 
 /* ─── Bottom Sheet Animation ─── */

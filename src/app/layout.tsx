@@ -28,6 +28,12 @@ export const metadata: Metadata = {
   },
 };
 
+import CartProvider from "@/app/context/CartContext";
+import CartDrawer from "@/app/components/CartDrawer";
+import ProductSheetProvider from "@/app/components/ProductSheetContext";
+import ProductSheet from "@/app/components/ProductSheet";
+import Navigation from "@/app/components/Navigation";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -38,8 +44,15 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${playfairDisplay.variable}`}
     >
-      <body className="min-h-screen antialiased overflow-x-hidden selection:bg-[#4a5d4e] selection:text-[#c0d5c2]">
-        {children}
+      <body className="min-h-screen antialiased overflow-x-hidden selection:bg-brand-terracotta selection:text-white">
+        <CartProvider>
+          <ProductSheetProvider>
+            <Navigation />
+            {children}
+            <ProductSheet />
+            <CartDrawer />
+          </ProductSheetProvider>
+        </CartProvider>
       </body>
     </html>
   );

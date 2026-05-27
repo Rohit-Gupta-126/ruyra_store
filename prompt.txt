@@ -1,0 +1,27 @@
+### PROMPT: Global Color Theme & Header Refactor
+
+> **Role:** Act as a Principal Frontend Engineer. Your task is to perform a global style refactor on the existing RUYRA React/Tailwind codebase. You must replace the current "Clay/Sage" color system with a "Rich Earth & Warm Sand" palette that aligns with the original brand identity.
+> **I. NEW TAILWIND COLOR DICTIONARY**
+> Update the `tailwind.config.js` with these exact hex codes:
+> * `brand-brown`: `#3E2C24` (Deep Earth Brown - *Use for Headers, Footers, and Primary Text*)
+> * `brand-sand`: `#F6F4F0` (Warm Sand - *Use for main app background*)
+> * `brand-taupe`: `#EAE4DB` (Muted Taupe - *Use for secondary surfaces and product cards*)
+> * `brand-terracotta`: `#B85B3F` (Rich Terracotta - *Use for primary CTA buttons and sale badges*)
+> * `brand-text-muted`: `#7A6F69` (Ash Brown - *Use for secondary text and prices*)
+> 
+> 
+> **II. HEADER & NAVIGATION REFACTOR (The "Brown Header" Requirement)**
+> * **Desktop Header:** Change the background from light/transparent to solid `bg-brand-brown`. The logo text "RUYRA" and all navigation links must now be `text-brand-sand`. Add a subtle bottom border: `border-b border-brand-sand/10`. On hover, the links should underline with `brand-terracotta`.
+> * **Mobile Bottom Pill (App-View):** Change the floating navigation pill background from glass-white to a dark glassmorphism: `backdrop-blur-md bg-brand-brown/95`. The icons inside must default to `text-brand-sand/70`. The active route icon changes to `text-brand-terracotta`.
+> 
+> 
+> **III. GLOBAL UI ELEMENT UPDATES**
+> * **Main Backgrounds:** Ensure the root `<body>` or main wrapper uses `bg-brand-sand`.
+> * **Product Cards:** Update the image wrapper backgrounds from standard gray to `bg-brand-taupe` to give the product photos a warmer, more organic frame.
+> * **Typography:** Change all primary heading text (H1, H2, H3) to `text-brand-brown`. Change all pricing and secondary descriptions to `text-brand-text-muted`.
+> * **Primary Buttons (e.g., "Add to Bag", "Subscribe"):** Change the background to `bg-brand-terracotta` with `text-white`. Ensure the hover state subtly darkens to `hover:bg-[#9A4C34]`.
+> * **Inputs & Forms:** Update border colors to `border-brand-brown/20` and focus states to `focus:border-brand-terracotta`.
+> 
+> 
+> **IV. EXECUTION**
+> Output the updated `tailwind.config.js` color extension, and then provide the refactored code for the `Header`, `MobileNav`, and a sample `ProductCard` component to demonstrate the new color mapping in action. Keep all Framer Motion animations exactly as they were.

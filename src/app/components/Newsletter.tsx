@@ -1,51 +1,84 @@
 "use client";
 
+import { useState } from "react";
+import { Send } from "lucide-react";
+import { motion } from "framer-motion";
+
 export default function Newsletter() {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      setSubmitted(true);
+      setEmail("");
+    }
+  };
+
   return (
-    <section className="mt-12 lg:mt-16 px-5 lg:px-0">
-      <div className="bg-[#faf9f6] rounded-[32px] p-8 text-center shadow-sm lg:p-12">
-        {/* Decorative leaf */}
-        <div className="flex justify-center mb-4">
-          <span className="material-symbols-outlined text-[32px] text-[#4a5d4e]">
-            spa
-          </span>
-        </div>
-
-        <h3
-          className="font-[family-name:var(--font-playfair)] text-2xl text-[#4a5d4e] mb-2 lg:text-3xl"
-          style={{ fontWeight: 600 }}
-        >
-          Join our Sanctuary
-        </h3>
-        <p className="font-sans text-sm text-[#434843] mb-6 max-w-xs mx-auto lg:max-w-md lg:text-base">
-          Receive early access to new rituals and exclusive botanical insights.
+    <section id="sustainability-section" className="bg-bg-primary py-24 px-6 md:px-12 border-t border-bg-surface flex justify-center items-center w-full">
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="max-w-2xl w-full text-center flex flex-col items-center"
+      >
+        
+        {/* Title */}
+        <h2 className="font-serif text-3xl md:text-4xl text-text-primary mb-3">
+          Join Our Sanctuary
+        </h2>
+        
+        {/* Subtitle */}
+        <p className="font-sans text-sm text-text-secondary max-w-md mb-10 leading-relaxed font-light">
+          Receive botanical insights, early access to new rituals, and thoughts on minimalist living.
         </p>
 
-        <form
-          className="flex flex-col gap-4 lg:flex-row lg:max-w-md lg:mx-auto"
-          onSubmit={(e) => e.preventDefault()}
-          aria-label="Newsletter sign-up"
-        >
-          <input
-            id="newsletter-email"
-            type="email"
-            placeholder="Email address"
-            required
-            className="flex-1 bg-[#f0efeb] border-none rounded-full px-6 py-4 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-[#4a5d4e]/20 text-[#1a1c1a] placeholder:text-[#434843]/60"
-          />
-          <button
-            id="newsletter-subscribe-btn"
-            type="submit"
-            className="bg-[#b97c66] text-white rounded-full py-4 px-8 font-sans font-medium tracking-wide hover:opacity-90 transition-opacity lg:flex-shrink-0"
+        {submitted ? (
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 100, damping: 12 }}
+            className="py-4 px-8 bg-bg-surface rounded-full text-accent-primary font-sans text-xs tracking-wider uppercase font-semibold"
           >
-            Subscribe
-          </button>
-        </form>
-
-        <p className="font-sans text-xs text-[#737872] mt-4">
-          No spam. Unsubscribe at any time.
-        </p>
-      </div>
+            Welcome to the sanctuary
+          </motion.div>
+        ) : (
+          <form
+            onSubmit={handleSubmit}
+            className="w-full max-w-md flex flex-col items-center gap-6"
+            aria-label="Newsletter sign-up"
+          >
+            <div className="relative w-full">
+              <input
+                id="newsletter-email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email address"
+                suppressHydrationWarning
+                className="bg-transparent border-b border-brand-brown/20 focus:border-brand-terracotta outline-none py-3.5 w-full text-center transition-colors font-sans text-sm placeholder:text-text-secondary/50 text-text-primary"
+              />
+            </div>
+            
+            <motion.button
+              id="newsletter-subscribe-btn"
+              type="submit"
+              suppressHydrationWarning
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 400, damping: 15 }}
+              className="px-8 py-3.5 bg-brand-terracotta hover:bg-[#9A4C34] text-white font-sans text-xs uppercase tracking-widest font-semibold rounded-full flex items-center gap-2 shadow-lg shadow-brand-terracotta/10 transition-all focus:outline-none"
+            >
+              <span>Subscribe</span>
+              <Send className="w-3.5 h-3.5" />
+            </motion.button>
+          </form>
+        )}
+      </motion.div>
     </section>
   );
 }
