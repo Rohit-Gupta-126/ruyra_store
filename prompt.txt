@@ -1,0 +1,84 @@
+### PROMPT 1: The "Scroll-Driven Editorial" Interstitial
+
+*Why you need this: Right now, your page is just a stack of functional blocks (Hero -> Carousel -> Grid). You need a visual "palette cleanser" that forces the user to slow down and engages them with physics.*
+
+```text
+Act as a Principal Frontend Engineer. Create a new component called "EditorialInterstitial.tsx" for the RUYRA Next.js landing page using React, Tailwind CSS, and Framer Motion (`useScroll`, `useTransform`).
+
+Global Theme: `bg-brand-sand`, `text-brand-brown`.
+
+ARCHITECTURE & UX SPECIFICATIONS:
+
+1. Layout & Scroll Physics:
+- This is a full-viewport-height section (`h-[150vh] relative`).
+- Inside this section, create a sticky container (`sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden`).
+- Use Framer Motion's `useScroll` linked to this container's ref to track the scroll progress (from 0 to 1).
+
+2. Typography Animation (The "Reveal"):
+- In the center of the screen, place a massive typographic statement using the serif font: "Light a Candle. / Ground your Spirit. / Reclaim your Space."
+- Break this into three separate `<motion.h2>` lines. 
+- Map the `scrollYProgress` to the `opacity` and `y` position of each line so they fade in and slide up sequentially as the user scrolls down through the section. 
+- Example: Line 1 hits 100% opacity at 0.3 scroll, Line 2 at 0.6, Line 3 at 0.9.
+
+3. Background Texture:
+- Apply a very subtle, animated SVG noise/grain overlay to the `bg-brand-sand` background to give it a tactile, physical paper feel.
+
+```
+
+---
+
+### PROMPT 2: The "Tactile" Signature Pieces Grid
+
+*Why you need this: Static product cards are boring. This upgrades your grid so that hovering over a product feels alive—incorporating crossfading videos and floating UI.*
+
+```text
+Act as a Principal Frontend Engineer. Upgrade the existing "SignaturePieces.tsx" component for the RUYRA web app using React, Tailwind CSS, and Framer Motion. 
+
+Global Theme: `bg-brand-taupe` (image backgrounds), `text-brand-brown`.
+
+ARCHITECTURE & UX SPECIFICATIONS:
+
+1. The "Sensory" Card Hover:
+- Update the product image container to `aspect-[4/5] relative overflow-hidden group cursor-pointer`.
+- Inside the container, render TWO media elements:
+  A. The static product image (default visibility).
+  B. A looping, muted `<video>` element (e.g., a close-up of a match lighting, or bath salts falling into water). Set this video to `opacity-0` by default.
+- Interaction: On `group-hover`, the static image fades out (`opacity-0 duration-700`) and the video fades in and slowly scales up (`opacity-100 scale-105 duration-1000`).
+
+2. Magnetic "Quick Add" Button:
+- Replace the standard '+' button in the corner. 
+- Implement a custom Framer Motion "magnetic" button. When the user's cursor gets close to the button, the button should slightly pull toward the cursor using a spring animation (`type: "spring", stiffness: 150, damping: 15`).
+- The button itself should be a circular glassmorphism pill (`backdrop-blur-md bg-white/50 border border-white text-brand-brown`).
+
+3. Staggered Entrance:
+- Wrap the entire grid in a Framer Motion `motion.div` with `variants` to stagger the entrance of the 4 product cards when they scroll into the viewport (`whileInView`). They should float up gently, not just appear.
+
+```
+
+---
+
+### PROMPT 3: The Infinite Value Marquee
+
+*Why you need this: Your current value strip (100% Natural, etc.) is desktop-only and static. A moving marquee instantly adds dynamic energy to the page and works beautifully on mobile.*
+
+```text
+Act as a Principal Frontend Engineer. Redesign the static Brand Value Strip into a "Dynamic Marquee" component for the RUYRA Next.js landing page using React, Tailwind CSS, and Framer Motion.
+
+Global Theme: `bg-brand-brown` for the strip background, `text-brand-sand` for the text and icons.
+
+ARCHITECTURE & UX SPECIFICATIONS:
+
+1. The Infinite Scroll Setup:
+- Layout: A relatively narrow horizontal banner (`w-full py-4 overflow-hidden flex whitespace-nowrap border-y border-brand-sand/20`).
+- Create a Framer Motion container that translates continuously along the X-axis from 0% to -50% using `animate={{ x: ["0%", "-50%"] }}` with a `transition={{ repeat: Infinity, ease: "linear", duration: 20 }}`.
+
+2. The Content Block:
+- Create a repeatable block of items: 
+  "✧ 100% NATURAL ✧ ETHICALLY SOURCED ✧ PLASTIC-FREE PACKAGING ✧ MADE WITH INTENTION".
+- Duplicate this content block twice inside the motion container to ensure a seamless, endless loop without jumping.
+- Typography: Sans-serif, text-xs, tracking-[0.3em] (widest).
+
+3. Interaction:
+- Add a pause-on-hover effect. When the user hovers over the marquee strip with their mouse (or taps on mobile), the animation duration slows down significantly or pauses, allowing them to read it clearly.
+
+```

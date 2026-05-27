@@ -57,7 +57,7 @@ export default function Testimonials() {
   };
 
   return (
-    <section className="py-24 px-6 md:px-12 w-full bg-brand-sand overflow-x-hidden">
+    <section className="py-24 px-6 md:px-12 w-full bg-brand-sand">
       <div className="max-w-7xl mx-auto text-center space-y-16">
         {/* Header */}
         <motion.div
@@ -75,14 +75,14 @@ export default function Testimonials() {
           </p>
         </motion.div>
 
-        {/* Staggered Grid */}
+        {/* Staggered Deck (Mobile Stack / Desktop Grid) */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-50px" }}
           animate="show"
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left w-full"
+          className="flex flex-col md:grid md:grid-cols-3 gap-8 text-left w-full"
         >
           {TESTIMONIALS.map((t, index) => {
             // Sticky top offset to stack them sequentially (e.g. 96px, 128px, 160px...)
@@ -92,8 +92,8 @@ export default function Testimonials() {
                 key={t.id}
                 variants={itemVariants}
                 whileHover={{ y: -5 }}
-                style={{ top: `${stickyTop}px` }}
-                className="sticky lg:relative lg:!top-auto bg-[#F5F2EB] lg:bg-brand-taupe/20 border border-brand-brown/10 lg:border-brand-brown/5 rounded-[2rem] lg:rounded-4xl p-8 md:p-10 flex flex-col justify-between space-y-8 hover:bg-[#EAE4DB] lg:hover:bg-brand-taupe/35 hover:border-brand-brown/15 lg:hover:border-brand-brown/10 transition-all duration-300 shadow-md lg:shadow-sm"
+                style={{ top: `${stickyTop}px`, zIndex: index + 10 }}
+                className="sticky md:relative md:!top-auto bg-[#F5F2EB] md:bg-brand-taupe/20 border border-brand-brown/10 md:border-brand-brown/5 rounded-[2rem] md:rounded-4xl p-8 md:p-10 flex flex-col justify-between space-y-8 hover:bg-[#EAE4DB] md:hover:bg-brand-taupe/35 hover:border-brand-brown/15 md:hover:border-brand-brown/10 transition-all duration-300 shadow-md md:shadow-sm"
               >
               {/* Rating stars */}
               <div className="flex items-center gap-0.5 text-brand-terracotta">

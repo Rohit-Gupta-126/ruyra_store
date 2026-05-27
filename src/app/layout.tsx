@@ -46,7 +46,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${playfairDisplay.variable}`}
     >
-      <body className="min-h-screen antialiased overflow-x-hidden selection:bg-brand-terracotta selection:text-white pb-16 md:pb-0">
+      <body className="min-h-screen antialiased overflow-x-clip selection:bg-brand-terracotta selection:text-white pb-16 md:pb-0">
         <CartProvider>
           <SearchProvider>
             <ProductSheetProvider>
