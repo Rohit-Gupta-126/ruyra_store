@@ -15,8 +15,8 @@ export default function SignaturePieces() {
   };
 
   return (
-    <section className="bg-bg-surface py-24 px-6 md:px-12 w-full overflow-x-hidden">
-      <div className="max-w-7xl mx-auto w-full">
+    <section className="bg-bg-surface py-24 w-full overflow-x-hidden">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 w-full">
         {/* Header with entrance animation */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}

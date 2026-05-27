@@ -220,7 +220,7 @@ function ChapterSection({ article }: { article: typeof articles[0] }) {
                 exit="exit"
                 className="w-full border-l-[3px] border-brand-terracotta pl-6 sm:pl-8"
               >
-                <p className="font-serif text-xl sm:text-2xl lg:text-3xl italic text-brand-terracotta leading-snug font-medium">
+                <p className="font-serif text-xl sm:text-2xl lg:text-3xl italic text-white leading-snug font-medium">
                   &ldquo;{article.quote}&rdquo;
                 </p>
               </motion.blockquote>

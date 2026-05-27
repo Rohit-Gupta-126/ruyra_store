@@ -32,8 +32,8 @@ const columns = [
 
 export default function Footer() {
   return (
-    <footer id="story-section" className="bg-bg-primary pt-24 pb-12 px-6 md:px-12 border-t border-bg-surface w-full">
-      <div className="max-w-7xl mx-auto flex flex-col gap-16">
+    <footer id="story-section" className="bg-bg-primary pt-24 pb-12 border-t border-bg-surface w-full">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-16">
         
         {/* Main Grid with scroll stagger */}
         <motion.div 

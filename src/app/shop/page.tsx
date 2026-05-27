@@ -124,8 +124,8 @@ export default function ShopPage() {
     <div className="bg-bg-primary text-text-primary min-h-screen flex flex-col">
       
       {/* ── Page Header (Static top header under Navigation) ── */}
-      <div className="bg-bg-primary border-b border-bg-surface pt-12 pb-8 px-6 md:px-12">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div className="bg-bg-primary border-b border-bg-surface pt-12 pb-8">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="space-y-2">
             <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
               All Adornments & Rituals
@@ -178,7 +178,7 @@ export default function ShopPage() {
           <motion.div 
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-7xl mx-auto mt-6 flex flex-wrap items-center gap-3 border-t border-bg-surface/55 pt-4"
+            className="max-w-7xl mx-auto px-6 md:px-12 mt-6 flex flex-wrap items-center gap-3 border-t border-bg-surface/55 pt-4"
           >
             <span className="font-sans text-[10px] tracking-wider uppercase font-bold text-text-secondary">
               Active Filters:
