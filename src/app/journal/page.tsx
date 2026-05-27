@@ -1,16 +1,15 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowDown } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, type Variants } from "framer-motion";
 import Footer from "@/components/layout/Footer";
 
-/* ──────────────────────────────────────────────
+/* ─────────────────────────────────────────────
    DATA
-   ──────────────────────────────────────────── */
-
+   ───────────────────────────────────────────── */
 const articles = [
   {
     id: "slow-light",
@@ -20,11 +19,11 @@ const articles = [
     author: "Elena Ruyra",
     image: "https://images.unsplash.com/photo-1603006905003-be475563bc59?q=80&w=1200&auto=format&fit=crop",
     alt: "Glowing amber jar candle",
-    title: ["The Philosophy", "of Slow Light"],
+    title: ["The Philosophy of", "Slow Light"],
     quote: "In the slow dance of firelight, we find a sanctuary that static light can never build.",
     paragraphs: [
-      "Lighting a candle is more than a way to push back the dark; it is an act of quiet creation. In our modern search for hyper-efficiency, we have swapped the rich, shifting glow of fire for the static hum of LED panels. We live in constant, sterile illumination that denies the transition of day into night.",
-      "Scientific observations show that flickering candlelight mimics our brains' resting alpha waves, immediately triggering a sense of calm. In this sanctuary, we seek raw organic materials that carry ancient histories — natural soy wax, botanical essential oils, and wood-fired ceramics that hold soil in their bones.",
+      "Lighting a candle is more than a way to push back the dark; it is an act of quiet creation. In our modern search for hyper-efficiency, we have swapped the rich, shifting glow of fire for the static hum of LED panels. We live in constant, sterile illumination that denies the natural transition of day into night. To light a candle is to declare that for the next three hours, time belongs to the flame.",
+      "We explore how slow, natural light grounds our nervous system and invites a meditative state. Scientific research shows that flickering candlelight mimics our brains' resting alpha waves, immediately triggering a sense of calm. In this sanctuary, we seek raw organic materials that carry ancient histories — natural soy wax, botanical essential oils, and wood-fired ceramics that hold soil in their bones.",
       "When we choose to live with slow light, we reclaim the boundaries of our day. The evening transitions from a continuation of work into a soft retreat of rest. The shadows cast by the flame are not empty space, but places for the mind to settle and wander without distraction."
     ]
   },
@@ -39,7 +38,7 @@ const articles = [
     title: ["Bathing as a", "Sacred Threshold"],
     quote: "Immersion is the physical act of leaving the world behind, step by step.",
     paragraphs: [
-      "Water carries memory, and immersion washes away the noise of the day. Modern life treats hygiene as a transactional task, a brief box to check in the morning. When we slow the bath down — adding unrefined salts, lavender blossoms, and woodsmoke infusions — it becomes a threshold.",
+      "Water carries memory, and immersion washes away the noise of the day. Modern life treats hygiene as a transactional task, a brief box to check. When we slow the bath down — adding unrefined salts, lavender blossoms, and woodsmoke infusions — it becomes a threshold. We pass from the sphere of labor into the sphere of rest.",
       "The warmth of the water triggers a physical softening, dilating blood vessels and releasing lactic acid built up in muscles. Simultaneously, mineral-dense deposits of magnesium and potassium replenish the skin's barrier. By intention, we turn the bath into a sanctuary, a ritual of preservation.",
       "In the steam, our breathing slows. The botanicals — chamomile, cedarwood, and lavender — act as sensory anchors, drawing our focus away from digital notifications and back to the weight of our own bodies."
     ]
@@ -55,60 +54,71 @@ const articles = [
     title: ["Tactile Geometry:", "Earthen Clay"],
     quote: "In the imperfect surface of hand-formed clay, we find the texture of truth.",
     paragraphs: [
-      "Irregularities are the voice of the materials speaking. When an object is perfectly uniform, it ceases to command attention; it disappears into the background of our sight. A wood-fired clay vessel, however, carries the erratic signature of the flame — iron-spot freckles, running glazes, tactile ridges where the potter's fingers pressed.",
+      "Irregularities are the voice of the materials speaking. When an object is perfectly uniform, it ceases to command attention; it disappears into the background of our sight. A wood-fired clay vessel carries the erratic signature of the flame — iron-spot freckles, running glazes, tactile ridges where the potter's fingers pressed.",
       "In a digital world of smooth screens and frictionless glass, these rough geometries draw our hands. They hold us in the tangible present. Touching the gritty sand-texture of a clay holder reminds us of the earth it came from and the kiln fire that made it solid.",
       "To surround oneself with handcrafted objects is to populate our sanctuary with stories of human touch. It is a quiet rejection of mass production in favor of singular intention."
     ]
   }
 ];
 
-/* ──────────────────────────────────────────────
-   CHAPTER SECTION COMPONENT
-   Each chapter is its own isolated scroll zone.
-   ──────────────────────────────────────────── */
+/* ─────────────────────────────────────────────
+   TEXT STEP ANIMATION VARIANTS
+   Using AnimatePresence mode="wait" so only
+   ONE text block ever exists at a time.
+   ───────────────────────────────────────────── */
+const textVariants: Variants = {
+  hidden: { opacity: 0, y: 22 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.25, 0.1, 0.25, 1] } },
+  exit:   { opacity: 0, y: -18, transition: { duration: 0.35, ease: [0.4, 0, 1, 1] } }
+};
 
-function ChapterSection({ article, isLast }: { article: typeof articles[0]; isLast: boolean }) {
+/* Step boundaries for a 500vh (progress 0→1) zone:
+   step 0 = title         → 0.00–0.24
+   step 1 = paragraph 1   → 0.25–0.49
+   step 2 = pull quote    → 0.50–0.74
+   step 3 = para 2 + 3   → 0.75–1.00  */
+function progressToStep(p: number): number {
+  if (p < 0.25) return 0;
+  if (p < 0.50) return 1;
+  if (p < 0.75) return 2;
+  return 3;
+}
+
+/* ─────────────────────────────────────────────
+   CHAPTER SECTION
+   ───────────────────────────────────────────── */
+function ChapterSection({ article }: { article: typeof articles[0] }) {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [step, setStep] = useState(0);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"]
   });
 
-  /* ── Parallax & zoom on background image ── */
+  /* Parallax background */
   const imgScale = useTransform(scrollYProgress, [0, 1], [1.12, 1.0]);
-  const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "-6%"]);
+  const imgY     = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"]);
 
-  /* ── Overlay vignette lightens slightly as you read deeper ── */
-  const overlayOpacity = useTransform(scrollYProgress, [0, 0.1, 0.5, 1], [0.7, 0.55, 0.55, 0.65]);
+  /* Update discrete step on scroll */
+  useEffect(() => {
+    return scrollYProgress.on("change", (p) => {
+      setStep(progressToStep(p));
+    });
+  }, [scrollYProgress]);
 
-  /* ── Chapter label & title fades in early, exits at end ── */
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.06, 0.60, 0.72], [0, 1, 1, 0]);
-  const titleY = useTransform(scrollYProgress, [0, 0.06, 0.60, 0.72], [30, 0, 0, -20]);
-
-  /* ── Paragraph 1: visible 10%→30%, exits 38%→45% ── */
-  const p1Opacity = useTransform(scrollYProgress, [0.06, 0.13, 0.36, 0.44], [0, 1, 1, 0]);
-  const p1Y = useTransform(scrollYProgress, [0.06, 0.13, 0.36, 0.44], [24, 0, 0, -24]);
-
-  /* ── Quote block: visible 44%→62%, exits 67%→74% ── */
-  const quoteOpacity = useTransform(scrollYProgress, [0.44, 0.51, 0.64, 0.72], [0, 1, 1, 0]);
-  const quoteY = useTransform(scrollYProgress, [0.44, 0.51, 0.64, 0.72], [24, 0, 0, -24]);
-
-  /* ── Paragraph 2 + 3: visible 72%→90%, stays till end ── */
-  const p2Opacity = useTransform(scrollYProgress, [0.72, 0.79, 0.95, 1.0], [0, 1, 1, isLast ? 1 : 0]);
-  const p2Y = useTransform(scrollYProgress, [0.72, 0.79, 0.95, 1.0], [24, 0, 0, isLast ? 0 : -12]);
+  /* Step indicator dot fills */
+  const dots = [0, 1, 2, 3];
 
   return (
-    /* Scroll zone: 5 viewport heights per chapter */
+    /* 500vh scroll zone per chapter — sticky inner pins for 400vh of scroll travel */
     <section ref={sectionRef} className="relative w-full h-[500vh]">
-      
-      {/* Sticky fullscreen frame */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
 
-        {/* ── Background image layer ── */}
+        {/* Background Image with parallax */}
         <motion.div
           style={{ scale: imgScale, y: imgY }}
-          className="absolute inset-0 w-full h-full will-change-transform"
+          className="absolute inset-0 will-change-transform"
         >
           <Image
             src={article.image}
@@ -120,108 +130,144 @@ function ChapterSection({ article, isLast }: { article: typeof articles[0]; isLa
           />
         </motion.div>
 
-        {/* ── Vignette overlay ── */}
-        <motion.div
-          style={{ opacity: overlayOpacity }}
-          className="absolute inset-0 bg-black pointer-events-none"
-        />
+        {/* Dark cinematic vignette */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/75 pointer-events-none" />
 
-        {/* ── Centered content layer ── */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center px-6 sm:px-12 lg:px-24">
-          <div className="w-full max-w-2xl lg:max-w-3xl mx-auto flex flex-col items-start">
-
-            {/* Chapter label + Title */}
-            <motion.div style={{ opacity: titleOpacity, y: titleY }} className="mb-8 lg:mb-10">
-              <p className="font-sans text-[10px] tracking-[0.35em] font-bold text-brand-terracotta uppercase mb-3">
-                CHAPTER {article.chapter} · {article.category}
-              </p>
-              <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1]">
-                {article.title[0]}
-                <br />
-                <span className="italic font-normal text-brand-sand">{article.title[1]}</span>
-              </h2>
-              <div className="flex items-center gap-3 mt-3 text-[10px] font-sans text-white/50 uppercase tracking-widest font-medium">
-                <span>{article.date}</span>
-                <span>·</span>
-                <span>By {article.author}</span>
-              </div>
-            </motion.div>
-
-            {/* Paragraph 1 — drop cap */}
-            <motion.p
-              style={{ opacity: p1Opacity, y: p1Y }}
-              className="absolute top-1/2 -translate-y-1/2 w-full max-w-2xl lg:max-w-3xl font-sans text-base sm:text-lg text-white/80 leading-relaxed font-light px-6 sm:px-12 lg:px-24 left-0 right-0 mx-auto
-                first-letter:float-left first-letter:text-7xl first-letter:font-serif first-letter:font-bold first-letter:text-brand-terracotta first-letter:mr-3 first-letter:mt-1 first-letter:leading-none"
-            >
-              {article.paragraphs[0]}
-            </motion.p>
-
-            {/* Pull Quote */}
-            <motion.blockquote
-              style={{ opacity: quoteOpacity, y: quoteY }}
-              className="absolute top-1/2 -translate-y-1/2 w-full max-w-2xl lg:max-w-3xl px-6 sm:px-12 lg:px-24 left-0 right-0 mx-auto border-l-2 border-brand-terracotta pl-6 sm:pl-8"
-            >
-              <p className="font-serif text-xl sm:text-2xl lg:text-3xl italic text-brand-terracotta leading-snug font-medium">
-                &ldquo;{article.quote}&rdquo;
-              </p>
-            </motion.blockquote>
-
-            {/* Paragraphs 2 + 3 */}
-            <motion.div
-              style={{ opacity: p2Opacity, y: p2Y }}
-              className="absolute top-1/2 -translate-y-1/2 w-full max-w-2xl lg:max-w-3xl px-6 sm:px-12 lg:px-24 left-0 right-0 mx-auto space-y-5 font-sans text-base sm:text-lg text-white/80 leading-relaxed font-light"
-            >
-              <p>{article.paragraphs[1]}</p>
-              <p>{article.paragraphs[2]}</p>
-            </motion.div>
-
-          </div>
-        </div>
-
-        {/* ── Chapter number watermark (corner) ── */}
-        <div className="absolute bottom-8 right-8 font-serif text-[80px] sm:text-[120px] font-bold text-white/5 leading-none select-none pointer-events-none">
+        {/* Watermark chapter number */}
+        <div className="absolute bottom-6 right-8 font-serif text-[100px] sm:text-[140px] font-bold text-white/[0.04] leading-none select-none pointer-events-none">
           {article.chapter}
         </div>
 
-        {/* ── Scroll cue (visible at chapter start) ── */}
-        <motion.div
-          style={{ opacity: titleOpacity }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
-        >
-          <motion.div
-            animate={{ y: [0, 6, 0] }}
-            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          >
-            <ArrowDown className="w-3.5 h-3.5 text-white/30" />
-          </motion.div>
-        </motion.div>
+        {/* Step indicator pills */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 items-center z-20">
+          {dots.map((d) => (
+            <div
+              key={d}
+              className={`h-1 rounded-full transition-all duration-500 ${
+                step === d ? "w-6 bg-brand-terracotta" : "w-2 bg-white/20"
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* ── CONTENT AREA ──
+            AnimatePresence mode="wait" guarantees only ONE
+            text block is mounted at any given time.
+            No stacking, no overlap — ever.                   */}
+        <div className="relative z-10 w-full max-w-2xl lg:max-w-3xl px-6 sm:px-10 lg:px-0 mx-auto min-h-[320px] flex items-center">
+          <AnimatePresence mode="wait">
+
+            {/* STEP 0 — Chapter title */}
+            {step === 0 && (
+              <motion.div
+                key="title"
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="w-full"
+              >
+                <p className="font-sans text-[10px] tracking-[0.35em] font-bold text-brand-terracotta uppercase mb-3">
+                  CHAPTER {article.chapter} · {article.category}
+                </p>
+                <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1]">
+                  {article.title[0]}
+                  <br />
+                  <span className="italic font-normal text-brand-sand">{article.title[1]}</span>
+                </h2>
+                <div className="flex items-center gap-3 mt-4 text-[10px] font-sans text-white/45 uppercase tracking-widest font-medium">
+                  <span>{article.date}</span>
+                  <span>·</span>
+                  <span>By {article.author}</span>
+                </div>
+                <div className="flex flex-col items-start gap-1 mt-8 text-white/25">
+                  <span className="font-sans text-[9px] tracking-[0.2em] uppercase font-semibold">
+                    Scroll to read
+                  </span>
+                  <motion.div
+                    animate={{ y: [0, 6, 0] }}
+                    transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                  >
+                    <ArrowDown className="w-3 h-3 text-brand-terracotta/70" />
+                  </motion.div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* STEP 1 — Paragraph 1 (drop cap) */}
+            {step === 1 && (
+              <motion.p
+                key="p1"
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="w-full font-sans text-base sm:text-lg lg:text-xl text-white/80 leading-relaxed font-light
+                  first-letter:float-left first-letter:text-[5.5rem] first-letter:leading-[0.8] first-letter:font-serif
+                  first-letter:font-bold first-letter:text-brand-terracotta first-letter:mr-3 first-letter:mt-2"
+              >
+                {article.paragraphs[0]}
+              </motion.p>
+            )}
+
+            {/* STEP 2 — Pull quote */}
+            {step === 2 && (
+              <motion.blockquote
+                key="quote"
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="w-full border-l-[3px] border-brand-terracotta pl-6 sm:pl-8"
+              >
+                <p className="font-serif text-xl sm:text-2xl lg:text-3xl italic text-brand-terracotta leading-snug font-medium">
+                  &ldquo;{article.quote}&rdquo;
+                </p>
+              </motion.blockquote>
+            )}
+
+            {/* STEP 3 — Paragraphs 2 + 3 */}
+            {step === 3 && (
+              <motion.div
+                key="p23"
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="w-full space-y-5 font-sans text-base sm:text-lg lg:text-xl text-white/80 leading-relaxed font-light"
+              >
+                <p>{article.paragraphs[1]}</p>
+                <p>{article.paragraphs[2]}</p>
+              </motion.div>
+            )}
+
+          </AnimatePresence>
+        </div>
 
       </div>
     </section>
   );
 }
 
-/* ──────────────────────────────────────────────
+/* ─────────────────────────────────────────────
    PAGE
-   ──────────────────────────────────────────── */
-
+   ───────────────────────────────────────────── */
 export default function JournalPage() {
   return (
     <div className="bg-black text-white selection:bg-brand-terracotta selection:text-white">
 
       {/* ── INTRO SCREEN ── */}
-      <section className="relative h-screen w-full flex flex-col items-center justify-center text-center px-6 overflow-hidden bg-black">
-        {/* Dim atmospheric background from chapter 1 */}
+      <section className="relative h-screen w-full flex flex-col items-center justify-center text-center px-6 overflow-hidden">
         <div className="absolute inset-0">
           <Image
             src={articles[0].image}
             alt="Journal intro"
             fill
-            className="object-cover opacity-25"
+            className="object-cover opacity-30"
             sizes="100vw"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/40 to-black/80" />
         </div>
 
         <motion.div
@@ -239,13 +285,12 @@ export default function JournalPage() {
             <span className="italic font-normal text-brand-sand">Intentional Living</span>
           </h1>
           <div className="w-10 h-px bg-brand-terracotta/60 my-2" />
-          <p className="font-sans text-sm text-white/55 max-w-sm leading-relaxed font-light">
+          <p className="font-sans text-sm text-white/50 max-w-sm leading-relaxed font-light">
             Three essays on ritual, sensory grounding, and the quiet spaces we build for the mind.
           </p>
-
-          <div className="flex flex-col items-center gap-2 mt-6 text-white/30">
+          <div className="flex flex-col items-center gap-2 mt-4 text-white/30">
             <span className="font-sans text-[9px] tracking-[0.25em] uppercase font-semibold">
-              Scroll to read
+              Scroll to begin
             </span>
             <motion.div
               animate={{ y: [0, 6, 0] }}
@@ -258,27 +303,22 @@ export default function JournalPage() {
       </section>
 
       {/* ── THREE CHAPTERS ── */}
-      {articles.map((article, idx) => (
-        <ChapterSection
-          key={article.id}
-          article={article}
-          isLast={idx === articles.length - 1}
-        />
+      {articles.map((article) => (
+        <ChapterSection key={article.id} article={article} />
       ))}
 
       {/* ── OUTRO ── */}
-      <section className="relative h-screen w-full flex flex-col items-center justify-center text-center px-6 bg-black overflow-hidden">
+      <section className="relative h-screen w-full flex flex-col items-center justify-center text-center px-6 overflow-hidden">
         <div className="absolute inset-0">
           <Image
             src={articles[2].image}
             alt="Outro"
             fill
-            className="object-cover opacity-15"
+            className="object-cover opacity-20"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-black/70" />
+          <div className="absolute inset-0 bg-black/72" />
         </div>
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -306,7 +346,6 @@ export default function JournalPage() {
       <div className="bg-bg-primary">
         <Footer />
       </div>
-
     </div>
   );
 }
