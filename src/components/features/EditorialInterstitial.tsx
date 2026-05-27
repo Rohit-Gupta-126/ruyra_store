@@ -12,23 +12,24 @@ export default function EditorialInterstitial() {
     offset: ["start start", "end end"],
   });
 
-  // Map scroll progress to opacity and y position for each line (entrance and float-out exit)
-  const line1Opacity = useTransform(scrollYProgress, [0.05, 0.22, 0.80, 0.92], [0, 1, 1, 0]);
-  const line1Y = useTransform(scrollYProgress, [0.05, 0.22, 0.80, 0.92], [40, 0, 0, -20]);
+  // Map scroll progress to opacity and y position for each line (gradual, smooth entrance)
+  const line1Opacity = useTransform(scrollYProgress, [0.05, 0.30], [0, 1]);
+  const line1Y = useTransform(scrollYProgress, [0.05, 0.30], [35, 0]);
 
-  const line2Opacity = useTransform(scrollYProgress, [0.28, 0.45, 0.80, 0.92], [0, 1, 1, 0]);
-  const line2Y = useTransform(scrollYProgress, [0.28, 0.45, 0.80, 0.92], [40, 0, 0, -20]);
+  const line2Opacity = useTransform(scrollYProgress, [0.30, 0.55], [0, 1]);
+  const line2Y = useTransform(scrollYProgress, [0.30, 0.55], [35, 0]);
 
-  const line3Opacity = useTransform(scrollYProgress, [0.50, 0.68, 0.80, 0.92], [0, 1, 1, 0]);
-  const line3Y = useTransform(scrollYProgress, [0.50, 0.68, 0.80, 0.92], [40, 0, 0, -20]);
+  const line3Opacity = useTransform(scrollYProgress, [0.55, 0.80], [0, 1]);
+  const line3Y = useTransform(scrollYProgress, [0.55, 0.80], [35, 0]);
 
-  // Background color shift
-  const bgOpacity = useTransform(scrollYProgress, [0, 1], [0.3, 1]);
+  // Combined float-out exit transition applied to the whole text block for premium smoothness
+  const containerOpacity = useTransform(scrollYProgress, [0.85, 0.96], [1, 0]);
+  const containerY = useTransform(scrollYProgress, [0.85, 0.96], [0, -30]);
 
   return (
     <section
       ref={containerRef}
-      className="relative w-full min-h-[135vh] bg-brand-sand"
+      className="relative w-full min-h-[150vh] bg-brand-sand"
     >
       {/* Animated grain texture overlay */}
       <div className="absolute inset-0 opacity-5 mix-blend-multiply overflow-hidden pointer-events-none">
@@ -64,7 +65,13 @@ export default function EditorialInterstitial() {
         ref={stickyRef}
         className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-visible"
       >
-        <div className="w-full max-w-5xl mx-auto px-6 text-center">
+        <motion.div
+          style={{
+            opacity: containerOpacity,
+            y: containerY,
+          }}
+          className="w-full max-w-5xl mx-auto px-6 text-center"
+        >
           <motion.h2
             style={{
               opacity: line1Opacity,
@@ -94,7 +101,7 @@ export default function EditorialInterstitial() {
           >
             Reclaim your Space.
           </motion.h2>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
