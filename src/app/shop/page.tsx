@@ -126,7 +126,7 @@ export default function ShopPage() {
       
       {/* ── Page Header (Static top header under Navigation) ── */}
       <div className="bg-bg-primary border-b border-bg-surface pt-12 pb-8">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-2">
             <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
               All Adornments & Rituals
@@ -136,41 +136,56 @@ export default function ShopPage() {
             </p>
           </div>
           
-          {/* Mobile/Tablet Search Bar */}
-          <div className="block md:hidden w-full">
-            <div className="relative flex items-center bg-bg-surface border border-brand-brown/10 rounded-full px-4 py-2.5 focus-within:border-brand-terracotta/40 transition-all shadow-sm">
-              <Search className="w-4 h-4 text-text-secondary mr-2 shrink-0" />
-              <input
-                type="text"
-                placeholder="Search rituals..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent w-full outline-none font-sans text-sm text-text-primary placeholder:text-text-secondary/50"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="p-1 hover:text-brand-terracotta text-text-secondary transition-colors focus:outline-none"
-                  aria-label="Clear search query"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              )}
+          {/* Controls Row (Search, Sort & Filter) on Mobile / Desktop */}
+          <div className="w-full md:w-auto flex flex-col md:flex-row items-stretch md:items-end gap-4 flex-1 md:flex-initial md:max-w-md justify-end">
+            {/* Mobile/Tablet Search Bar */}
+            <div className="block md:hidden w-full">
+              <div className="relative flex items-center bg-bg-surface border border-brand-brown/10 rounded-full px-4 py-2.5 focus-within:border-brand-terracotta/40 transition-all shadow-sm">
+                <Search className="w-4 h-4 text-text-secondary mr-2 shrink-0" />
+                <input
+                  type="text"
+                  placeholder="Search rituals..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="bg-transparent w-full outline-none font-sans text-sm text-text-primary placeholder:text-text-secondary/50"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="p-1 hover:text-brand-terracotta text-text-secondary transition-colors focus:outline-none"
+                    aria-label="Clear search query"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-          
-          {/* Sorting Dropdown */}
-          <div className="flex items-center gap-2 self-start md:self-end">
-            <ArrowUpDown className="w-4 h-4 text-text-secondary" />
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as "default" | "price-asc" | "price-desc")}
-              className="bg-transparent font-sans text-xs tracking-wider uppercase font-semibold text-text-primary focus:outline-none cursor-pointer border-b border-text-primary/10 pb-1"
-            >
-              <option value="default">Default Sorting</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-            </select>
+            
+            {/* Sort & Filter Row */}
+            <div className="flex items-center justify-between md:justify-end gap-6 w-full">
+              {/* Sorting Dropdown */}
+              <div className="flex items-center gap-2">
+                <ArrowUpDown className="w-4 h-4 text-text-secondary" />
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as "default" | "price-asc" | "price-desc")}
+                  className="bg-transparent font-sans text-xs tracking-wider uppercase font-semibold text-text-primary focus:outline-none cursor-pointer border-b border-text-primary/10 pb-1"
+                >
+                  <option value="default">Default Sorting</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                </select>
+              </div>
+
+              {/* Mobile Filter Button (hidden on desktop) */}
+              <button
+                onClick={() => setIsMobileFilterOpen(true)}
+                className="md:hidden flex items-center gap-1.5 px-4 py-2 rounded-full border border-brand-brown/10 bg-bg-surface text-text-primary hover:border-brand-terracotta/30 transition-all font-sans text-xs tracking-wider uppercase font-bold focus:outline-none"
+              >
+                <SlidersHorizontal className="w-3.5 h-3.5 text-text-secondary" />
+                Filter
+              </button>
+            </div>
           </div>
         </div>
 
@@ -347,20 +362,7 @@ export default function ShopPage() {
         </div>
       </div>
 
-      {/* ── Mobile Floating Filter Button & Bottom Sheet Modal ── */}
-      <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 md:hidden">
-        <motion.button
-          id="mobile-filter-trigger"
-          suppressHydrationWarning
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setIsMobileFilterOpen(true)}
-          className="bg-accent-primary text-white px-6 py-3 rounded-full shadow-xl flex items-center gap-2 font-sans text-xs tracking-widest uppercase font-semibold hover:bg-opacity-95 focus:outline-none"
-        >
-          <SlidersHorizontal className="w-4 h-4" />
-          Filter & Sort
-        </motion.button>
-      </div>
+      {/* ── Mobile Bottom Sheet Modal ── */}
 
       {/* Mobile Filter Drawer (Bottom Sheet) */}
       <AnimatePresence>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, ShoppingBag, Compass, Store } from "lucide-react";
+import { Search, ShoppingBag, Compass, Store, Home } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCart } from "@/lib/context/CartContext";
 import { useSearch } from "@/lib/context/SearchContext";
@@ -15,9 +15,9 @@ const navLinks = [
 ];
 
 const mobileNavItems = [
-  { id: "home", label: "Home", icon: Compass, href: "/" },
+  { id: "home", label: "Home", icon: Home, href: "/" },
   { id: "shop", label: "Shop", icon: Store, href: "/shop" },
-  { id: "search", label: "Search", icon: Search, href: "#", isSearchButton: true },
+  { id: "journal", label: "Journal", icon: Compass, href: "/journal" },
   { id: "cart", label: "Cart", icon: ShoppingBag, href: "#", isCartButton: true },
 ];
 
@@ -56,8 +56,8 @@ export default function Navigation() {
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 h-14 md:h-16 flex items-center justify-between">
           
-          {/* Logo: Centered on mobile, left-aligned on desktop */}
-          <div className="flex-1 md:flex-none flex justify-center md:justify-start">
+          {/* Logo: Left-aligned on both mobile and desktop */}
+          <div className="flex justify-start">
             <Link href="/" className="font-serif text-lg md:text-xl tracking-[0.25em] text-brand-brown font-bold hover:opacity-85 transition-opacity">
               RUYRA
             </Link>
@@ -116,6 +116,19 @@ export default function Navigation() {
               )}
             </motion.button>
           </div>
+
+          {/* Mobile Search Icon - Hidden on Desktop */}
+          <div className="flex md:hidden items-center text-brand-brown">
+            <button
+              id="nav-search-mobile"
+              suppressHydrationWarning
+              onClick={openSearch}
+              className="p-2 hover:text-brand-terracotta transition-colors focus:outline-none cursor-pointer"
+              aria-label="Search Collection"
+            >
+              <Search className="w-5 h-5 stroke-[1.5]" />
+            </button>
+          </div>
         </div>
       </motion.header>
 
@@ -131,17 +144,15 @@ export default function Navigation() {
           const Icon = item.icon;
           const isActive = item.isCartButton 
             ? isCartOpen 
-            : (item.isSearchButton
-              ? isSearchOpen
-              : (item.href === "/" ? pathname === "/" : pathname?.startsWith(item.href)));
+            : (item.href === "/" ? pathname === "/" : pathname?.startsWith(item.href));
           
-          if (item.isCartButton || item.isSearchButton) {
+          if (item.isCartButton) {
             return (
               <button
                 key={item.id}
                 id={`mobile-nav-${item.id}`}
                 suppressHydrationWarning
-                onClick={item.isCartButton ? openCart : openSearch}
+                onClick={openCart}
                 className="relative flex flex-col items-center justify-center p-3 text-brand-brown/70 hover:text-brand-terracotta active:scale-95 transition-all focus:outline-none cursor-pointer"
                 aria-label={item.label}
               >
@@ -154,13 +165,6 @@ export default function Navigation() {
                   <span className="absolute top-1 right-1 w-4 h-4 bg-brand-terracotta text-white text-[9px] font-bold rounded-full flex items-center justify-center">
                     {cartCount}
                   </span>
-                )}
-                {isActive && !item.isCartButton && (
-                  <motion.div
-                    layoutId="mobile-nav-active-dot"
-                    className="absolute bottom-1 w-1 h-1 bg-brand-terracotta rounded-full"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
                 )}
               </button>
             );
