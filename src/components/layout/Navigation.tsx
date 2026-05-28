@@ -27,7 +27,7 @@ export default function Navigation() {
   const pathname = usePathname();
   
   const { cartCount, openCart, isCartOpen } = useCart();
-  const { openSearch, isSearchOpen } = useSearch();
+  const { openSearch } = useSearch();
 
   useEffect(() => {
     const handleScroll = () => {
