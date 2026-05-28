@@ -6,7 +6,7 @@ export default function NotFound() {
       {/* Decorative watermark */}
       <span
         aria-hidden="true"
-        className="font-serif font-bold text-[160px] leading-none text-brand-brown/[0.04] select-none pointer-events-none absolute"
+        className="font-serif font-bold text-[160px] leading-none text-brand-brown/4 select-none pointer-events-none absolute"
       >
         404
       </span>

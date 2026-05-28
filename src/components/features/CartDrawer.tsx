@@ -30,7 +30,7 @@ export default function CartDrawer() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={closeCart}
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[95]"
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-95"
             aria-hidden="true"
           />
 
@@ -40,10 +40,10 @@ export default function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 260, damping: 30 }}
-            className="fixed top-0 right-0 h-full w-[90%] md:w-[450px] bg-bg-primary z-[100] shadow-2xl flex flex-col text-text-primary"
+            className="fixed top-0 right-0 h-full w-[90%] md:w-112.5 bg-bg-primary z-100 shadow-2xl flex flex-col text-text-primary"
           >
             {/* Header Area */}
-            <div className="p-6 border-b border-bg-surface flex-shrink-0 space-y-4">
+            <div className="p-6 border-b border-bg-surface shrink-0 space-y-4">
               <div className="flex justify-between items-center">
                 <h3 className="font-serif text-2xl font-bold flex items-center gap-2">
                   <ShoppingBag className="w-5 h-5 text-accent-primary" />
@@ -109,7 +109,7 @@ export default function CartDrawer() {
                     className="flex gap-4 border-b border-bg-surface/50 pb-6"
                   >
                     {/* Item Image */}
-                    <div className="w-24 h-24 rounded-lg bg-bg-surface relative flex-shrink-0 overflow-hidden">
+                    <div className="w-24 h-24 rounded-lg bg-bg-surface relative shrink-0 overflow-hidden">
                       <Image
                         src={item.image}
                         alt={item.name}

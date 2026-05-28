@@ -120,7 +120,7 @@ export default function HeroSection() {
     <section 
       onMouseEnter={() => setIsAutoplay(false)}
       onMouseLeave={() => setIsAutoplay(true)}
-      className="relative min-h-[90vh] landscape:min-h-[85vh] w-full bg-brand-sand overflow-hidden flex flex-col justify-center border-b border-brand-brown/5 pb-[64px] md:pb-0"
+      className="relative min-h-[90vh] landscape:min-h-[85vh] w-full bg-brand-sand overflow-hidden flex flex-col justify-center border-b border-brand-brown/5 pb-16 md:pb-0"
     >
       {/* Subtle organic light glow overlay behind the layout (Desktop only) */}
       <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden hidden lg:block">
@@ -187,7 +187,7 @@ export default function HeroSection() {
                   className="object-cover object-center"
                 />
                 {/* Visual shade gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/45 via-black/10 to-transparent pointer-events-none" />
               </motion.div>
             </AnimatePresence>
 
@@ -201,7 +201,7 @@ export default function HeroSection() {
               className="absolute bottom-3 left-3 right-3 p-3.5 lg:bottom-6 lg:left-6 lg:right-6 lg:p-5 backdrop-blur-md bg-white/10 border border-white/20 rounded-xl lg:rounded-2xl text-white shadow-xl flex flex-col justify-end gap-0.5 pointer-events-none"
             >
               <div className="font-sans text-[8px] sm:text-[9px] tracking-[0.25em] uppercase text-white/70 font-semibold flex items-center gap-1.5">
-                <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[2] text-accent-gold" />
+                <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-2 text-accent-gold" />
                 Sensory Spec
               </div>
               <div className="font-serif text-[11px] sm:text-xs lg:text-base font-medium leading-snug mt-0.5 text-white">
@@ -216,7 +216,7 @@ export default function HeroSection() {
         </div>
 
         {/* Left Editorial Panel (Order-2 on mobile so it sits cleanly below the image) */}
-        <div className="landscape:col-span-5 flex flex-col justify-center w-full max-w-[480px] sm:portrait:max-w-[560px] landscape:max-w-none mx-auto p-0 order-2 landscape:order-1">
+        <div className="landscape:col-span-5 flex flex-col justify-center w-full max-w-120 sm:portrait:max-w-140 landscape:max-w-none mx-auto p-0 order-2 landscape:order-1">
           {/* Collection Tag */}
           <div className="flex items-center gap-2 mb-3 landscape:mb-6">
             <span className="h-px w-6 bg-brand-brown/30" />
@@ -329,7 +329,7 @@ export default function HeroSection() {
               className="flex-1 landscape:flex-none inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-3.5 bg-brand-brown text-brand-sand font-sans text-[10px] sm:text-xs font-bold tracking-widest uppercase transition-all duration-300 hover:bg-brand-brown/95 hover:shadow-lg hover:shadow-brand-brown/10 rounded-md cursor-pointer group"
             >
               {currentVibe.ctaText.replace("Collection", "")} {/* Make it slightly shorter for mobile */}
-              <ArrowRight className="w-3.5 h-3.5 stroke-[2] transition-transform duration-300 group-hover:translate-x-1" />
+              <ArrowRight className="w-3.5 h-3.5 stroke-2 transition-transform duration-300 group-hover:translate-x-1" />
             </a>
             <a
               href="/journal"
