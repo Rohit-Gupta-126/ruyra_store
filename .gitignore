@@ -42,3 +42,7 @@ next-env.d.ts
 
 # reports
 PRODUCTION_READINESS_REPORT.md
+
+# build log
+build_log.txt
+
