@@ -42,3 +42,13 @@ next-env.d.ts
 
 # reports
 PRODUCTION_READINESS_REPORT.md
+
+# OpenNext
+.open-next
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+
+!.env.example
