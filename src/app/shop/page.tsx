@@ -94,14 +94,14 @@ export default function ShopPage() {
     // Sorting
     if (sortBy === "price-asc") {
       result.sort((a, b) => {
-        const priceA = parseFloat(a.price.replace("$", ""));
-        const priceB = parseFloat(b.price.replace("$", ""));
+        const priceA = parseFloat(a.price.replace(/[^0-9.]/g, ""));
+        const priceB = parseFloat(b.price.replace(/[^0-9.]/g, ""));
         return priceA - priceB;
       });
     } else if (sortBy === "price-desc") {
       result.sort((a, b) => {
-        const priceA = parseFloat(a.price.replace("$", ""));
-        const priceB = parseFloat(b.price.replace("$", ""));
+        const priceA = parseFloat(a.price.replace(/[^0-9.]/g, ""));
+        const priceB = parseFloat(b.price.replace(/[^0-9.]/g, ""));
         return priceB - priceA;
       });
     }

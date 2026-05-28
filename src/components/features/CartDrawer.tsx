@@ -4,6 +4,7 @@ import { useCart } from "@/lib/context/CartContext";
 import { X, Plus, Minus, Lock, ShoppingBag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function CartDrawer() {
   const {
@@ -15,7 +16,9 @@ export default function CartDrawer() {
     subtotal,
   } = useCart();
 
-  const freeShippingThreshold = 75;
+  const router = useRouter();
+
+  const freeShippingThreshold = 2500;
   const isFreeShipping = subtotal >= freeShippingThreshold;
   const remainingForFreeShipping = freeShippingThreshold - subtotal;
   const shippingProgress = Math.min((subtotal / freeShippingThreshold) * 100, 100);
@@ -69,7 +72,7 @@ export default function CartDrawer() {
                     <span>
                       You are{" "}
                       <span className="font-bold text-accent-secondary">
-                        ${remainingForFreeShipping.toFixed(2)}
+                        ₹{remainingForFreeShipping.toFixed(0)}
                       </span>{" "}
                       away from complimentary shipping.
                     </span>
@@ -183,15 +186,15 @@ export default function CartDrawer() {
               <div className="absolute bottom-0 w-full bg-white p-6 border-t border-bg-surface flex flex-col gap-4 shadow-[0_-8px_30px_rgba(0,0,0,0.03)] z-10">
                 <div className="flex justify-between items-baseline">
                   <span className="font-sans text-sm text-text-secondary">Subtotal</span>
-                  <span className="font-serif text-xl font-bold">${subtotal.toFixed(2)}</span>
+                  <span className="font-serif text-xl font-bold">₹{subtotal.toLocaleString("en-IN")}</span>
                 </div>
                 
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => {
-                    alert("Proceeding to secure checkout sanctuary...");
                     closeCart();
+                    router.push("/checkout");
                   }}
                   className="w-full bg-accent-primary hover:bg-opacity-95 text-white py-4 rounded-full font-sans text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 shadow-xl shadow-accent-primary/10 transition-all focus:outline-none"
                 >

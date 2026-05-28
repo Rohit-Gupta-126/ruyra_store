@@ -158,7 +158,7 @@ export default function ProductSheet() {
   const discountPriceNumeric = basePriceNumeric * 0.9;
   const displayPrice = purchaseType === "one-time"
     ? currentProduct.price
-    : `$${discountPriceNumeric.toFixed(2)}`;
+    : `₹${Math.round(discountPriceNumeric).toLocaleString("en-IN")}`;
 
   // Find 1-2 complementary products
   const complementaryProducts = products
@@ -538,19 +538,19 @@ export default function ProductSheet() {
               {/* Shipping Motivator */}
               <div className="mb-3.5 space-y-1.5 text-left">
                 <div className="flex justify-between text-[11px] font-medium font-sans">
-                  {subtotal >= 75 ? (
+                  {subtotal >= 2500 ? (
                     <span className="text-brand-terracotta font-semibold">You qualify for complimentary shipping! 🚚</span>
                   ) : (
                     <span>
-                      Add <span className="font-bold text-brand-terracotta">${(75 - subtotal).toFixed(2)}</span> to unlock free shipping
+                      Add <span className="font-bold text-brand-terracotta">₹{(2500 - subtotal).toFixed(0)}</span> to unlock free shipping
                     </span>
                   )}
-                  <span className="text-brand-text-muted">{Math.min(Math.round((subtotal / 75) * 100), 100)}%</span>
+                  <span className="text-brand-text-muted">{Math.min(Math.round((subtotal / 2500) * 100), 100)}%</span>
                 </div>
                 <div className="w-full h-1 bg-brand-taupe rounded-full overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
-                    animate={{ width: `${Math.min((subtotal / 75) * 100, 100)}%` }}
+                    animate={{ width: `${Math.min((subtotal / 2500) * 100, 100)}%` }}
                     transition={{ duration: 0.5, ease: "easeOut" }}
                     className="h-full bg-brand-terracotta"
                   />

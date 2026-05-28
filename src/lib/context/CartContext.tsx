@@ -24,6 +24,7 @@ interface CartContextValue {
   toggleCart: () => void;
   openCart: () => void;
   closeCart: () => void;
+  clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -139,6 +140,8 @@ export default function CartProvider({ children }: { children: React.ReactNode }
     return acc + numericPrice * item.quantity;
   }, 0);
 
+  const clearCart = () => setCartItems([]);
+
   return (
     <CartContext.Provider
       value={{
@@ -152,6 +155,7 @@ export default function CartProvider({ children }: { children: React.ReactNode }
         toggleCart,
         openCart,
         closeCart,
+        clearCart,
       }}
     >
       {children}

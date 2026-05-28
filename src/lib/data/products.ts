@@ -16,7 +16,7 @@ export const products: Product[] = [
   {
     id: "amber-ritual-candle",
     name: "Amber Ritual Candle",
-    price: "$45",
+    price: "₹1,499",
     image: "https://images.unsplash.com/photo-1603006905003-be475563bc59?q=80&w=800&auto=format&fit=crop",
     alt: "Hand-poured soy wax candle in an amber glass jar, casting a warm golden glow on dark stone",
     category: "Home Fragrance",
@@ -27,7 +27,7 @@ export const products: Product[] = [
   {
     id: "ritual-bath-salts",
     name: "Ritual Bath Salts",
-    price: "$38",
+    price: "₹1,299",
     image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop",
     alt: "Textured pink Himalayan salts mixed with dry lavender and calendula petals in a low stoneware dish",
     category: "Bath & Body",
@@ -38,7 +38,7 @@ export const products: Product[] = [
   {
     id: "earthen-taper-holder",
     name: "Earthen Taper Holder",
-    price: "$65",
+    price: "₹2,199",
     image: "https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?q=80&w=800&auto=format&fit=crop",
     alt: "Chunky hand-thrown clay taper candle holder showing natural iron spots and beige sand texture",
     category: "Home Decor",
@@ -49,7 +49,7 @@ export const products: Product[] = [
   {
     id: "resin-adornments",
     name: "Resin Adornments",
-    price: "$120",
+    price: "₹3,999",
     image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=800&auto=format&fit=crop",
     alt: "Amber resin block displaying suspended dry botanical fragments and mineral dust",
     category: "Adornments",
@@ -63,13 +63,13 @@ export const vibeCategories = [
   {
     id: "home-fragrance",
     name: "Home Fragrance",
-    price: "$45",
+    price: "₹1,499",
     image: "https://images.unsplash.com/photo-1603006905003-be475563bc59?q=80&w=800&auto=format&fit=crop",
   },
   {
     id: "bath-rituals",
     name: "Bath Rituals",
-    price: "$38",
+    price: "₹1,299",
     image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop",
   },
 ];
