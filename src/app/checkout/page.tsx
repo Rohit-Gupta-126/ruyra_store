@@ -58,8 +58,8 @@ export default function CheckoutPage() {
     shipping: ShippingDetails;
   } | null>(null);
 
-  // Shipping cost calculations
-  const shippingCost = subtotal >= 2500 ? 0 : 150;
+  // Shipping cost calculations (Free shipping over ₹1,999)
+  const shippingCost = subtotal >= 1999 ? 0 : 150;
   const grandTotal = subtotal + shippingCost;
 
   // Handle countdown timer
@@ -149,15 +149,15 @@ export default function CheckoutPage() {
           <div className="w-16 h-16 bg-brand-taupe/40 rounded-full flex items-center justify-center mx-auto text-brand-terracotta">
             <ShoppingBag className="w-8 h-8" />
           </div>
-          <h1 className="font-serif text-3xl font-bold">Your Sanctuary Bag is Empty</h1>
+          <h1 className="font-serif text-3xl font-bold">Your Keepsake Bag is Empty</h1>
           <p className="font-sans text-sm text-brand-text-muted leading-relaxed font-light">
             You cannot proceed to checkout without adding items to your shopping cart.
           </p>
           <Link
             href="/shop"
-            className="inline-block w-full bg-brand-brown text-brand-sand py-3.5 rounded-full font-sans text-xs uppercase tracking-widest font-semibold hover:bg-brand-brown/95 transition-all"
+            className="inline-block w-full bg-brand-terracotta text-white py-3.5 rounded-full font-sans text-xs uppercase tracking-widest font-semibold hover:bg-[#B34E59] transition-all shadow-md"
           >
-            Start Your Ritual
+            Explore Handcrafted Blooms
           </Link>
         </div>
       </main>
@@ -165,23 +165,23 @@ export default function CheckoutPage() {
   }
 
   return (
-    <main className="bg-brand-sand min-h-screen text-brand-brown pt-8 pb-24 font-sans selection:bg-brand-terracotta selection:text-white">
+    <main className="bg-[#FAF7F2] min-h-screen text-[#422926] pt-8 pb-24 font-sans selection:bg-brand-blush selection:text-white">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Checkout Header */}
-        <div className="flex items-center justify-between pb-8 border-b border-brand-brown/5 mb-8">
+        <div className="flex items-center justify-between pb-8 border-b border-[#EFE7DD] mb-8">
           <div className="flex items-center gap-3">
             {currentStep !== "success" && currentStep !== "shipping" && (
               <button
                 onClick={() => setCurrentStep(currentStep === "payment" ? "shipping" : "payment")}
-                className="p-2 hover:bg-brand-taupe rounded-full transition-colors"
+                className="p-2 hover:bg-brand-taupe rounded-full transition-colors cursor-pointer"
                 aria-label="Go back"
               >
                 <ArrowLeft className="w-4 h-4" />
               </button>
             )}
             <div>
-              <h1 className="font-serif text-2xl font-bold tracking-wide">Checkout Sanctuary</h1>
-              <p className="text-[10px] uppercase tracking-widest text-brand-text-muted">Secure transaction</p>
+              <h1 className="font-serif text-2xl font-bold tracking-wide">CHISÓ Creations Checkout</h1>
+              <p className="text-[10px] uppercase tracking-widest text-brand-text-muted">Handmade with love • Secure transaction</p>
             </div>
           </div>
           <div className="flex items-center gap-1.5 text-brand-text-muted text-xs">
@@ -196,24 +196,24 @@ export default function CheckoutPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
-            className="max-w-2xl mx-auto bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-brand-brown/5 text-center space-y-8"
+            className="max-w-2xl mx-auto bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-[#EFE7DD] text-center space-y-8"
           >
-            <div className="w-20 h-20 bg-[#D1E7DD] text-[#0F5132] rounded-full flex items-center justify-center mx-auto shadow-inner">
+            <div className="w-20 h-20 bg-brand-sage-light text-brand-sage rounded-full flex items-center justify-center mx-auto shadow-inner">
               <Check className="w-10 h-10 stroke-[2.5]" />
             </div>
             
             <div className="space-y-3">
-              <h2 className="font-serif text-3xl font-bold md:text-4xl text-brand-brown">Order Confirmed</h2>
+              <h2 className="font-serif text-3xl font-bold md:text-4xl text-[#422926]">Order Confirmed ♡</h2>
               <p className="font-sans text-xs text-brand-text-muted uppercase tracking-widest font-semibold">
                 Your order ID is <span className="text-brand-terracotta">{completedOrder.orderId}</span>
               </p>
               <p className="font-sans text-sm text-brand-text-muted max-w-md mx-auto font-light leading-relaxed">
-                Thank you, {completedOrder.shipping.fullName}. Your ritual items are being prepared at our sanctuary. A confirmation email has been dispatched to <span className="font-medium text-brand-brown">{completedOrder.shipping.email}</span>.
+                Thank you, {completedOrder.shipping.fullName}! Your handmade creations are being lovingly prepared and packed. A confirmation email has been dispatched to <span className="font-medium text-[#422926]">{completedOrder.shipping.email}</span>.
               </p>
             </div>
 
-            <div className="border-t border-b border-brand-brown/5 py-6 text-left space-y-4">
-              <h3 className="font-serif text-base font-bold">Delivery Sanctuary Address</h3>
+            <div className="border-t border-b border-[#EFE7DD] py-6 text-left space-y-4">
+              <h3 className="font-serif text-base font-bold">Delivery Address</h3>
               <p className="font-sans text-xs text-brand-text-muted leading-relaxed font-light">
                 {completedOrder.shipping.fullName}<br />
                 {completedOrder.shipping.address}{completedOrder.shipping.apartment ? `, ${completedOrder.shipping.apartment}` : ""}<br />

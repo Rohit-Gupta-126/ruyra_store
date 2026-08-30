@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Shop - All Adornments & Rituals",
+  title: "Shop All Blooms, Charms & Gifts",
   description:
-    "Browse RUYRA's full collection of handcrafted botanical candles, bath salts, earthen ware, and resin adornments. Filter by ritual type and scent profile.",
+    "Browse CHISÓ Creations' collection of handcrafted chenille bouquets, adorable bag charms, woven basket décor, and heartfelt custom gift sets.",
   alternates: {
     canonical: "/shop",
   },
   openGraph: {
-    title: "Shop All Rituals | RUYRA",
+    title: "Shop All Handcrafted Blooms & Gifts | CHISÓ Creations",
     description:
-      "Browse RUYRA's full collection of handcrafted botanical candles, bath salts, earthen ware, and resin adornments.",
+      "Browse CHISÓ Creations' collection of handcrafted chenille bouquets, adorable bag charms, and heartfelt gift sets.",
     url: "/shop",
   },
 };

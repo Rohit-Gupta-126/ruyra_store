@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, Playfair_Display, Caveat } from "next/font/google";
 import "./globals.css";
 
 import CartProvider from "@/lib/context/CartContext";
@@ -10,8 +10,8 @@ import Navigation from "@/components/layout/Navigation";
 import SearchProvider from "@/lib/context/SearchContext";
 import SearchOverlay from "@/components/features/SearchOverlay";
 
-const inter = Inter({
-  variable: "--font-inter",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin"],
   display: "swap",
 });
@@ -19,25 +19,44 @@ const inter = Inter({
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
-  weight: ["600", "700"],
+  weight: ["500", "600", "700", "800"],
+  display: "swap",
+});
+
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
 export const viewport: Viewport = {
-  themeColor: "#3E2C24",
+  themeColor: "#422926",
   width: "device-width",
   initialScale: 1,
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ruyra.com"),
+  metadataBase: new URL("https://chisocreations.com"),
   title: {
-    default: "RUYRA - Botanical Rituals",
-    template: "%s | RUYRA",
+    default: "CHISÓ Creations - Little Luxuries, Handcrafted",
+    template: "%s | CHISÓ Creations",
   },
   description:
-    "Handcrafted botanical candles, bath rituals, and artisanal home fragrance. Embrace the warmth of nature's glow.",
-  keywords: ["botanical", "artisanal", "candles", "bath rituals", "home fragrance", "soy candles", "botanical skincare"],
+    "Handmade blooms, adorable charms, and thoughtful gifts made especially for you. Discover everlasting chenille flowers, handcrafted woven décor, and bespoke keepsakes.",
+  keywords: [
+    "CHISÓ Creations",
+    "handmade blooms",
+    "chenille flowers",
+    "crochet flower bouquet",
+    "tulip bouquet",
+    "bag charms",
+    "thoughtful gifts",
+    "handcrafted gifts",
+    "custom creations",
+    "aesthetic room decor",
+    "everlasting flowers"
+  ],
   icons: {
     icon: { url: "/icon.svg", type: "image/svg+xml" },
   },
@@ -55,28 +74,28 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "RUYRA - Botanical Rituals",
+    title: "CHISÓ Creations - Little Luxuries, Handcrafted",
     description:
-      "Handcrafted botanical candles, bath rituals, and artisanal home fragrance.",
+      "Handmade blooms, adorable charms, and thoughtful gifts made especially for you. Blooming happiness, crafted by hand.",
     type: "website",
     url: "/",
-    siteName: "RUYRA",
+    siteName: "CHISÓ Creations",
     locale: "en_US",
     images: [
       {
-        url: "/hero_bg.png",
+        url: "https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=1200&auto=format&fit=crop",
         width: 1200,
         height: 630,
-        alt: "RUYRA botanical candle ritual",
+        alt: "CHISÓ Creations handmade floral bouquet and charms",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "RUYRA - Botanical Rituals",
+    title: "CHISÓ Creations - Little Luxuries, Handcrafted",
     description:
-      "Handcrafted botanical candles, bath rituals, and artisanal home fragrance.",
-    images: ["/hero_bg.png"],
+      "Handmade blooms, adorable charms, and thoughtful gifts made especially for you.",
+    images: ["https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=1200&auto=format&fit=crop"],
   },
 };
 
@@ -88,9 +107,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${playfairDisplay.variable}`}
+      className={`${jakarta.variable} ${playfairDisplay.variable} ${caveat.variable}`}
     >
-      <body className="min-h-screen antialiased overflow-x-clip selection:bg-brand-terracotta selection:text-white pb-16 md:pb-0">
+      <body className="min-h-screen antialiased overflow-x-clip selection:bg-brand-blush selection:text-white pb-16 md:pb-0 font-sans bg-brand-sand text-brand-brown">
         <CartProvider>
           <SearchProvider>
             <ProductSheetProvider>

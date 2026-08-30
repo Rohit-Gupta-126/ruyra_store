@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { Sparkles, Heart, ArrowRight, Flower2, Gift, Send } from "lucide-react";
 
 interface Vibe {
   id: string;
@@ -12,64 +13,68 @@ interface Vibe {
   title: [string, string];
   desc: string;
   image: string;
+  alt: string;
   notes: string[];
   ctaText: string;
   ctaLink: string;
-  sensoryText: string;
+  craftBadge: string;
 }
 
 const VIBES: Vibe[] = [
   {
-    id: "amber",
-    label: "Amber Ritual",
-    tagline: "RUYRA / SIGNATURE COLLECTION",
-    title: ["Sanctuary in", "Every Detail"],
-    desc: "Botanical rituals handcrafted with notes of warm amber, cedarwood & wild vetiver. Formulated with pure soy wax to ground your spirit.",
-    image: "/hero_bg.png",
-    notes: ["Warm Amber", "Cedarwood", "Wild Vetiver"],
-    ctaText: "Shop Amber Collection",
-    ctaLink: "/shop",
-    sensoryText: "100% natural, hand-poured in small batches."
+    id: "blooms",
+    label: "Handmade Blooms",
+    tagline: "CHISÓ CREATIONS / CHENILLE FLOWERS",
+    title: ["Blooming Happiness,", "Crafted by Hand."],
+    desc: "Plush, everlasting chenille flower bouquets handcrafted with love in soft blushing pinks and warm cream tones. Never wilts, no water needed.",
+    image: "https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?q=80&w=1000&auto=format&fit=crop",
+    alt: "Handcrafted pink chenille tulip bouquet with satin ribbon and craft tag",
+    notes: ["Chenille Velvet", "Everlasting Keepsake", "Hand-tied Satin Bow"],
+    ctaText: "Shop Handcrafted Blooms",
+    ctaLink: "/shop?category=Blooms",
+    craftBadge: "Made with love. Kept forever. ♡"
   },
   {
-    id: "bath",
-    label: "Bath Rituals",
-    tagline: "RUYRA / BATH & BODY",
-    title: ["Rest in the", "Mineral Depths"],
-    desc: "A restorative blend of mineral-rich pink Himalayan salt, Dead Sea salt, and organic lavender. Dissolves to release a grounding aroma.",
-    image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop",
-    notes: ["Pink Salt", "Lavender", "Chamomile"],
-    ctaText: "Explore Bath Rituals",
-    ctaLink: "/shop",
-    sensoryText: "Restorative dead-sea minerals & floral extracts."
+    id: "charms",
+    label: "Adorable Charms",
+    tagline: "CHISÓ CREATIONS / BAG CHARMS",
+    title: ["Little Charms,", "Big Happiness."],
+    desc: "Adorable miniature plush tulips, woven crochet hearts, and lustrous pearl beads designed to brighten your favorite totes and keys.",
+    image: "https://images.unsplash.com/photo-1611085583191-a3b181a88401?q=80&w=1000&auto=format&fit=crop",
+    alt: "Handmade chenille tulip and woven crochet heart keychain with pearl beads",
+    notes: ["Plush Mini Bloom", "Crochet Heart", "Faux Pearl Keychain"],
+    ctaText: "Explore Bag Charms",
+    ctaLink: "/shop?category=Charms",
+    craftBadge: "Adorable & Unique ♡"
   },
   {
-    id: "earthen",
-    label: "Earthen Clay",
-    tagline: "RUYRA / HOME DECOR",
-    title: ["Molded by", "Fire & Hands"],
-    desc: "Molded by hand in clay, then wood-fired to create unique surface irregularities. Adds raw, tactile geometry and rustic elegance to any space.",
-    image: "https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?q=80&w=800&auto=format&fit=crop",
-    notes: ["Sable Clay", "Wood-fired", "Tactile Sandstone"],
-    ctaText: "View Decor Pieces",
-    ctaLink: "/shop",
-    sensoryText: "Hand-thrown clay, fired with natural iron spots."
+    id: "decor",
+    label: "Woven Décor",
+    tagline: "CHISÓ CREATIONS / ROOM & DESK DÉCOR",
+    title: ["Cozy Warmth for", "Every Space."],
+    desc: "Handcrafted daisy flower arrangements in miniature woven rattan baskets with easel stands to add sunny cheer to desks and bedrooms.",
+    image: "https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=1000&auto=format&fit=crop",
+    alt: "Handmade daisy blooms in woven basket pot on wooden display stand",
+    notes: ["Woven Basket Pot", "Hand-stitched Daisies", "Wooden Stand"],
+    ctaText: "Discover Décor Pieces",
+    ctaLink: "/shop?category=Décor",
+    craftBadge: "Handmade to Beautify Spaces ✨"
   }
 ];
 
 export default function HeroSection() {
-  const [activeVibe, setActiveVibe] = useState<string>("amber");
+  const [activeVibe, setActiveVibe] = useState<string>("blooms");
   const [isAutoplay, setIsAutoplay] = useState<boolean>(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Motion values for mouse movement (3D tilt parallax) - Desktop only
+  // Motion values for 3D tilt parallax
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5; // range: -0.5 to 0.5
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
     mouseX.set(x);
     mouseY.set(y);
@@ -80,264 +85,230 @@ export default function HeroSection() {
     mouseY.set(0);
   };
 
-  // Map mouse coordinates to 3D rotation & floating translation
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], [10, -10]);
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], [-10, 10]);
-  const cardX = useTransform(mouseX, [-0.5, 0.5], [-15, 15]);
-  const cardY = useTransform(mouseY, [-0.5, 0.5], [-15, 15]);
+  const rotateX = useTransform(mouseY, [-0.5, 0.5], [8, -8]);
+  const rotateY = useTransform(mouseX, [-0.5, 0.5], [-8, 8]);
+  const cardX = useTransform(mouseX, [-0.5, 0.5], [-12, 12]);
+  const cardY = useTransform(mouseY, [-0.5, 0.5], [-12, 12]);
 
-  // Automatic vibe switching logic
+  // Autoplay rotation
   useEffect(() => {
     if (!isAutoplay) return;
-
     const interval = setInterval(() => {
       setActiveVibe((prev) => {
         const currentIndex = VIBES.findIndex((v) => v.id === prev);
         const nextIndex = (currentIndex + 1) % VIBES.length;
         return VIBES[nextIndex].id;
       });
-    }, 6500); // switches every 6.5 seconds
-
+    }, 6500);
     return () => clearInterval(interval);
-  }, [isAutoplay, activeVibe]);
+  }, [isAutoplay]);
 
   const currentVibe = VIBES.find((v) => v.id === activeVibe) || VIBES[0];
 
-  const getVibeColor = (id: string) => {
-    switch (id) {
-      case "amber":
-        return "var(--color-brand-terracotta)";
-      case "bath":
-        return "#7E8E76"; // Sage Green
-      case "earthen":
-        return "#8C6D58"; // Clay Sable
-      default:
-        return "var(--color-brand-terracotta)";
-    }
-  };
-
   return (
     <section 
-      onMouseEnter={() => setIsAutoplay(false)}
-      onMouseLeave={() => setIsAutoplay(true)}
-      className="relative min-h-[90vh] landscape:min-h-[85vh] w-full bg-brand-sand overflow-hidden flex flex-col justify-center border-b border-brand-brown/5 pb-16 md:pb-0"
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative min-h-[90vh] md:min-h-[88vh] flex items-center justify-center overflow-hidden py-12 md:py-16 bg-[#FAF7F2]"
     >
-      {/* Subtle organic light glow overlay behind the layout (Desktop only) */}
-      <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden hidden lg:block">
-        <motion.div
-          animate={{
-            background: activeVibe === "amber" 
-              ? "radial-gradient(circle at 15% 25%, rgba(184, 91, 63, 0.05) 0%, transparent 60%)"
-              : activeVibe === "bath"
-              ? "radial-gradient(circle at 15% 25%, rgba(126, 142, 118, 0.06) 0%, transparent 60%)"
-              : "radial-gradient(circle at 15% 25%, rgba(140, 109, 88, 0.06) 0%, transparent 60%)"
-          }}
-          className="absolute inset-0 transition-all duration-1000"
-        />
-      </div>
+      {/* Background Soft Pastel Gradient Blurs */}
+      <div className="absolute top-10 left-1/4 w-96 h-96 bg-[#FADCD9]/40 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-[#EBF1EA]/50 rounded-full blur-3xl pointer-events-none -z-10" />
 
-      {/* Main Grid Wrapper */}
-      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-12 py-6 landscape:py-16 grid grid-cols-1 landscape:grid-cols-12 gap-6 landscape:gap-16 items-center">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
         
-        {/* Right Sensory Canvas Panel (Image Container - Order-1 on mobile so visual loads at the top) */}
-        <div
-          ref={containerRef}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          style={{ perspective: 1000 }}
-          className="landscape:col-span-7 flex items-center justify-center order-1 landscape:order-2 w-full select-none"
-        >
-          {/* Color aura behind image (Desktop only) */}
+        {/* ── Left Column: Editorial Copy ── */}
+        <div className="lg:col-span-7 space-y-6 sm:space-y-8 text-left z-10">
+          
+          {/* Pill Badge */}
           <motion.div
-            animate={{
-              backgroundColor: activeVibe === "amber" 
-                ? "rgba(184, 91, 63, 0.12)" 
-                : activeVibe === "bath" 
-                ? "rgba(126, 142, 118, 0.14)" 
-                : "rgba(140, 109, 88, 0.14)",
-            }}
-            className="absolute -inset-6 blur-3xl rounded-full opacity-60 pointer-events-none transition-colors duration-700 -z-10 hidden lg:block"
-          />
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#EFE7DD] shadow-xs text-brand-terracotta text-xs font-sans tracking-widest uppercase font-semibold"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-brand-gold animate-spin-slow" />
+            <span>Little luxuries, handcrafted. ✨</span>
+          </motion.div>
 
-          {/* Main 3D visual card - Compact on mobile (h-[28vh] to h-[35vh]), large on desktop */}
+          {/* Headline with script accent */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentVibe.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="space-y-2"
+            >
+              <span className="font-sans text-xs tracking-[0.25em] uppercase text-brand-text-muted font-bold block">
+                {currentVibe.tagline}
+              </span>
+              <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-[#422926] leading-[1.12] font-bold tracking-tight">
+                {currentVibe.title[0]}{" "}
+                <span className="font-script text-5xl sm:text-6xl lg:text-7xl font-normal text-brand-terracotta block sm:inline">
+                  {currentVibe.title[1]}
+                </span>
+              </h1>
+              <p className="font-sans text-sm sm:text-base text-brand-text-muted max-w-xl font-normal leading-relaxed pt-2">
+                {currentVibe.desc}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Notes pills */}
+          <div className="flex flex-wrap gap-2 pt-1">
+            {currentVibe.notes.map((note, idx) => (
+              <span
+                key={idx}
+                className="px-3.5 py-1 rounded-full text-xs font-sans font-medium bg-[#F3EBE6] text-[#422926]/80 flex items-center gap-1.5"
+              >
+                <Heart className="w-2.5 h-2.5 text-brand-blush fill-brand-blush" />
+                {note}
+              </span>
+            ))}
+          </div>
+
+          {/* Action CTAs */}
+          <div className="flex flex-wrap items-center gap-4 pt-2">
+            <Link
+              href={currentVibe.ctaLink}
+              className="px-8 py-4 rounded-full bg-brand-terracotta hover:bg-[#B34E59] text-white font-sans text-xs sm:text-sm font-semibold tracking-wider uppercase transition-all shadow-md hover:shadow-lg flex items-center gap-2 group"
+            >
+              <span>{currentVibe.ctaText}</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+
+            <Link
+              href="/shop?category=Custom%20Creations"
+              className="px-6 py-4 rounded-full bg-white hover:bg-[#FBF8F4] text-[#422926] border border-[#EFE7DD] hover:border-brand-rose font-sans text-xs sm:text-sm font-semibold tracking-wider transition-all flex items-center gap-2 shadow-xs"
+            >
+              <Send className="w-3.5 h-3.5 text-brand-terracotta" />
+              <span>Custom Creation (DM us ♡)</span>
+            </Link>
+          </div>
+
+          {/* Interactive Vibe Selectors */}
+          <div className="pt-6 border-t border-[#EFE7DD] flex flex-wrap items-center gap-3">
+            <span className="font-sans text-xs text-brand-text-muted uppercase tracking-wider font-semibold mr-2">
+              Explore:
+            </span>
+            {VIBES.map((vibe) => {
+              const isActive = vibe.id === activeVibe;
+              return (
+                <button
+                  key={vibe.id}
+                  onClick={() => {
+                    setActiveVibe(vibe.id);
+                    setIsAutoplay(false);
+                  }}
+                  className={`px-4 py-2 rounded-full text-xs font-sans transition-all duration-300 cursor-pointer ${
+                    isActive
+                      ? "bg-[#422926] text-[#FAF7F2] font-bold shadow-xs scale-105"
+                      : "bg-white text-[#422926]/70 border border-[#EFE7DD] hover:border-brand-rose hover:text-[#422926]"
+                  }`}
+                >
+                  {vibe.label}
+                </button>
+              );
+            })}
+          </div>
+
+        </div>
+
+        {/* ── Right Column: 3D Tilt Image Showcase with Floating Tags ── */}
+        <div className="lg:col-span-5 relative flex items-center justify-center">
+          
+          {/* Main 3D Card */}
           <motion.div
             style={{
               rotateX,
               rotateY,
+              x: cardX,
+              y: cardY,
               transformStyle: "preserve-3d",
             }}
-            className="relative w-full h-[28vh] sm:h-[35vh] portrait:sm:h-[45vh] landscape:h-[68vh] rounded-2xl lg:rounded-3xl overflow-hidden shadow-[0_12px_30px_rgba(62,44,36,0.08)] lg:shadow-[0_20px_50px_rgba(62,44,36,0.12)] border border-brand-brown/5 bg-brand-taupe/20"
+            className="relative w-full aspect-4/5 max-w-md rounded-3xl overflow-hidden shadow-2xl bg-white p-3 border border-[#EFE7DD]"
           >
-            {/* Image Transition Slider */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeVibe}
-                initial={{ opacity: 0, scale: 1.04 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.55, ease: "easeInOut" }}
-                className="absolute inset-0 w-full h-full"
-              >
-                <Image
-                  src={currentVibe.image}
-                  alt={currentVibe.label}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 55vw"
-                  className="object-cover object-center"
-                />
-                {/* Visual shade gradient */}
-                <div className="absolute inset-0 bg-linear-to-t from-black/45 via-black/10 to-transparent pointer-events-none" />
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Floating 3D Parallax Detail Card (Responsive sizing) */}
-            <motion.div
-              style={{
-                x: cardX,
-                y: cardY,
-                translateZ: 50,
-              }}
-              className="absolute bottom-3 left-3 right-3 p-3.5 lg:bottom-6 lg:left-6 lg:right-6 lg:p-5 backdrop-blur-md bg-white/10 border border-white/20 rounded-xl lg:rounded-2xl text-white shadow-xl flex flex-col justify-end gap-0.5 pointer-events-none"
-            >
-              <div className="font-sans text-[8px] sm:text-[9px] tracking-[0.25em] uppercase text-white/70 font-semibold flex items-center gap-1.5">
-                <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-2 text-accent-gold" />
-                Sensory Spec
-              </div>
-              <div className="font-serif text-[11px] sm:text-xs lg:text-base font-medium leading-snug mt-0.5 text-white">
-                {currentVibe.sensoryText}
-              </div>
-              <div className="font-sans text-[8px] sm:text-[9px] text-white/60 mt-0.5 flex items-center gap-1.5">
-                <span className="w-1 h-1 rounded-full bg-accent-gold animate-pulse" />
-                Pure Intention • Cruelty-Free
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Left Editorial Panel (Order-2 on mobile so it sits cleanly below the image) */}
-        <div className="landscape:col-span-5 flex flex-col justify-center w-full max-w-120 sm:portrait:max-w-140 landscape:max-w-none mx-auto p-0 order-2 landscape:order-1">
-          {/* Collection Tag */}
-          <div className="flex items-center gap-2 mb-3 landscape:mb-6">
-            <span className="h-px w-6 bg-brand-brown/30" />
-            <span className="font-sans text-[9px] tracking-[0.25em] uppercase text-brand-brown/60 font-semibold">
-              {currentVibe.tagline}
-            </span>
-          </div>
-
-          {/* Vibe Switcher Tabs (Horizontal scroll on mobile, wrap/flex on desktop) */}
-          <div className="flex overflow-x-auto no-scrollbar gap-1 p-0.5 bg-brand-taupe/30 border border-brand-brown/5 rounded-full max-w-full mb-5 landscape:mb-8 shrink-0 w-max">
-            {VIBES.map((v) => (
-              <button
-                key={v.id}
-                onClick={() => {
-                  setActiveVibe(v.id);
-                  setIsAutoplay(false);
-                }}
-                suppressHydrationWarning
-                className="relative px-3.5 py-1.5 sm:py-2 rounded-full font-sans text-[9px] sm:text-xs uppercase tracking-widest font-bold transition-all cursor-pointer z-10 whitespace-nowrap"
-                style={{
-                  color: activeVibe === v.id ? "var(--color-brand-sand)" : "var(--color-brand-brown)",
-                }}
-              >
-                {activeVibe === v.id && (
-                  <motion.span
-                    layoutId="hero-active-vibe-capsule"
-                    className="absolute inset-0 bg-brand-brown rounded-full -z-10"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+            <div className="relative w-full h-full rounded-2xl overflow-hidden bg-brand-taupe">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentVibe.id}
+                  initial={{ opacity: 0, scale: 1.08 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.7 }}
+                  className="relative w-full h-full"
+                >
+                  <Image
+                    src={currentVibe.image}
+                    alt={currentVibe.alt}
+                    fill
+                    priority
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 40vw"
                   />
-                )}
-                {v.label}
-              </button>
-            ))}
-          </div>
+                  {/* Subtle vignette gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#422926]/40 via-transparent to-transparent" />
+                </motion.div>
+              </AnimatePresence>
 
-          {/* Sequential Reveal Header */}
-          <div key={`header-${activeVibe}`} className="overflow-hidden">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ type: "spring", stiffness: 90, damping: 20 }}
-              className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-brand-brown leading-[1.15] tracking-wide"
-            >
-              <span className="block">{currentVibe.title[0]}</span>
-              <motion.span
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ type: "spring", stiffness: 90, damping: 20, delay: 0.12 }}
-                className="block font-serif italic mt-1 font-normal"
-                style={{ color: getVibeColor(activeVibe) }}
-              >
-                {currentVibe.title[1]}
-              </motion.span>
-            </motion.h1>
-          </div>
-
-          {/* Subtitle Description */}
-          <motion.p
-            key={`desc-${activeVibe}`}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 90, damping: 20, delay: 0.22 }}
-            className="font-sans text-xs sm:text-sm lg:text-base text-brand-text-muted mt-3 landscape:mt-6 leading-relaxed font-light"
-          >
-            {currentVibe.desc}
-          </motion.p>
-
-          {/* Fragrance / Product Ingredient Badges */}
-          <motion.div
-            key={`notes-${activeVibe}`}
-            initial="hidden"
-            animate="show"
-            variants={{
-              hidden: { opacity: 0 },
-              show: {
-                opacity: 1,
-                transition: {
-                  staggerChildren: 0.08,
-                  delayChildren: 0.32,
-                },
-              },
-            }}
-            className="flex flex-wrap gap-1.5 mt-5"
-          >
-            {currentVibe.notes.map((note) => (
-              <motion.span
-                key={note}
-                variants={{
-                  hidden: { opacity: 0, y: 5 },
-                  show: { opacity: 1, y: 0 },
-                }}
-                className="px-3 py-1 bg-brand-taupe/40 border border-brand-brown/5 rounded-full font-sans text-[9px] sm:text-[10px] tracking-wider text-brand-brown font-medium flex items-center gap-1.5"
-              >
-                <span className="w-1 h-1 rounded-full bg-brand-terracotta/60" />
-                {note}
-              </motion.span>
-            ))}
+              {/* Bottom Image Tag */}
+              <div className="absolute bottom-4 left-4 right-4 p-3.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/60 shadow-lg flex items-center justify-between text-left">
+                <div>
+                  <h4 className="font-serif text-sm font-bold text-[#422926]">
+                    {currentVibe.label}
+                  </h4>
+                  <p className="font-sans text-[11px] text-brand-text-muted">
+                    100% Handcrafted • Never Wilts
+                  </p>
+                </div>
+                <span className="font-script text-lg text-brand-terracotta">
+                  Chisó ♡
+                </span>
+              </div>
+            </div>
           </motion.div>
 
-          {/* CTAs (Side-by-side on mobile and tablet to save vertical height) */}
+          {/* Floating Craft Tag 1 (Top Left) */}
           <motion.div
-            key={`ctas-${activeVibe}`}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 90, damping: 20, delay: 0.42 }}
-            className="flex flex-col min-[360px]:flex-row gap-3 mt-6 landscape:mt-8 w-full"
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-4 -left-4 sm:-left-8 bg-white border border-[#EFE7DD] rounded-2xl p-3 sm:p-4 shadow-xl z-20 hidden sm:flex items-center gap-3 max-w-[200px]"
           >
-            <a
-              href={currentVibe.ctaLink}
-              className="flex-1 landscape:flex-none inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-3.5 bg-brand-brown text-brand-sand font-sans text-[10px] sm:text-xs font-bold tracking-widest uppercase transition-all duration-300 hover:bg-brand-brown/95 hover:shadow-lg hover:shadow-brand-brown/10 rounded-md cursor-pointer group"
-            >
-              {currentVibe.ctaText.replace("Collection", "")} {/* Make it slightly shorter for mobile */}
-              <ArrowRight className="w-3.5 h-3.5 stroke-2 transition-transform duration-300 group-hover:translate-x-1" />
-            </a>
-            <a
-              href="/journal"
-              className="flex-1 landscape:flex-none inline-flex items-center justify-center px-4 sm:px-6 py-3.5 border border-brand-brown/20 text-brand-brown font-sans text-[10px] sm:text-xs font-bold tracking-widest uppercase hover:bg-brand-brown/5 transition-all duration-300 rounded-md cursor-pointer"
-            >
-              Our Story
-            </a>
+            <div className="w-9 h-9 rounded-full bg-brand-rose-light flex items-center justify-center text-brand-terracotta shrink-0">
+              <Heart className="w-4 h-4 fill-brand-terracotta" />
+            </div>
+            <div>
+              <p className="font-sans text-[11px] font-bold text-[#422926] leading-tight">
+                Made with love.
+              </p>
+              <p className="font-script text-xs text-brand-terracotta">
+                Kept forever. ♡
+              </p>
+            </div>
           </motion.div>
+
+          {/* Floating Craft Tag 2 (Bottom Right) */}
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute -bottom-4 -right-4 sm:-right-6 bg-white border border-[#EFE7DD] rounded-2xl p-3 sm:p-4 shadow-xl z-20 hidden sm:flex items-center gap-3 max-w-[220px]"
+          >
+            <div className="w-9 h-9 rounded-full bg-brand-sage-light flex items-center justify-center text-brand-sage shrink-0">
+              <Flower2 className="w-4 h-4" />
+            </div>
+            <div>
+              <p className="font-sans text-[11px] font-bold text-[#422926] leading-tight">
+                Blooming happiness,
+              </p>
+              <p className="font-script text-xs text-brand-terracotta">
+                crafted by hand. ✨
+              </p>
+            </div>
+          </motion.div>
+
         </div>
 
       </div>

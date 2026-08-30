@@ -1,36 +1,40 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
-import { Star } from "lucide-react";
+import { Star, Heart } from "lucide-react";
 
 interface Testimonial {
   id: number;
   quote: string;
   author: string;
   role: string;
+  itemBought: string;
   rating: number;
 }
 
 const TESTIMONIALS: Testimonial[] = [
   {
     id: 1,
-    quote: "The Amber Ritual candle has transformed my evening routine. The earthy amber and cedarwood ground my space instantly.",
-    author: "Claire H.",
-    role: "Verified Ritualist",
+    quote: "The Chenille Tulip Bouquet is even prettier in real life! The soft velvet texture and lovely wrapping make it the perfect keepsake. It never wilts!",
+    author: "Ananya R.",
+    role: "Verified Buyer",
+    itemBought: "Eternal Tulip Bouquet",
     rating: 5,
   },
   {
     id: 2,
-    quote: "These lavender bath salts are a weekly self-care necessity. It feels like stepping into a private botanical sanctuary.",
-    author: "Liam D.",
-    role: "Verified Ritualist",
+    quote: "I bought the Tulip & Heart Bag Charm for my tote bag and receive compliments every single day. The little pearl chain and wooden tag are so adorable.",
+    author: "Sneha M.",
+    role: "Verified Buyer",
+    itemBought: "Tulip & Heart Charm",
     rating: 5,
   },
   {
     id: 3,
-    quote: "Every detail, from the hand-cast clay to the plastic-free packing, feels intentional. Ruyra is a complete sensory experience.",
-    author: "Chloe S.",
-    role: "Verified Ritualist",
+    quote: "Ordered the custom gift box for my best friend's birthday. Chisó wrote my message in beautiful calligraphy and the daisies brought pure happiness!",
+    author: "Pooja K.",
+    role: "Verified Buyer",
+    itemBought: "Heartfelt Gift Hamper",
     rating: 5,
   },
 ];
@@ -57,74 +61,77 @@ export default function Testimonials() {
   };
 
   return (
-    <section className="py-24 w-full bg-brand-sand">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 text-center space-y-16">
+    <section className="py-20 md:py-28 w-full bg-[#FAF7F2] border-t border-[#EFE7DD]">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 text-center space-y-14">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="space-y-3"
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="space-y-2 max-w-xl mx-auto"
         >
-          <h2 className="font-serif text-3xl md:text-4xl text-brand-brown">
-            Sanctuary Echoes
+          <div className="flex items-center justify-center gap-1.5 text-brand-terracotta text-xs font-sans font-bold tracking-widest uppercase">
+            <Heart className="w-3.5 h-3.5 fill-brand-terracotta" />
+            <span>LOVED BY THOUSANDS</span>
+          </div>
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#422926]">
+            Heartfelt <span className="font-script text-4xl sm:text-5xl lg:text-6xl text-brand-terracotta">Reviews</span>
           </h2>
-          <p className="font-sans text-xs uppercase tracking-widest text-brand-text-muted">
-            Stories of grounding from our community
+          <p className="font-sans text-xs sm:text-sm text-brand-text-muted">
+            Stories of blooming joy and keepsake gifts from our sweet community.
           </p>
         </motion.div>
 
-        {/* Staggered Deck (Mobile Stack / Desktop Grid) */}
+        {/* 3 Cards Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-50px" }}
-          animate="show"
-          className="flex flex-col md:grid md:grid-cols-3 gap-8 text-left w-full"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 text-left w-full"
         >
-          {TESTIMONIALS.map((t, index) => {
-            // Sticky top offset to stack them sequentially (e.g. 96px, 128px, 160px...)
-            const stickyTop = 96 + index * 32;
-            return (
-              <motion.div
-                key={t.id}
-                variants={itemVariants}
-                whileHover={{ y: -5 }}
-                style={{ top: `${stickyTop}px`, zIndex: index + 10 }}
-                className="sticky md:relative md:!top-auto bg-[#F5F2EB] md:bg-brand-taupe/20 border border-brand-brown/10 md:border-brand-brown/5 rounded-[2rem] md:rounded-4xl p-8 md:p-10 flex flex-col justify-between space-y-8 hover:bg-[#EAE4DB] md:hover:bg-brand-taupe/35 hover:border-brand-brown/15 md:hover:border-brand-brown/10 transition-all duration-300 shadow-md md:shadow-sm"
-              >
-              {/* Rating stars */}
-              <div className="flex items-center gap-0.5 text-brand-terracotta">
-                {[...Array(t.rating)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-brand-terracotta stroke-brand-terracotta" />
-                ))}
+          {TESTIMONIALS.map((t) => (
+            <motion.div
+              key={t.id}
+              variants={itemVariants}
+              whileHover={{ y: -5 }}
+              className="bg-white border border-[#EFE7DD] rounded-3xl p-8 flex flex-col justify-between space-y-6 shadow-xs hover:shadow-md hover:border-brand-rose transition-all duration-300"
+            >
+              {/* Rating stars & Item tag */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1 text-[#D9A557]">
+                  {[...Array(t.rating)].map((_, i) => (
+                    <Star key={i} className="w-3.5 h-3.5 fill-[#D9A557] stroke-[#D9A557]" />
+                  ))}
+                </div>
+                <span className="text-[11px] font-sans font-semibold text-brand-terracotta bg-brand-rose-light px-2.5 py-0.5 rounded-full">
+                  {t.itemBought}
+                </span>
               </div>
 
               {/* Quote */}
-              <p className="font-serif text-lg leading-relaxed text-brand-brown italic">
+              <p className="font-serif text-base sm:text-lg leading-relaxed text-[#422926] italic">
                 &ldquo;{t.quote}&rdquo;
               </p>
 
               {/* Author Info */}
-              <div className="pt-4 border-t border-brand-brown/5 flex items-center justify-between">
+              <div className="pt-4 border-t border-[#EFE7DD] flex items-center justify-between">
                 <div>
-                  <h4 className="font-sans text-sm font-semibold text-brand-brown">
+                  <h4 className="font-sans text-sm font-bold text-[#422926]">
                     {t.author}
                   </h4>
                   <span className="font-sans text-[11px] text-brand-text-muted">
                     {t.role}
                   </span>
                 </div>
-                {/* Verified Circle */}
-                <div className="w-6 h-6 rounded-full bg-brand-brown/5 flex items-center justify-center">
-                  <span className="text-[10px] font-sans font-bold text-brand-terracotta">✓</span>
+                {/* Verified Tag */}
+                <div className="w-6 h-6 rounded-full bg-brand-sage-light flex items-center justify-center text-brand-sage font-bold text-xs">
+                  ✓
                 </div>
               </div>
             </motion.div>
-          );
-        })}
+          ))}
         </motion.div>
       </div>
     </section>

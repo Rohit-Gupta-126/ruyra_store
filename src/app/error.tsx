@@ -2,59 +2,53 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
+import { Heart } from "lucide-react";
 
 export default function GlobalError({
   error,
-  unstable_retry,
+  reset,
 }: {
   error: Error & { digest?: string };
-  unstable_retry: () => void;
+  reset?: () => void;
 }) {
   useEffect(() => {
-    // Log error to an error reporting service in production
     if (process.env.NODE_ENV !== "development") {
-      console.error("[RUYRA error]", error);
+      console.error("[CHISÓ Creations error]", error);
     }
   }, [error]);
 
   return (
-    <main className="min-h-screen bg-brand-sand flex flex-col items-center justify-center text-center px-6">
-      {/* Decorative watermark */}
-      <span
-        aria-hidden="true"
-        className="font-serif font-bold text-[160px] leading-none text-brand-brown/[0.04] select-none pointer-events-none absolute"
-      >
-        ✦
-      </span>
+    <main className="min-h-screen bg-[#FAF7F2] flex flex-col items-center justify-center text-center px-6 text-[#422926]">
+      <div className="relative z-10 flex flex-col items-center gap-4 max-w-md">
+        <div className="w-12 h-12 rounded-full bg-brand-rose-light flex items-center justify-center text-brand-terracotta mb-2">
+          <Heart className="w-6 h-6 fill-brand-terracotta" />
+        </div>
 
-      <div className="relative z-10 flex flex-col items-center gap-5 max-w-md">
-        <span className="font-sans text-[10px] tracking-[0.4em] uppercase font-bold text-brand-terracotta">
+        <span className="font-sans text-xs tracking-[0.3em] uppercase font-bold text-brand-terracotta">
           Something went wrong
         </span>
 
-        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-brand-brown leading-tight">
-          A disruption
-          <br />
-          <span className="italic font-normal">in the sanctuary</span>
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#422926] leading-tight">
+          A small hiccup in <br />
+          <span className="font-script text-4xl sm:text-5xl text-brand-terracotta">the craft studio ♡</span>
         </h1>
 
-        <div className="w-10 h-px bg-brand-terracotta/40" />
-
-        <p className="font-sans text-sm text-brand-text-muted leading-relaxed font-light">
-          An unexpected error occurred. Please try again, or return home if the
-          problem persists.
+        <p className="font-sans text-xs sm:text-sm text-brand-text-muted leading-relaxed">
+          An unexpected error occurred. Please try refreshing, or return home if the problem persists.
         </p>
 
-        <div className="flex gap-3 mt-2">
-          <button
-            onClick={unstable_retry}
-            className="px-6 py-3 bg-brand-brown text-brand-sand font-sans text-xs font-bold tracking-widest uppercase rounded-md hover:bg-brand-brown/90 transition-all"
-          >
-            Try Again
-          </button>
+        <div className="flex gap-3 mt-4">
+          {reset && (
+            <button
+              onClick={reset}
+              className="px-6 py-3 bg-brand-terracotta text-white font-sans text-xs font-bold tracking-widest uppercase rounded-full hover:bg-[#B34E59] shadow-md transition-all cursor-pointer"
+            >
+              Try Again
+            </button>
+          )}
           <Link
             href="/"
-            className="px-6 py-3 border border-brand-brown/20 text-brand-brown font-sans text-xs font-bold tracking-widest uppercase rounded-md hover:bg-brand-brown/5 transition-all"
+            className="px-6 py-3 border border-[#EFE7DD] bg-white text-[#422926] font-sans text-xs font-bold tracking-widest uppercase rounded-full hover:border-brand-rose transition-all shadow-xs"
           >
             Home
           </Link>

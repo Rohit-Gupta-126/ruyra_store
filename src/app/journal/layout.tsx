@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Journal - Notes on Intentional Living",
+  title: "Our Story & Journal - CHISÓ Creations",
   description:
-    "Three essays on ritual, sensory grounding, and the quiet spaces we build for the mind. The RUYRA Journal explores slow light, sacred bathing, and earthen craft.",
+    "Stories on handcrafted art, the magic of everlasting chenille blooms, and why thoughtful handmade gifts mean more. From the makers at CHISÓ Creations.",
   alternates: {
     canonical: "/journal",
   },
   openGraph: {
-    title: "The Journal | RUYRA",
+    title: "Our Story & Journal | CHISÓ Creations",
     description:
-      "Essays on ritual, sensory grounding, and intentional living from the makers at RUYRA.",
+      "Stories on handcrafted art, everlasting flowers, and thoughtful handmade gifts from CHISÓ Creations.",
     url: "/journal",
   },
 };

@@ -17,9 +17,9 @@ const securityHeaders = [
       "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // unsafe-eval needed by Next.js dev + framer-motion
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: blob: https://images.unsplash.com https://lh3.googleusercontent.com",
-      "media-src 'self' https://storage.googleapis.com",
-      "connect-src 'self'",
+      "img-src 'self' data: blob: https://images.unsplash.com https://lh3.googleusercontent.com http://localhost:8000 http://127.0.0.1:8000 https://*.r2.dev https://*.r2.cloudflarestorage.com",
+      "media-src 'self' https://storage.googleapis.com http://localhost:8000 http://127.0.0.1:8000 https://*.r2.dev https://*.r2.cloudflarestorage.com",
+      "connect-src 'self' http://localhost:8000 http://127.0.0.1:8000",
       "frame-ancestors 'none'",
     ].join("; "),
   },
@@ -41,6 +41,28 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
         pathname: "/**",
       },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8000",
+        pathname: "/**",
+      },
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        port: "8000",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.r2.dev",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.r2.cloudflarestorage.com",
+        pathname: "/**",
+      },
     ],
   },
   async headers() {
@@ -48,6 +70,14 @@ const nextConfig: NextConfig = {
       {
         source: "/(.*)",
         headers: securityHeaders,
+      },
+    ];
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/api/v1/:path*",
+        destination: "http://127.0.0.1:8000/api/v1/:path*",
       },
     ];
   },

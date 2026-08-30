@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/private/"],
     },
-    sitemap: "https://ruyra.com/sitemap.xml",
+    sitemap: "https://chisocreations.com/sitemap.xml",
   };
 }

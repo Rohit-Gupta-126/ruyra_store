@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { X, ShoppingBag, Star, RefreshCw, Plus, Check } from "lucide-react";
+import { X, ShoppingBag, Star, RefreshCw, Plus, Check, Heart, Sparkles, Gift } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useProductSheet } from "./ProductSheetContext";
 import { products } from "@/lib/data/products";
@@ -25,75 +25,59 @@ interface PhotoReview {
 
 const INITIAL_PHOTO_REVIEWS: PhotoReview[] = [
   {
-    image: "https://images.unsplash.com/photo-1596436889106-be35e843f974?q=80&w=600&auto=format&fit=crop",
-    reviewText: "Creates a warm, calming atmosphere. Absolutely love the amber scent.",
-    author: "Julian R."
+    image: "https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?q=80&w=600&auto=format&fit=crop",
+    reviewText: "The chenille flowers are so plush and soft! Never having to throw flowers away again is amazing.",
+    author: "Ananya R."
   },
   {
-    image: "https://images.unsplash.com/photo-1602872030267-33a826bc5fe6?q=80&w=600&auto=format&fit=crop",
-    reviewText: "The salts dissolved perfectly, leaving a smooth lavender scent. So relaxing.",
+    image: "https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=600&auto=format&fit=crop",
+    reviewText: "Looks so sweet on my study desk! The little woven pot and stand are top quality.",
     author: "Elena V."
   },
   {
-    image: "https://images.unsplash.com/photo-1572945281788-b203c9fb60d1?q=80&w=600&auto=format&fit=crop",
-    reviewText: "Fits beautifully in my living room. Handcrafted texture is wonderful.",
-    author: "Marc K."
+    image: "https://images.unsplash.com/photo-1611085583191-a3b181a88401?q=80&w=600&auto=format&fit=crop",
+    reviewText: "The charm is adorable. The heart crochet work and pearls are so well crafted.",
+    author: "Sneha M."
   },
   {
-    image: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?q=80&w=600&auto=format&fit=crop",
-    reviewText: "A true statement piece. The botanicals look stunning under sunlight.",
-    author: "Sophia L."
+    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=600&auto=format&fit=crop",
+    reviewText: "Sent this gift box to my mom. She cried happy tears! 10/10 packaging.",
+    author: "Pooja K."
   }
 ];
 
 const INITIAL_TEXT_REVIEWS: Record<string, Review[]> = {
-  "amber-ritual-candle": [
+  "chenille-tulip-bouquet": [
     {
       rating: 5,
-      title: "Pure serenity in a jar",
-      body: "The combination of amber and cedarwood is grounding without being overpowering. The slow soy burn is clean, and the jar adds a rustic aesthetic to my mantle.",
-      reviewer: "Julian R.",
+      title: "Pure joy in a bouquet ♡",
+      body: "The blush pink chenille velvet is so soft to the touch. It arrived in pristine kraft packaging with a lovely ribbon. Will treasure this forever!",
+      reviewer: "Ananya R.",
       verified: true
     },
     {
       rating: 5,
-      title: "My evening grounding ritual",
-      body: "I light this every evening before meditation. The projection is excellent and it fills the entire room within ten minutes. Absolutely purchasing again.",
-      reviewer: "Sarah M.",
+      title: "Best anniversary gift ever",
+      body: "My partner loved that these flowers will last forever. No wilting, no pollen allergies, just lovely handmade art.",
+      reviewer: "Rohan D.",
       verified: true
     }
   ],
-  "ritual-bath-salts": [
+  "crochet-daisy-basket": [
     {
       rating: 5,
-      title: "Restorative bath sanctuary",
-      body: "These lavender salts are the ultimate self-care. The pink Himalayan salt draws out tension and the botanical petals floating in the bath look so beautiful.",
+      title: "Cozy desk companion",
+      body: "The daisies look bright and happy every morning when I start work. The wooden stand holds the basket perfectly.",
       reviewer: "Elena V.",
       verified: true
-    },
-    {
-      rating: 4,
-      title: "Lovely lavender scent",
-      body: "Very relaxing and skin feels incredibly soft. The only tiny thing is cleaning the flower petals out of the tub after, but it's worth it for the vibe.",
-      reviewer: "Marcus D.",
-      verified: true
     }
   ],
-  "earthen-taper-holder": [
+  "tulip-heart-bag-charm": [
     {
       rating: 5,
-      title: "Stunning craftsmanship",
-      body: "I love the natural wabi-sabi imperfections and iron spots on the clay. It holds my tapers firmly and serves as a sculptural accent even when unlit.",
-      reviewer: "Marc K.",
-      verified: true
-    }
-  ],
-  "resin-adornments": [
-    {
-      rating: 5,
-      title: "An exquisite piece of art",
-      body: "The moss and lichen suspended inside the bio-resin block are captured perfectly. It catches the natural morning light beautifully on my windowsill.",
-      reviewer: "Sophia L.",
+      title: "Obsessed with this charm!",
+      body: "I attached it to my canvas tote and everyone asks where I got it. The pearls and mini tulip are high quality.",
+      reviewer: "Sneha M.",
       verified: true
     }
   ]
@@ -101,495 +85,332 @@ const INITIAL_TEXT_REVIEWS: Record<string, Review[]> = {
 
 export default function ProductSheet() {
   const { sheetState, closeSheet } = useProductSheet();
-  const { isOpen, title, image } = sheetState;
+  const { addItem } = useCart();
 
-  // Find detailed product info based on title
-  const currentProduct = products.find((p) => p.name === title) || products[0];
+  const product = products.find((p) => p.name === sheetState.title) || products[0];
 
-  // Store selected variants keyed by product ID
-  const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({});
-  const [purchaseType, setPurchaseType] = useState<"one-time" | "subscription">("one-time");
-  const [frequency, setFrequency] = useState("1 month");
+  const [selectedVariant, setSelectedVariant] = useState<string>(
+    product.variants ? product.variants[0] : "Standard"
+  );
+  const [includeGiftNote, setIncludeGiftNote] = useState(false);
+  const [giftNoteMessage, setGiftNoteMessage] = useState("");
+  const [quantity, setQuantity] = useState(1);
+  const [activeTab, setActiveTab] = useState<"craft" | "care" | "reviews">("craft");
+  const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
+  const [addedAnimation, setAddedAnimation] = useState(false);
 
-  // Reviews state (scoped per product ID)
-  const [customReviews, setCustomReviews] = useState<Record<string, Review[]>>({});
-  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-
-  const { addItem, subtotal } = useCart();
-
-  const selectedVariant = currentProduct
-    ? (selectedVariants[currentProduct.id] || currentProduct.variants[0] || "")
-    : "";
-
-  const handleSelectVariant = (variant: string) => {
-    if (currentProduct) {
-      setSelectedVariants((prev) => ({
-        ...prev,
-        [currentProduct.id]: variant,
-      }));
+  const reviews = INITIAL_TEXT_REVIEWS[product.id] || [
+    {
+      rating: 5,
+      title: "Exceptional handmade quality",
+      body: "Handcrafted with so much attention to detail. Packed securely and arrived quickly.",
+      reviewer: "Tara S.",
+      verified: true
     }
-  };
-
-  const handleAddReview = (newReview: { rating: number; title: string; body: string; reviewer: string }) => {
-    if (currentProduct) {
-      setCustomReviews((prev) => {
-        const existing = prev[currentProduct.id] || [];
-        return {
-          ...prev,
-          [currentProduct.id]: [
-            {
-              rating: newReview.rating,
-              title: newReview.title,
-              body: newReview.body,
-              reviewer: newReview.reviewer,
-              verified: true,
-            },
-            ...existing,
-          ],
-        };
-      });
-    }
-  };
-
-  if (!currentProduct) return null;
-
-  // Numerical pricing for subscribe discount calculations
-  const basePriceNumeric = parseFloat(currentProduct.price.replace(/[^0-9.]/g, "")) || 0;
-  const discountPriceNumeric = basePriceNumeric * 0.9;
-  const displayPrice = purchaseType === "one-time"
-    ? currentProduct.price
-    : `₹${Math.round(discountPriceNumeric).toLocaleString("en-IN")}`;
-
-  // Find 1-2 complementary products
-  const complementaryProducts = products
-    .filter((p) => p.id !== currentProduct.id)
-    .slice(0, 2);
-
-  // Combine default reviews and custom reviews
-  const textReviews = [
-    ...(customReviews[currentProduct.id] || []),
-    ...(INITIAL_TEXT_REVIEWS[currentProduct.id] || []),
   ];
 
+  const handleAddToCart = () => {
+    setAddedAnimation(true);
+    for (let i = 0; i < quantity; i++) {
+      addItem({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        variant: selectedVariant + (includeGiftNote && giftNoteMessage ? ` (Note: ${giftNoteMessage})` : ""),
+        image: product.image,
+      });
+    }
+    setTimeout(() => {
+      setAddedAnimation(false);
+      closeSheet();
+    }, 800);
+  };
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          {/* Backdrop Overlay */}
-          <motion.div
-            id="sheet-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={closeSheet}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-55"
-            aria-hidden="true"
-          />
-
-          {/* Bottom Sheet Drawer */}
-          <motion.div
-            id="product-sheet"
-            role="dialog"
-            aria-modal="true"
-            aria-label={`Product details for ${title}`}
-            initial={{ y: "100%", x: 0 }}
-            animate={{ y: 0, x: 0 }}
-            exit={{ y: "100%", x: 0 }}
-            variants={{
-              desktop: { y: 0, x: 0 },
-              mobile: { y: 0, x: 0 }
-            }}
-            transition={{ type: "spring", stiffness: 260, damping: 28 }}
-            className="fixed inset-x-0 bottom-0 h-[80vh] md:h-full md:w-120 md:top-0 md:bottom-0 md:left-auto md:right-0 md:rounded-t-none md:rounded-l-3xl bg-bg-primary rounded-t-3xl shadow-2xl z-60 flex flex-col text-text-primary overflow-hidden"
-          >
-            {/* Top Drag Indicator (Mobile Only) */}
-            <div 
-              className="w-full flex justify-center py-4 cursor-pointer md:hidden shrink-0"
+    <>
+      <AnimatePresence>
+        {sheetState.isOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               onClick={closeSheet}
-              aria-label="Close details"
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-90"
+              aria-hidden="true"
+            />
+
+            {/* Modal / Bottom Sheet */}
+            <motion.div
+              initial={{ y: "100%", opacity: 0.5 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: "100%", opacity: 0 }}
+              transition={{ type: "spring", stiffness: 260, damping: 28 }}
+              className="fixed bottom-0 left-0 right-0 max-h-[92vh] md:max-h-[88vh] md:bottom-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-3xl bg-[#FAF7F2] rounded-t-3xl md:rounded-3xl z-100 shadow-2xl overflow-hidden flex flex-col text-[#422926]"
             >
-              <div className="w-12 h-1.5 bg-gray-300 rounded-full hover:bg-gray-400 transition-colors" />
-            </div>
-
-            {/* Header / Top Bar */}
-            <div className="flex justify-between items-center px-6 pt-2 pb-4 md:pt-8 shrink-0 border-b border-bg-surface">
-              <span className="font-sans text-[10px] tracking-[0.25em] uppercase text-text-secondary">
-                {currentProduct.category}
-              </span>
-              <motion.button
-                id="sheet-close-btn"
-                suppressHydrationWarning
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.92 }}
-                className="w-8 h-8 rounded-full bg-bg-surface flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors focus:outline-none"
-                onClick={closeSheet}
-                aria-label="Close detail panel"
-              >
-                <X className="w-4 h-4" />
-              </motion.button>
-            </div>
-
-            {/* Scrollable Content Container */}
-            <div className="flex-1 overflow-y-auto px-6 py-6 space-y-8 no-scrollbar pb-48">
-              {/* Product Image */}
-              <div className="relative aspect-4/3 w-full rounded-2xl overflow-hidden bg-bg-surface shrink-0">
-                <Image
-                  src={image || currentProduct.image}
-                  alt={currentProduct.alt}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 480px"
-                />
-              </div>
-
-              {/* Title & Price */}
-              <div>
-                <h2 className="font-serif text-3xl md:text-4xl leading-tight">
-                  {title}
-                </h2>
-                <div className="flex items-center gap-3 mt-2">
-                  <span className="font-sans text-xl font-medium tracking-wide">
-                    {displayPrice}
+              {/* Header with Close */}
+              <div className="p-4 sm:p-6 border-b border-[#EFE7DD] flex items-center justify-between bg-white shrink-0">
+                <div className="flex items-center gap-2">
+                  <span className="font-sans text-xs uppercase tracking-wider font-bold text-brand-terracotta bg-brand-rose-light px-3 py-1 rounded-full">
+                    {product.category}
                   </span>
-                  <div className="flex items-center gap-1 text-accent-gold ml-2">
-                    <Star className="w-4 h-4 fill-accent-gold stroke-accent-gold" />
-                    <span className="font-sans text-xs text-text-secondary font-medium">
-                      4.9 ({140 + textReviews.length} reviews)
-                    </span>
+                  <span className="text-xs text-brand-text-muted hidden sm:inline">
+                    • 100% Handcrafted Keepsake
+                  </span>
+                </div>
+                <button
+                  onClick={closeSheet}
+                  className="w-8 h-8 rounded-full bg-[#FAF7F2] hover:bg-brand-rose-light text-[#422926] hover:text-brand-terracotta flex items-center justify-center transition-colors focus:outline-none cursor-pointer"
+                  aria-label="Close details"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Scrollable Content */}
+              <div className="overflow-y-auto p-6 sm:p-8 space-y-6 sm:space-y-8 flex-1 no-scrollbar pb-32 md:pb-8">
+                
+                {/* Product Hero Info */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                  <div className="md:col-span-5 aspect-4/5 rounded-2xl overflow-hidden bg-brand-taupe relative shadow-xs">
+                    <Image
+                      src={product.image}
+                      alt={product.alt}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 40vw"
+                    />
                   </div>
-                </div>
-              </div>
 
-              {/* Description */}
-              <div className="space-y-2">
-                <h4 className="font-sans text-xs font-bold uppercase tracking-wider text-text-secondary">
-                  The Ritual
-                </h4>
-                <p className="font-sans text-sm text-text-primary leading-relaxed font-light">
-                  {currentProduct.description}
-                </p>
-              </div>
-
-              {/* Variant Selector */}
-              <div>
-                <h4 className="font-sans text-xs font-bold uppercase tracking-wider text-text-secondary mb-3">
-                  Select {currentProduct.variantType}
-                </h4>
-                <div className="flex flex-wrap gap-3">
-                  {currentProduct.variants.map((v) => {
-                    const isSelected = selectedVariant === v;
-                    return (
-                      <motion.button
-                        key={v}
-                        id={`variant-btn-${v}`}
-                        suppressHydrationWarning
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={() => handleSelectVariant(v)}
-                        className={`px-5 py-2.5 rounded-full font-sans text-xs tracking-wider border transition-all duration-300 focus:outline-none ${
-                          isSelected
-                            ? "bg-bg-primary border-accent-primary border-2 text-accent-primary font-medium"
-                            : "bg-white border-gray-200 text-text-secondary hover:border-text-secondary/40"
-                        }`}
-                      >
-                        {v}
-                      </motion.button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Subscribe & Save Radio-Button Cards */}
-              <div className="space-y-3">
-                <h4 className="font-sans text-xs font-bold uppercase tracking-wider text-text-secondary">
-                  Delivery Options
-                </h4>
-                <div className="flex flex-col gap-3">
-                  {/* Card 1: One-time */}
-                  <div
-                    onClick={() => setPurchaseType("one-time")}
-                    className={`p-4 rounded-2xl border cursor-pointer transition-all duration-300 flex items-center justify-between ${
-                      purchaseType === "one-time"
-                        ? "border-brand-brown bg-brand-taupe/30"
-                        : "border-brand-brown/10 hover:border-brand-brown/30 bg-white"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-4.5 h-4.5 rounded-full border flex items-center justify-center ${
-                        purchaseType === "one-time" ? "border-brand-brown" : "border-brand-brown/25"
-                      }`}>
-                        {purchaseType === "one-time" && (
-                          <div className="w-2.5 h-2.5 rounded-full bg-brand-brown" />
+                  <div className="md:col-span-7 space-y-4 text-left">
+                    <div>
+                      <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#422926]">
+                        {product.name}
+                      </h2>
+                      <div className="flex items-baseline gap-3 pt-1">
+                        <span className="font-sans text-xl sm:text-2xl font-bold text-[#422926]">
+                          {product.price}
+                        </span>
+                        {product.originalPrice && (
+                          <span className="font-sans text-sm text-brand-text-muted line-through">
+                            {product.originalPrice}
+                          </span>
                         )}
+                        <span className="text-xs font-sans text-brand-sage font-semibold">
+                          In Stock (Handcrafted with love)
+                        </span>
                       </div>
-                      <span className="font-sans text-sm font-semibold">One-Time Purchase</span>
-                    </div>
-                    <span className="font-sans text-sm font-medium">{currentProduct.price}</span>
-                  </div>
-
-                  {/* Card 2: Subscribe & Save */}
-                  <div
-                    onClick={() => setPurchaseType("subscription")}
-                    className={`p-4 rounded-2xl border cursor-pointer transition-all duration-300 flex flex-col gap-3 ${
-                      purchaseType === "subscription"
-                        ? "border-brand-brown bg-brand-taupe/30"
-                        : "border-brand-brown/10 hover:border-brand-brown/30 bg-white"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-4.5 h-4.5 rounded-full border flex items-center justify-center ${
-                          purchaseType === "subscription" ? "border-brand-brown" : "border-brand-brown/25"
-                        }`}>
-                          {purchaseType === "subscription" && (
-                            <div className="w-2.5 h-2.5 rounded-full bg-brand-brown" />
-                          )}
-                        </div>
-                        <div className="flex flex-col text-left">
-                          <span className="font-sans text-sm font-semibold">Subscribe & Save 10%</span>
-                          <span className="text-[10px] text-brand-text-muted">Eco-friendly auto-ship, cancel anytime</span>
-                        </div>
-                      </div>
-                      <span className="font-sans text-sm font-bold text-brand-terracotta">
-                        ${discountPriceNumeric.toFixed(2)}
-                      </span>
                     </div>
 
-                    {purchaseType === "subscription" && (
-                      <motion.div 
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        className="pt-3 border-t border-brand-brown/10 flex items-center justify-between" 
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <span className="font-sans text-[11px] text-brand-text-muted">Delivery frequency:</span>
-                        <select
-                          value={frequency}
-                          onChange={(e) => setFrequency(e.target.value)}
-                          className="bg-white border border-brand-brown/10 rounded-lg px-2 py-1 font-sans text-xs focus:outline-none"
-                        >
-                          <option value="1 month">Deliver every 1 month</option>
-                          <option value="2 months">Deliver every 2 months</option>
-                          <option value="3 months">Deliver every 3 months</option>
-                        </select>
-                      </motion.div>
-                    )}
-                  </div>
-                </div>
-              </div>
+                    <p className="font-sans text-xs sm:text-sm text-brand-text-muted leading-relaxed">
+                      {product.description}
+                    </p>
 
-              {/* Eco details / brand strip */}
-              <div className="bg-bg-surface rounded-2xl p-4 flex flex-col gap-3">
-                <div className="flex items-center gap-3 text-accent-primary">
-                  <RefreshCw className="w-4 h-4 animate-spin-slow" />
-                  <span className="font-sans text-xs font-medium">Plastic-free packaging & climate-neutral shipping</span>
-                </div>
-              </div>
-
-              {/* "Frequently Paired With" Cross-Sell */}
-              <div className="space-y-4 pt-4 border-t border-brand-brown/10">
-                <h3 className="font-serif text-lg font-bold text-brand-brown">Complete the Ritual</h3>
-                <div className="flex flex-col gap-3">
-                  {complementaryProducts.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex items-center justify-between p-3.5 bg-brand-taupe/20 border border-brand-brown/5 rounded-2xl hover:bg-brand-taupe/35 transition-colors duration-200"
-                    >
-                      <div className="flex items-center gap-3.5">
-                        <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-brand-taupe shrink-0">
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fill
-                            className="object-cover"
-                            sizes="48px"
-                          />
-                        </div>
-                        <div className="text-left">
-                          <h4 className="font-sans text-xs font-semibold text-brand-brown leading-snug">
-                            {item.name}
-                          </h4>
-                          <span className="font-sans text-[11px] text-brand-text-muted">
-                            {item.price}
-                          </span>
-                        </div>
-                      </div>
-                      <motion.button
-                        whileHover={{ scale: 1.08 }}
-                        whileTap={{ scale: 0.92 }}
-                        onClick={() => {
-                          addItem({
-                            id: item.id,
-                            name: item.name,
-                            price: item.price,
-                            variant: item.variants[0],
-                            image: item.image,
-                          });
-                        }}
-                        className="w-8 h-8 rounded-full border border-brand-brown text-brand-brown hover:bg-brand-brown hover:text-brand-sand flex items-center justify-center transition-colors focus:outline-none"
-                        aria-label={`Add ${item.name}`}
-                      >
-                        <Plus className="w-4 h-4" />
-                      </motion.button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* "Words from the Sanctuary" Reviews (Trust Engine) */}
-              <div className="pt-8 border-t border-brand-brown/10 space-y-6">
-                {/* Header Summary */}
-                <div className="flex items-start justify-between">
-                  <div className="space-y-1 text-left">
-                    <h3 className="font-serif text-2xl font-bold text-brand-brown">
-                      Words from the Sanctuary
-                    </h3>
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-0.5 text-accent-primary">
-                        {[1, 2, 3, 4, 5].map((i) => (
-                          <Star key={i} className="w-3.5 h-3.5 fill-brand-terracotta stroke-brand-terracotta" />
-                        ))}
-                      </div>
-                      <span className="font-sans text-[11px] text-brand-text-muted">
-                        4.9 / 5 • {140 + textReviews.length} reviews
-                      </span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setIsReviewModalOpen(true)}
-                    className="border border-brand-brown text-brand-brown hover:bg-brand-brown hover:text-brand-sand font-sans text-[10px] tracking-wider uppercase font-semibold px-4 py-2 rounded-full transition-all focus:outline-none cursor-pointer"
-                  >
-                    Write a Review
-                  </button>
-                </div>
-
-                {/* Photo Reviews Carousel */}
-                <div className="space-y-2 text-left">
-                  <h4 className="font-sans text-[10px] font-bold uppercase tracking-wider text-brand-text-muted">
-                    Community Moments
-                  </h4>
-                  <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar scroll-smooth snap-x snap-mandatory">
-                    {INITIAL_PHOTO_REVIEWS.map((photo, i) => (
-                      <div
-                        key={i}
-                        className="w-50 h-62.5 rounded-2xl overflow-hidden relative group shrink-0 snap-start bg-brand-taupe shadow-md"
-                      >
-                        <Image
-                          src={photo.image}
-                          alt={`Lifestyle upload by ${photo.author}`}
-                          fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
-                          sizes="200px"
-                        />
-                        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-left pointer-events-none">
-                          <p className="text-white font-sans text-xs leading-relaxed mb-1 line-clamp-4 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
-                            &ldquo;{photo.reviewText}&rdquo;
-                          </p>
-                          <span className="text-white/80 font-sans text-[9px] uppercase tracking-wider">
-                            — {photo.author}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Detailed Text Reviews List */}
-                <div className="space-y-4 divide-y divide-brand-brown/5 text-left">
-                  {textReviews.map((review, idx) => (
-                    <div key={idx} className={`${idx > 0 ? "pt-4" : ""} space-y-1.5`}>
-                      <div className="flex justify-between items-center">
-                        <div className="flex items-center gap-0.5 text-accent-primary">
-                          {[1, 2, 3, 4, 5].map((i) => (
-                            <Star
-                              key={i}
-                              className={`w-3 h-3 ${
-                                i <= review.rating
-                                  ? "fill-brand-terracotta stroke-brand-terracotta"
-                                  : "text-brand-brown/15"
+                    {/* Variant Selector */}
+                    {product.variants && product.variants.length > 0 && (
+                      <div className="space-y-2 pt-2">
+                        <label className="font-sans text-xs font-bold text-[#422926] uppercase tracking-wider block">
+                          Select {product.variantType || "Option"}:
+                        </label>
+                        <div className="flex flex-wrap gap-2">
+                          {product.variants.map((variant) => (
+                            <button
+                              key={variant}
+                              onClick={() => setSelectedVariant(variant)}
+                              className={`px-3.5 py-1.5 rounded-full text-xs font-sans transition-all cursor-pointer ${
+                                selectedVariant === variant
+                                  ? "bg-[#422926] text-white font-bold shadow-xs"
+                                  : "bg-white text-[#422926] border border-[#EFE7DD] hover:border-brand-rose"
                               }`}
-                            />
+                            >
+                              {variant}
+                            </button>
                           ))}
                         </div>
-                        <div className="flex items-center gap-1 bg-[#D1E7DD] text-[#0F5132] px-2 py-0.5 rounded-full">
-                          <Check className="w-2.5 h-2.5" />
-                          <span className="font-sans text-[9px] font-semibold uppercase tracking-wider">
-                            Verified Buyer
-                          </span>
-                        </div>
                       </div>
-                      <h4 className="font-sans text-sm font-semibold text-brand-brown">
-                        {review.title}
-                      </h4>
-                      <p className="font-sans text-xs text-brand-text-muted leading-relaxed max-w-2xl font-light">
-                        {review.body}
-                      </p>
-                      <span className="block font-sans text-[10px] text-brand-brown/60">
-                        — {review.reviewer}
-                      </span>
+                    )}
+
+                    {/* Custom Gift Note Option */}
+                    <div className="p-3.5 rounded-2xl bg-white border border-[#EFE7DD] space-y-2.5">
+                      <label className="flex items-center gap-2 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={includeGiftNote}
+                          onChange={(e) => setIncludeGiftNote(e.target.checked)}
+                          className="accent-brand-terracotta w-4 h-4 rounded"
+                        />
+                        <span className="font-sans text-xs font-bold text-[#422926] flex items-center gap-1.5">
+                          <Gift className="w-3.5 h-3.5 text-brand-terracotta" />
+                          Add Complimentary Handwritten Gift Note ♡
+                        </span>
+                      </label>
+
+                      {includeGiftNote && (
+                        <textarea
+                          rows={2}
+                          value={giftNoteMessage}
+                          onChange={(e) => setGiftNoteMessage(e.target.value)}
+                          placeholder="Write your custom message here (e.g. Happy Birthday Sarah! Loved crafting this for you...)"
+                          className="w-full text-xs font-sans p-2.5 rounded-xl border border-[#EFE7DD] focus:border-brand-terracotta outline-none bg-[#FAF7F2] resize-none"
+                        />
+                      )}
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
 
-            {/* Sticky Bottom CTA */}
-            <div className="absolute bottom-0 left-0 right-0 bg-brand-sand/95 border-t border-brand-brown/5 px-6 py-5 shrink-0 z-10">
-              {/* Shipping Motivator */}
-              <div className="mb-3.5 space-y-1.5 text-left">
-                <div className="flex justify-between text-[11px] font-medium font-sans">
-                  {subtotal >= 2500 ? (
-                    <span className="text-brand-terracotta font-semibold">You qualify for complimentary shipping! 🚚</span>
-                  ) : (
-                    <span>
-                      Add <span className="font-bold text-brand-terracotta">₹{(2500 - subtotal).toFixed(0)}</span> to unlock free shipping
-                    </span>
+                    {/* Quantity & Add to Bag Bar */}
+                    <div className="flex items-center gap-3 pt-2">
+                      <div className="flex items-center border border-[#EFE7DD] bg-white rounded-full p-1 shadow-xs">
+                        <button
+                          onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                          className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-brand-rose-light text-[#422926] font-bold text-sm"
+                        >
+                          -
+                        </button>
+                        <span className="w-8 text-center font-sans text-xs font-bold">
+                          {quantity}
+                        </span>
+                        <button
+                          onClick={() => setQuantity(quantity + 1)}
+                          className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-brand-rose-light text-[#422926] font-bold text-sm"
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <button
+                        onClick={handleAddToCart}
+                        disabled={addedAnimation}
+                        className={`flex-1 py-3.5 px-6 rounded-full font-sans text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer ${
+                          addedAnimation
+                            ? "bg-brand-sage text-white"
+                            : "bg-brand-terracotta hover:bg-[#B34E59] text-white hover:shadow-lg"
+                        }`}
+                      >
+                        {addedAnimation ? (
+                          <>
+                            <Check className="w-4 h-4" />
+                            <span>Added to Bag! ♡</span>
+                          </>
+                        ) : (
+                          <>
+                            <ShoppingBag className="w-4 h-4" />
+                            <span>Add to Bag</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* Tabs: Craft Story, Flower Care, Customer Reviews */}
+                <div className="space-y-4 pt-4 border-t border-[#EFE7DD]">
+                  <div className="flex border-b border-[#EFE7DD] gap-6">
+                    <button
+                      onClick={() => setActiveTab("craft")}
+                      className={`pb-2.5 font-sans text-xs sm:text-sm font-bold uppercase tracking-wider border-b-2 transition-all cursor-pointer ${
+                        activeTab === "craft"
+                          ? "border-brand-terracotta text-brand-terracotta"
+                          : "border-transparent text-brand-text-muted hover:text-[#422926]"
+                      }`}
+                    >
+                      Artisanal Craft
+                    </button>
+                    <button
+                      onClick={() => setActiveTab("care")}
+                      className={`pb-2.5 font-sans text-xs sm:text-sm font-bold uppercase tracking-wider border-b-2 transition-all cursor-pointer ${
+                        activeTab === "care"
+                          ? "border-brand-terracotta text-brand-terracotta"
+                          : "border-transparent text-brand-text-muted hover:text-[#422926]"
+                      }`}
+                    >
+                      Care Guide
+                    </button>
+                    <button
+                      onClick={() => setActiveTab("reviews")}
+                      className={`pb-2.5 font-sans text-xs sm:text-sm font-bold uppercase tracking-wider border-b-2 transition-all cursor-pointer ${
+                        activeTab === "reviews"
+                          ? "border-brand-terracotta text-brand-terracotta"
+                          : "border-transparent text-brand-text-muted hover:text-[#422926]"
+                      }`}
+                    >
+                      Reviews ({reviews.length})
+                    </button>
+                  </div>
+
+                  {/* Tab Contents */}
+                  {activeTab === "craft" && (
+                    <div className="p-4 rounded-2xl bg-white border border-[#EFE7DD] text-xs font-sans text-brand-text-muted space-y-2 leading-relaxed text-left">
+                      <p>
+                        🌸 <strong>Hand-stitched with care:</strong> Every petal and loop is sculpted individually using high-grade hypoallergenic chenille velvet yarn.
+                      </p>
+                      <p>
+                        ✨ <strong>Everlasting Keepsake:</strong> Unlike fresh cut flowers that fade in days, our blooms stay vibrant forever without any maintenance.
+                      </p>
+                      <p>
+                        🎁 <strong>Eco-Friendly Packaging:</strong> Shipped in plastic-free recyclable kraft wrapping with a hand-tied satin ribbon.
+                      </p>
+                    </div>
                   )}
-                  <span className="text-brand-text-muted">{Math.min(Math.round((subtotal / 2500) * 100), 100)}%</span>
+
+                  {activeTab === "care" && (
+                    <div className="p-4 rounded-2xl bg-white border border-[#EFE7DD] text-xs font-sans text-brand-text-muted space-y-2 leading-relaxed text-left">
+                      <p>• <strong>No Water Needed:</strong> Keep away from moisture and water to preserve yarn softness.</p>
+                      <p>• <strong>Gentle Dusting:</strong> If needed, gently tap or blow cool air from a hairdryer to remove light dust.</p>
+                      <p>• <strong>Direct Sunlight:</strong> Best displayed indoors away from harsh prolonged UV sunlight to retain rich pastel hues.</p>
+                    </div>
+                  )}
+
+                  {activeTab === "reviews" && (
+                    <div className="space-y-4 text-left">
+                      {/* Photo Reviews Strip */}
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        {INITIAL_PHOTO_REVIEWS.map((pr, idx) => (
+                          <div key={idx} className="aspect-square relative rounded-xl overflow-hidden bg-brand-taupe">
+                            <Image src={pr.image} alt={pr.reviewText} fill className="object-cover" />
+                            <div className="absolute inset-0 bg-black/30 p-2 flex flex-col justify-end text-[10px] text-white">
+                              <span className="font-bold">{pr.author}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Text Reviews */}
+                      <div className="space-y-3">
+                        {reviews.map((r, idx) => (
+                          <div key={idx} className="p-4 rounded-2xl bg-white border border-[#EFE7DD] space-y-1.5">
+                            <div className="flex items-center justify-between">
+                              <div className="flex text-[#D9A557]">
+                                {[...Array(r.rating)].map((_, i) => (
+                                  <Star key={i} className="w-3 h-3 fill-[#D9A557]" />
+                                ))}
+                              </div>
+                              <span className="text-[10px] font-sans font-semibold text-brand-sage">
+                                Verified Buyer ✓
+                              </span>
+                            </div>
+                            <h4 className="font-serif text-sm font-bold text-[#422926]">{r.title}</h4>
+                            <p className="font-sans text-xs text-brand-text-muted">{r.body}</p>
+                            <p className="font-sans text-[10px] text-brand-text-muted/70 pt-1">— {r.reviewer}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                 </div>
-                <div className="w-full h-1 bg-brand-taupe rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${Math.min((subtotal / 2500) * 100, 100)}%` }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="h-full bg-brand-terracotta"
-                  />
-                </div>
+
               </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
-              <motion.button
-                id="add-to-bag-btn"
-                suppressHydrationWarning
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full bg-accent-primary hover:bg-opacity-95 text-white py-4 rounded-full font-sans text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 shadow-xl shadow-accent-primary/10 hover:shadow-accent-primary/20 transition-all focus:outline-none cursor-pointer"
-                onClick={() => {
-                  addItem({
-                    id: currentProduct.id,
-                    name: title,
-                    price: displayPrice,
-                    variant: selectedVariant,
-                    image: image || currentProduct.image,
-                    isSubscription: purchaseType === "subscription",
-                    frequency: purchaseType === "subscription" ? frequency : undefined,
-                  });
-                  closeSheet();
-                }}
-              >
-                <ShoppingBag className="w-4 h-4 stroke-2" />
-                Add to Bag — {displayPrice}
-              </motion.button>
-            </div>
-          </motion.div>
-
-          {/* Write Review Form Overlay */}
-          <WriteReviewModal
-            isOpen={isReviewModalOpen}
-            onClose={() => setIsReviewModalOpen(false)}
-            onSubmit={handleAddReview}
-          />
-        </>
-      )}
-    </AnimatePresence>
+      <WriteReviewModal
+        isOpen={isWriteReviewOpen}
+        onClose={() => setIsWriteReviewOpen(false)}
+        onSubmit={() => setIsWriteReviewOpen(false)}
+      />
+    </>
   );
 }

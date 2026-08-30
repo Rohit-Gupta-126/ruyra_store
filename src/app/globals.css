@@ -1,14 +1,22 @@
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
 
-/* ─── RUYRA Design Tokens (Tailwind v4 @theme) ─── */
+/* ─── CHISÓ Creations Design Tokens (Tailwind v4 @theme) ─── */
 @theme inline {
-  /* Brand Palette */
-  --color-brand-brown: #3E2C24;
-  --color-brand-sand: #F6F4F0;
-  --color-brand-taupe: #EAE4DB;
-  --color-brand-terracotta: #B85B3F;
-  --color-brand-text-muted: #7A6F69;
+  /* Brand Palette - Soft Artisanal Luxury */
+  --color-brand-brown: #422926;
+  --color-brand-mocha: #38201D;
+  --color-brand-sand: #FAF7F2;
+  --color-brand-cream: #FFFDF9;
+  --color-brand-taupe: #F3EBE6;
+  --color-brand-blush: #D9777F;
+  --color-brand-rose: #E8A598;
+  --color-brand-rose-light: #F9ECE9;
+  --color-brand-terracotta: #C8626D;
+  --color-brand-sage: #7E9675;
+  --color-brand-sage-light: #EBF1EA;
+  --color-brand-gold: #D9A557;
+  --color-brand-text-muted: #7D6B66;
 
   /* Colors mapped to Brand Palette */
   --color-bg-primary: var(--color-brand-sand);
@@ -16,16 +24,18 @@
   --color-text-primary: var(--color-brand-brown);
   --color-text-secondary: var(--color-brand-text-muted);
   --color-accent-primary: var(--color-brand-terracotta);
-  --color-accent-secondary: var(--color-brand-terracotta);
-  --color-accent-gold: #D4AF37;
+  --color-accent-secondary: var(--color-brand-blush);
+  --color-accent-gold: var(--color-brand-gold);
+  --color-accent-sage: var(--color-brand-sage);
 
   /* Typography */
-  --font-sans: var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-sans: var(--font-jakarta), "Plus Jakarta Sans", system-ui, sans-serif;
   --font-serif: var(--font-playfair), "Playfair Display", Georgia, serif;
+  --font-script: var(--font-caveat), "Caveat", "Alex Brush", cursive;
 
   /* Custom Spacing & Border Radius */
   --radius-card: 1.25rem;
-  --radius-card-lg: 1.5rem;
+  --radius-card-lg: 1.75rem;
   --radius-pill: 9999px;
   --radius-sheet: 2.5rem;
 }
@@ -46,7 +56,12 @@ html {
 body {
   background-color: var(--color-brand-sand);
   color: var(--color-brand-brown);
-  font-family: var(--font-inter), "Inter", system-ui, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* ─── Typography Helpers ─── */
+.font-script {
+  font-family: var(--font-caveat), "Caveat", "Alex Brush", cursive;
 }
 
 /* ─── Scrollbar Utility ─── */
@@ -60,9 +75,21 @@ body {
   scrollbar-width: none;
 }
 
-/* ─── Text Outline ─── */
-.text-outline-brown {
-  -webkit-text-stroke: 1px var(--color-brand-brown);
+/* ─── Craft Aesthetic Details ─── */
+.craft-tag {
+  background: #FFFDF9;
+  border: 1px dashed rgba(66, 41, 38, 0.25);
+  box-shadow: 0 4px 12px rgba(66, 41, 38, 0.04);
+}
+
+.craft-pill {
+  background: #FFF7F5;
+  border: 1px solid #F3DDD8;
+  color: #C8626D;
+}
+
+.craft-card-glow {
+  box-shadow: 0 10px 30px -10px rgba(217, 119, 127, 0.12), 0 2px 8px rgba(66, 41, 38, 0.04);
 }
 
 /* ─── Bottom Sheet Animation ─── */
@@ -85,36 +112,6 @@ body {
   pointer-events: auto;
 }
 
-/* ─── Desktop Sidebar Nav ─── */
-.desktop-sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 260px;
-  background: rgba(250, 249, 246, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(195, 200, 193, 0.4);
-  z-index: 50;
-  display: flex;
-  flex-direction: column;
-  padding: 2rem 1.5rem;
-}
-
-/* ─── Tablet Top Nav ─── */
-.tablet-topnav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 50;
-  background: rgba(250, 249, 246, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(195, 200, 193, 0.3);
-}
-
 /* ─── Hover scale group ─── */
 .product-card:hover .product-img {
   transform: scale(1.05);
@@ -123,21 +120,7 @@ body {
   transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* ─── Desktop grid layout ─── */
-@media (min-width: 1024px) {
-  .desktop-layout {
-    margin-left: 260px;
-  }
-}
-
-/* ─── Tablet layout ─── */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .tablet-layout {
-    padding-top: 72px;
-  }
-}
-
 /* ─── Hero text shadow ─── */
 .hero-headline {
-  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 16px rgba(66, 41, 38, 0.08);
 }

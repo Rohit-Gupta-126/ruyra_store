@@ -44,7 +44,7 @@ export default function CartProvider({ children }: { children: React.ReactNode }
   // Load cart from localStorage on mount (Client-side only)
   useEffect(() => {
     const timer = setTimeout(() => {
-      const savedCart = localStorage.getItem("ruyra_cart");
+      const savedCart = localStorage.getItem("chiso_cart") || localStorage.getItem("ruyra_cart");
       if (savedCart) {
         try {
           const parsed = JSON.parse(savedCart);
@@ -65,7 +65,7 @@ export default function CartProvider({ children }: { children: React.ReactNode }
   // Save cart to localStorage on change
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem("ruyra_cart", JSON.stringify(cartItems));
+      localStorage.setItem("chiso_cart", JSON.stringify(cartItems));
     }
   }, [cartItems, isLoaded]);
 
