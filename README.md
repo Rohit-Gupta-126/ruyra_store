@@ -1,84 +1,76 @@
-# RUYRA — Botanical Rituals
+# CHISÓ Creations — Little Luxuries, Handcrafted. ✨
 
-RUYRA is a premium luxury e-commerce storefront specializing in handcrafted botanical candles, bath rituals, and artisanal home adornments. This Next.js 16 application showcases a refined editorial aesthetic with immersive UX patterns designed to elevate the brand experience and drive conversions.
+**CHISÓ Creations** is an artisanal luxury e-commerce storefront specializing in everlasting chenille floral creations, adorable bag charms, woven room décor, and heartfelt bespoke gifts. Built on Next.js 16 with Turbopack, Tailwind CSS v4, and Framer Motion, it delivers a cozy, tactile editorial aesthetic with high-converting, modern UI/UX interactions.
 
-## ✨ Key Features
+> *"Handmade blooms. Thoughtful gifts. Made especially for you. ♡"*
 
-### Hero Section
-A breathtaking full-screen hero featuring:
-* High-quality background imagery (`hero_bg.png`) with optimized loading and 100% quality rendering
-* Centered, minimalist typography with serif headings and elegant sans-serif subtitles
-* Soft darkening overlay for text legibility without obscuring the beautiful product backdrop
-* Smooth scale-down entrance animation on initial page load
-* Responsive CTA buttons (white solid & translucent outline) with hover transitions
+---
 
-### Tactile Product Cards
-Enhanced product cards with dual-media hover effects:
-* Static product image that fades out smoothly on hover
-* Background video that fades in revealing product in motion
-* Magnetic button effect: floating `+` button that tracks cursor movement up to 40px radius
-* Responsive design: mobile floating button below, desktop magnetic interaction
-* Graceful fallback: if video fails to load, the product image remains visible
+## 🌸 Core Handcrafted Pillars
 
-### Vibe Carousel
-Curated product showcase with smart responsive layout:
-* Mobile: horizontal snap carousel with finger-scroll interaction
-* Tablet/Desktop: CSS Grid (3 columns) with overflow-visible staggered animation
-* Product cards fade and scale in on scroll using Framer Motion's `whileInView`
-* Brand-aligned color palette (sand background, brown typography, terracotta accents)
+1. 🌸 **BLOOMS**: Everlasting chenille and crochet flower bouquets (tulips, daisies, peonies) handcrafted with love and kept forever.
+2. 🎀 **CHARMS**: Adorable & unique plush mini tulips, hand-stitched crochet hearts, and faux pearl beaded keychains.
+3. 🎁 **GIFTS**: Curated celebratory gift hampers with complimentary handwritten calligraphy cards.
+4. 🏠 **DÉCOR**: Miniature daisy flower arrangements in rustic woven rattan basket pots with wooden display stands.
+5. ✏️ **CUSTOM CREATIONS**: Bespoke floral designs tailored to custom color palettes, anniversaries, and milestone moments.
 
-### Editorial Interstitial
-Premium scroll-linked text animation section:
-* Fixed sticky container with 200vh scroll height for immersive reading experience
-* Three-line progressive reveal mapped to scroll progress (5%-25%, 35%-55%, 65%-85%)
-* Smooth opacity and vertical movement (`useTransform` from Framer Motion)
-* Perfect timing eliminates dead space and creates seamless narrative flow
+---
 
-### Value Marquee
-Horizontal loop animation showcasing brand pillars:
-* Auto-scrolling ticker displaying key brand values
-* Seamless infinite loop with duplicate content
-* Desktop and mobile optimized widths with responsive font scaling
-* Accessibility support with pause on hover/focus
+## ✨ Key Features & UX Highlights
 
-### Revenue Engine
-Integrated within the Product Detail Modal:
-* **Subscribe & Save**: Stacked cards offering 10% discount with frequency selection
-* **Shipping Motivator**: Dynamic progress bar tracking $75 free shipping threshold
-* **Cross-sell Recommendations**: "Complete the Ritual" pairing suggestions
+### 1. Interactive 3D Hero Showcase
+- **3D Tilt Physics**: Interactive perspective card responding to cursor movement.
+- **Floating Craft Tags**: *"Made with love. Kept forever. ♡"* and *"Blooming happiness, crafted by hand. ✨"*
+- **Multi-vibe Switcher**: Seamless autoplay and manual tab navigation between Blooms, Charms, and Décor.
+- **Top Announcement Bar**: Displays promotional alerts and free shipping thresholds.
 
-### Trust Engine
-Community-driven social proof:
-* **Photo Review Carousel**: User-generated content with glassmorphic overlays
-* **Verified Buyer Badges**: Trust indicators with detailed reviews
-* **Dynamic Review Submission**: Write review modal with star rating system
+### 2. Category Pillars Grid (`CategoryPillars.tsx`)
+- Interactive 5-pillar visual navigation bar mapping directly to corresponding collections with animated hover transitions.
 
-### Performance Engine
-Predictive instant search:
-* Full-screen responsive search overlay
-* Trending intention pills for quick filtering
-* Real-time query matching against product metadata
-* Staggered result animations with instant modal trigger
+### 3. Tactile Product Cards (`ProductCard.tsx`)
+- Soft linen and pastel card surfaces with category badges.
+- **Magnetic Quick-Add Button**: Floating spring-physics button that attracts cursor within a 40px radius.
+- Star rating indicators and instant preview sheet triggers.
+
+### 4. Keepsake Product Quick-View (`ProductSheet.tsx`)
+- Tabbed specifications: **Artisanal Craft Details**, **Everlasting Care Guide** (no watering needed), and **Customer Photo Reviews**.
+- Interactive stem/ribbon variant selectors.
+- Complimentary **Handwritten Gift Note** checkbox with custom message input.
+
+### 5. Keepsake Bag & Checkout Flow (`CartDrawer.tsx` & `/checkout`)
+- Real-time free shipping motivator meter (₹1,999 threshold).
+- Plastic-free craft packaging reminder.
+- Multi-step checkout with UPI (PhonePe, Paytm, BHIM QR codes), order confirmation, and celebratory receipt generation.
+
+### 6. Handcrafted Story Interstitial (`EditorialInterstitial.tsx`)
+- Scroll-driven parallax text reveal: *"Handmade with Love. Kept Forever. ♡ Blooming Happiness in Every Stitch."*
+
+### 7. Instant Search Overlay (`SearchOverlay.tsx`)
+- Full-screen search with trending intention pills (*"Chenille Tulip"*, *"Bag Charms"*, *"Daisy Basket"*, *"Gift Box"*).
+
+---
+
+## 🎨 Design System & Palette
+
+- **Base Canvas**: Warm Linen & Oat Milk (`#FAF7F2`, `#FFFDF9`)
+- **Primary Typography**: Deep Warm Mocha & Espresso (`#422926`, `#38201D`)
+- **Accent Palette**: Romantic Blush Pink (`#D9777F`), Coral Rose (`#E8A598`), Terracotta (`#C8626D`)
+- **Botanical & Sparkle**: Sage Green (`#7E9675`) & Honey Gold (`#D9A557`)
+- **Typography Pairings**:
+  - `Playfair Display` (Luxury Editorial Serif)
+  - `Plus Jakarta Sans` (Clean Modern Sans)
+  - `Caveat` & `Alex Brush` (Handcrafted Romantic Script)
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Framework**: Next.js 16.2.6 (Turbopack, App Router, Server Components)
-* **Styling**: Tailwind CSS v4 with custom design tokens (`brand-sand`, `brand-brown`, `brand-terracotta`, `brand-taupe`)
-* **Animations**: Framer Motion (scroll tracking, spring physics, magnetic interactions, stagger effects)
-* **Icons**: Lucide React
-* **Package Manager**: pnpm with workspace support
-* **Type Safety**: TypeScript
-
-### Custom Tailwind Variables
-```css
---brand-sand: #F6F4F0
---brand-brown: #3E2C24
---brand-terracotta: #D97A60
---brand-taupe: #8B8680
---rounded-b-sheet: 40px (custom border radius)
-```
+- **Framework**: Next.js 16.2.6 (Turbopack, App Router, React 19)
+- **Styling**: Tailwind CSS v4 with custom design tokens
+- **Animations**: Framer Motion (spring physics, scroll-linked transforms, stagger animations)
+- **Icons**: Lucide React
+- **Package Manager**: pnpm (v11+)
+- **Language**: TypeScript
 
 ---
 
@@ -87,65 +79,42 @@ Predictive instant search:
 ```
 src/
 ├── app/
-│   ├── page.tsx              # Landing page with full component orchestration
-│   ├── layout.tsx            # Root layout with global providers
-│   ├── globals.css           # Global styles (overflow-x: hidden removed to preserve sticky)
-│   ├── journal/              # Journal/blog section
-│   ├── shop/                 # Shop section
+│   ├── page.tsx              # CHISÓ Creations landing page
+│   ├── layout.tsx            # Root layout with fonts, metadata & providers
+│   ├── globals.css           # Design tokens, Tailwind v4 @theme, custom classes
+│   ├── shop/                 # Catalog page with category pills & price sort
+│   ├── journal/              # Artisanal craft stories & care guide
+│   ├── checkout/             # Multi-step checkout flow with UPI QR codes
+│   ├── not-found.tsx         # Branded 404 page
+│   └── error.tsx             # Error boundary
 │
 ├── components/
 │   ├── features/
-│   │   ├── HeroSection.tsx           # Full-screen hero with image & CTA
-│   │   ├── ProductCard.tsx           # Tactile cards with video hover
-│   │   ├── VibeCarousel.tsx          # Responsive product showcase carousel
-│   │   ├── EditorialInterstitial.tsx # Scroll-linked text animation
-│   │   ├── ValueMarquee.tsx          # Auto-scrolling brand values ticker
-│   │   ├── SignaturePieces.tsx       # Signature collection display
-│   │   ├── Testimonials.tsx          # Customer testimonials
-│   │   ├── Newsletter.tsx            # Email signup form
-│   │   ├── ProductSheet.tsx          # Details modal with revenue engine
-│   │   ├── ProductSheetContext.tsx   # Modal state management
-│   │   ├── WriteReviewModal.tsx      # Review submission form
-│   │   ├── SearchOverlay.tsx         # Search modal with instant results
-│   │   └── CartDrawer.tsx            # Shopping cart sidebar
+│   │   ├── HeroSection.tsx           # 3D tilt showcase & craft tags
+│   │   ├── CategoryPillars.tsx       # 5 signature pillars (Blooms, Charms, etc.)
+│   │   ├── ProductCard.tsx           # Magnetic add & tactile hover card
+│   │   ├── ProductSheet.tsx          # Quick-view drawer with care guide & notes
+│   │   ├── LaunchesAndOffers.tsx     # Gift set bundles & drops
+│   │   ├── EditorialInterstitial.tsx # Scroll-driven text reveal
+│   │   ├── ValueMarquee.tsx          # Infinite brand values loop
+│   │   ├── SignaturePieces.tsx       # Signature product catalog grid
+│   │   ├── Testimonials.tsx          # Verified community reviews
+│   │   ├── Newsletter.tsx            # Community signup & custom inquiry
+│   │   ├── CartDrawer.tsx            # Keepsake bag with free shipping progress
+│   │   ├── SearchOverlay.tsx         # Instant search modal
+│   │   └── WriteReviewModal.tsx      # Customer review submission
 │   │
 │   └── layout/
-│       ├── Navigation.tsx            # Header navigation
-│       └── Footer.tsx                # Footer
+│       ├── Navigation.tsx            # Top header & mobile bottom dock
+│       └── Footer.tsx                # Artisanal footer with social connections
 │
-├── lib/
-│   ├── context/
-│   │   ├── CartContext.tsx           # Cart state management
-│   │   └── SearchContext.tsx         # Search state management
-│   └── data/
-│       └── products.ts               # Product database & metadata
-│
-└── types/
-    └── (TypeScript type definitions)
+└── lib/
+    ├── context/
+    │   ├── CartContext.tsx           # Cart state management (chiso_cart)
+    │   └── SearchContext.tsx         # Global search modal context
+    └── data/
+        └── products.ts               # Handcrafted product catalog & metadata
 ```
-
----
-
-## 🎨 Design Highlights
-
-### Spacing & Alignment Standards
-- Navigation height: 64px (fixed)
-- Hero section: 85vh (perfectly balanced with header)
-- Container max-width: 7xl (1280px)
-- Padding scales: mobile 6 (24px), desktop 16 (64px)
-- Consistent gap spacing for component layout
-
-### Animation Patterns
-- **Entrance**: Scale-down with spring physics (stiffness: 60-70)
-- **Hover**: Magnetic interactions + scale transforms
-- **Scroll**: Linked opacity/position transforms using Framer Motion's `useScroll`
-- **Stagger**: Orchestrated child animations with 150ms delays
-
-### Responsive Breakpoints
-- Mobile: Base styles (< 768px)
-- Tablet: `md:` prefix (≥ 768px)
-- Desktop: `lg:` prefix (≥ 1024px)
-- HD: `xl:` prefix (≥ 1280px)
 
 ---
 
@@ -160,7 +129,7 @@ src/
    ```bash
    pnpm dev
    ```
-   The site will be available at `http://localhost:3000`
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 3. **Build for production**:
    ```bash
@@ -174,30 +143,6 @@ src/
 
 ---
 
-## 🐛 Known Considerations
+## 💌 Stay Tuned & Keep Supporting Small ♡
 
-* **Sticky Elements**: `overflow-x: hidden` removed from `body` in `globals.css` to preserve `position: sticky` bounds. Horizontal overflow is managed at individual container level.
-* **Video Loading**: Product card videos use fallback error handling—if a video URL is unavailable, the static image remains visible as a graceful degradation.
-* **Scroll Performance**: `EditorialInterstitial` uses optimized `useTransform` with `offset: ["start start", "end end"]` for smooth 60fps scroll tracking.
-
----
-
-## 📦 Dependencies
-
-- `next`: 16.2.6
-- `react`: 19.x
-- `framer-motion`: Latest (animations & interactions)
-- `tailwindcss`: v4 (styling)
-- `lucide-react`: Icons
-- `typescript`: Type safety
-
----
-
-## 🚀 Performance Optimizations
-
-- Next.js Image optimization with `quality={100}` for hero background
-- Turbopack for ultra-fast builds
-- Server Components by default for reduced client bundle
-- Tailwind CSS v4 with canonical class names
-- Strategic use of `priority` prop for above-fold images
-- Scroll-triggered animations only on `whileInView`
+Handcrafted with love by **CHISÓ Creations**. Kept forever.
